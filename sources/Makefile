@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/14 02:33:59 by fjanoty          ###   ########.fr        #
+#    Updated: 2016/12/14 07:04:03 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 		$(CC) $(CFLAGS)  -o ../$(NAME) $(OBJ) -L ../libft/ -lft \
 		-L ../c_maths -lc_maths \
-		-lmlx -framework OpenGL -framework AppKit  
+		-lmlx -framework OpenGL -framework AppKit -framework opencl 
 
 #		-L /usr/lib/ -lmlx -lm -lX11 -lXext
 
