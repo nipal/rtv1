@@ -6,13 +6,13 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/14 02:20:52 by fjanoty          ###   ########.fr        #
+#    Updated: 2016/12/14 02:33:59 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean all fclean re
 
-DEPS = ../includes/fractol.h
+DEPS = ../includes/rtv1.h
 
 SRC		= 	main.c \
 			exit.c 

@@ -6,14 +6,15 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/26 07:31:16 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 02:07:02 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 02:36:56 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
 #include "rtv1.h"
 
 int		main(int ac, char **av)
 {
+	(void)ac;
+	(void)av;
 	return (0);
 }

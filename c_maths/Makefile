@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/09/13 19:48:58 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/14 02:21:48 by fjanoty          ###   ########.fr        #
+#    Updated: 2016/12/14 02:34:02 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,4 @@ $(NAME): $(OBJ)
 clean:
 	rm -f $(OBJ)
 
-fclean: clean
-	rm -f $(NAME)
-
-re: fclean all
+re: clean all
