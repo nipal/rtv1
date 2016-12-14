@@ -2,4 +2,5 @@
 *.a
 *.sw*
 *.swp
+**/**.swp
 idee
