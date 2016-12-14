@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 09:51:58 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 12:26:30 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,11 @@ typedef	struct			s_mem_ocl
 
 typedef	struct			s_ocl
 {
-	cl_platform_id		platform_id;
-	cl_device_id		device_id;
 	cl_context			context;
 	cl_command_queue	command_queue;
 
 	cl_program			program;
-	cl_kernel			kernel;	
-	cl_uint				ret_num_devices;
-	cl_uint				ret_num_platforms;
-	cl_int				ret;
+	cl_kernel			kernel;
 }						t_ocl;
 
 typedef	union	u_pix
@@ -101,6 +96,8 @@ struct			s_env
 {
 	void		*mlx;
 	t_win		*win_rt;
+	t_ocl		*ocl;
+	t_mem_ocl	*mem_ocl;
 };
 
 
@@ -122,4 +119,11 @@ int				window_destroy(t_win **w);
 **	init_opencl
 */
 int	init_opencl(t_env *e, int size_x, int size_y);
+
+t_ocl		*init_kernel(int size_x, int size_y, const char *name_file);
+t_mem_ocl	*init_mem_ocl(t_ocl *ocl, int size_x, int size_y);
+int			main_while_ocl(t_mem_ocl *mem, t_ocl *ocl);
+void		actual_ocl_data(t_mem_ocl *mem);
+int			destroy_ocl(t_ocl **ocl);
+int	destroy_mem_ocl(t_mem_ocl **mem);
 #endif
