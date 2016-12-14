@@ -6,35 +6,18 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 09:10:24 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 08:17:39 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
+#include <fcntl.h>
+
 #include <mlx.h>
 #include "libft.h"
 #include "c_maths.h"
-
-#include <stdio.h>	
-#include <stdlib.h>
-#include <OpenCL/opencl.h>
-#include <fcntl.h>
-#include <string.h>
-#include <stdio.h>	
-#include <stdlib.h>
-
-#include <OpenCL/opencl.h>
-
-
-
-
-
-
-#define MAX_SOURCE_SIZE (0x100000)	
-
-
 
 /*
  	ON va faire une structure keybord et mousse avec plein de truc cool
@@ -43,35 +26,6 @@
 
 # define SIZE_X 1024
 # define SIZE_Y 768
-
-/*
-**	dans t_ocl on a juste les variable de base pour lancer un kernel
-**	apres on aurras sois une structure par kernel sois un tableau sois un verra
-*/
-
-typedef	struct			s_mem_ocl
-{
-	cl_mem				Amobj;	
-	cl_mem				Bmobj;	
-	cl_mem				Cmobj;	
-	float				*A;
-	float				*B;
-	float				*C;
-}						t_mem_ocl;
-
-typedef	struct			s_ocl
-{
-	cl_platform_id		platform_id;
-	cl_device_id		device_id;
-	cl_context			context;
-	cl_command_queue	command_queue;
-
-	cl_program			program;
-	cl_kernel			kernel;	
-	cl_uint				ret_num_devices;
-	cl_uint				ret_num_platforms;
-	cl_int				ret;
-}						t_ocl;
 
 typedef	union	u_pix
 {
@@ -119,7 +73,7 @@ int				ft_free(void **ptr);
 int				window_destroy(t_win **w);
 
 /*
-**	init_opencl
+**	init_rtv1
 */
-int	init_opencl(t_env *e, int size_x, int size_y);
+int	init_opencl(int	size_x, int size_y);
 #endif

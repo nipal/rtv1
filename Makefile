@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:28:32 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/14 02:39:13 by fjanoty          ###   ########.fr        #
+#    Updated: 2016/12/14 07:21:44 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 export CFLAGS		= -Wall -Wextra -Werror  -Ofaste
 export CC			= gcc
-export NAME			= rt_v1
+export NAME			= rtv1
 
 SRC_DIR				= ./sources
 LIB_FT				= ./libft
