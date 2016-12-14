@@ -6,12 +6,17 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 17:08:19 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 22:53:44 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
+
+# define SPHERE 	0
+# define PLAN 		1
+# define CYLINDRE	2
+# define CONE		3
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -35,7 +40,6 @@
 #define MAX_SOURCE_SIZE (0x100000)	
 
 
-
 /*
  	ON va faire une structure keybord et mousse avec plein de truc cool
 	(en mode interface a lib)
@@ -48,6 +52,15 @@
 **	dans t_ocl on a juste les variable de base pour lancer un kernel
 **	apres on aurras sois une structure par kernel sois un tableau sois un verra
 */
+
+typedef	struct	s_obj
+{
+	float		position[3];				
+	float		direction[3];
+	float		size;
+	int			type;
+
+}				t_obj;
 
 typedef	struct			s_mem_ocl
 {
