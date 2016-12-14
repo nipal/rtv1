@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 08:12:19 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 15:46:19 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 16:38:01 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void		actual_ocl_data(t_mem_ocl *mem)
 	(void)mem;
 }
 
+*/
 int			destroy_ocl(t_ocl **ocl)
 {
 	cl_int ret;
@@ -184,4 +185,3 @@ int	destroy_mem_ocl(t_mem_ocl **mem)
 	*mem = NULL;
 	return (1);
 }
-*/

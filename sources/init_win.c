@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 08:03:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 17:05:07 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_win		*window_init(t_env *e, int size_x, int size_y, char *name)
 					, &(w->size_line), &(w->endian)))
 			|| !(w->name = ft_strdup(name)))
 		return (NULL);
+	init_win_event(w);
 	w->e = e;
 	w->size_x = size_x;
 	w->size_y = size_y;
@@ -50,3 +51,14 @@ int			window_destroy(t_win **w)
 	ft_free((void**)w);
 	return (1);
 }
+
+void		init_win_event(t_win *w)
+{
+	mlx_hook(w->win, KEY_PRESS, (1 << 24) - 1, press_key, w);
+	mlx_hook(w->win, KEY_RELEASE, (1 << 24) - 1, release_key, w);
+	mlx_hook(w->win, BUTTON_PRESS, (1 << 24) - 1, press_cursor, w);
+	mlx_hook(w->win, BUTTON_RELEASE, (1 << 24) - 1, release_cursor, w);
+	mlx_hook(w->win, MOTION_NOTIFY, (1 << 24) - 1, motion_cursor, w);
+}
+
+

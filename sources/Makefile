@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/14 09:58:14 by fjanoty          ###   ########.fr        #
+#    Updated: 2016/12/14 16:26:38 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,11 @@
 
 DEPS = ../includes/rtv1.h
 
-SRC		= 	main.c \
-			init_rtv1.c \
-			init_win.c \
-			init_opencl.c \
+SRC		= 	main.c			\
+			init_rtv1.c		\
+			init_win.c		\
+			init_opencl.c	\
+			event.c 		\
 			exit.c 
 
 OBJ		= $(SRC:.c=.o)

@@ -6,12 +6,18 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 15:41:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 17:04:18 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
+
+# define KEY_PRESS                2
+# define KEY_RELEASE              3
+# define BUTTON_PRESS             4
+# define BUTTON_RELEASE           5
+# define MOTION_NOTIFY            6
 
 #include <mlx.h>
 #include "libft.h"
@@ -26,12 +32,6 @@
 #include <stdlib.h>
 
 #include <OpenCL/opencl.h>
-
-
-
-
-
-
 #define MAX_SOURCE_SIZE (0x100000)	
 
 
@@ -118,6 +118,7 @@ int	main_bcl(t_env *e);
 t_win			*window_init(t_env *e, int size_x, int size_y, char *name);
 int				ft_free(void **ptr);
 int				window_destroy(t_win **w);
+void			init_win_event(t_win *w);
 
 /*
 **	init_opencl
@@ -129,5 +130,20 @@ t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl);
 int			main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
 void		actual_ocl_data(t_mem_ocl *mem);
 int			destroy_ocl(t_ocl **ocl);
-int	destroy_mem_ocl(t_mem_ocl **mem);
+int			destroy_mem_ocl(t_mem_ocl **mem);
+
+/*
+**	event
+*/
+
+int		press_key(int key_code, t_win *w);
+int		release_key(int key_code, t_win *w);
+int		motion_cursor(int x, int y, t_win *w);
+int		press_cursor(int button, int x, int y, t_win *w);
+int		release_cursor(int button, int x, int y, t_win *w);
+
+/*
+**	exit
+*/
+int		ft_exit(t_env *e);
 #endif
