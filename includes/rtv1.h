@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 17:04:18 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 17:08:19 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,6 @@
 
 typedef	struct			s_mem_ocl
 {
-	cl_mem				Amobj;
-	cl_mem				Bmobj;
-	cl_mem				Cmobj;
-	float				*A;
-	float				*B;
-	float				*C;
-
-
 	cl_mem				ocl_time;
 	cl_mem				ocl_data;
 	int					*img_data;
