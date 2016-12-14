@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 08:12:19 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 12:39:01 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 15:46:19 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,41 +59,46 @@ t_ocl		*init_kernel(int size_x, int size_y, const char *name_file)
 	ocl->program = clCreateProgramWithSource(ocl->context, 1, (const char **)&source_str, (const size_t *)&source_size, &ret);	
 	ret = clBuildProgram(ocl->program, 1, &device_id, NULL, NULL, NULL);
 	/* Create data parallel OpenCL kernel */	
-	ocl->kernel = clCreateKernel(ocl->program, "dataParallel", &ret);
+	ocl->kernel = clCreateKernel(ocl->program, "test_image", &ret);
 	free(source_str);
 	return (ocl);
 }
 
-t_mem_ocl	*init_mem_ocl(t_ocl *ocl, int size_x, int size_y)
+t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
 {
 	t_mem_ocl	*mem;
 	int 		i;
 	int			j;
 	cl_int		ret;
+	(void)(i);
+	(void)(j);
 
-	(void)ocl;
-	(void)size_x;
-	(void)size_y;
 	if (!(mem = (t_mem_ocl*)ft_memalloc(sizeof(t_mem_ocl))))
 		return (NULL);
+	/*
 	mem->A = (float *)malloc(4*4*sizeof(float));
 	mem->B = (float *)malloc(4*4*sizeof(float));
 	mem->C = (float *)malloc(4*4*sizeof(float));
-	/* Initialize input data */
 	for (i=0; i < 4; i++) {
 		for (j=0; j < 4; j++) {
 			mem->A[i*4+j] = i*4+j+1;
 			mem->B[i*4+j] = j*4+i+1;
 		}	
-	}	
-	mem->Amobj = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, 4*4*sizeof(float), NULL, &ret);
-	mem->Bmobj = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, 4*4*sizeof(float), NULL, &ret);
-	mem->Cmobj = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, 4*4*sizeof(float), NULL, &ret);
+	}
+	mem->Amobj = clCreateBuffer(ocl->context, CL_MEM_READ_ONLY, 4*4*sizeof(float), NULL, &ret);
+	mem->Bmobj = clCreateBuffer(ocl->context, CL_MEM_READ_ONLY, 4*4*sizeof(float), NULL, &ret);
+	mem->Cmobj = clCreateBuffer(ocl->context, CL_MEM_WRITE_ONLY, 4*4*sizeof(float), NULL, &ret);
+	*/
+
+
+	mem->img_data = (int*)w->data;
+	mem->ocl_time = clCreateBuffer(ocl->context, CL_MEM_READ_ONLY, sizeof(int), NULL, &ret);
+	mem->ocl_data = clCreateBuffer(ocl->context, CL_MEM_WRITE_ONLY, (w->size_x * w->size_y) * sizeof(int), NULL, &ret);
 	return (mem);
 }
 
 
-int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl)
+int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w)
 {
 	static	int count = 0;
 	int	i;
@@ -101,46 +106,47 @@ int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl)
 	cl_int	ret;
 	size_t	global_item_size;
 	size_t	local_item_size;
+	(void)i;
+	(void)j;
 
-	global_item_size = 4;
+	global_item_size = w->size_x * w->size_y;
 	local_item_size = 1;
 	
-	/* Initialize input data */
+/*
 	for (i=0; i < 4; i++) {
 		for (j=0; j < 4; j++) {
 			mem->A[i*4+j] = i*4+j+1 + count;
 			mem->B[i*4+j] = j*4+i+1 + count;
-		}	
-	}	
+		}
+	}
 
-	/* Copy input data to the memory buffer */
 	ret = clEnqueueWriteBuffer(ocl->command_queue, mem->Amobj, CL_TRUE, 0, 4*4*sizeof(float), mem->A, 0, NULL, NULL);
 	ret = clEnqueueWriteBuffer(ocl->command_queue, mem->Bmobj, CL_TRUE, 0, 4*4*sizeof(float), mem->B, 0, NULL, NULL);
 
-	ret = clSetKernelArg(ocl->kernel, 0, sizeof(cl_mem), (void *)&(mem->Amobj));
-	ret = clSetKernelArg(ocl->kernel, 1, sizeof(cl_mem), (void *)&(mem->Bmobj));
 	ret = clSetKernelArg(ocl->kernel, 2, sizeof(cl_mem), (void *)&(mem->Cmobj));
+*/
 
-
+	ret = clEnqueueWriteBuffer(ocl->command_queue, mem->ocl_time
+			, CL_TRUE, 0, sizeof(int), &count, 0, NULL, NULL);
+	ret = clSetKernelArg(ocl->kernel, 0, sizeof(cl_mem), (void *)&(mem->ocl_time));
+	ret = clSetKernelArg(ocl->kernel, 1, sizeof(cl_mem), (void *)&(mem->ocl_data));
 	/* Execute OpenCL kernel as data parallel */
 	ret = clEnqueueNDRangeKernel(ocl->command_queue, ocl->kernel, 1, NULL,
 			&global_item_size, &local_item_size, 0, NULL, NULL);
 
 	/* Transfer result to host */
-	ret = clEnqueueReadBuffer(ocl->command_queue, mem->Cmobj, CL_TRUE, 0, 4*4*sizeof(float), mem->C, 0, NULL, NULL);
-
-	/* Display Results */
-	for (i=0; i < 4; i++) {
-		for (j=0; j < 4; j++) {
-			printf("%7.2f ", mem->C[i*4+j]);
-		}	
-		printf("\n");
-	}	
-	printf("---------------------------------------------\n");
+	ret = clEnqueueReadBuffer(ocl->command_queue, mem->ocl_data, CL_TRUE, 0,
+			(w->size_x * w->size_y) * sizeof(int), mem->img_data, 0, NULL, NULL);
+	
+	mlx_put_image_to_window(w->e->mlx, w->win, w->img, 0, 0);
+//	printf("---------------------------------------------\n");
 	count++;
 	return (0);
 }
 
+
+
+/*
 void		actual_ocl_data(t_mem_ocl *mem)
 {
 	(void)mem;
@@ -178,5 +184,4 @@ int	destroy_mem_ocl(t_mem_ocl **mem)
 	*mem = NULL;
 	return (1);
 }
-
-
+*/

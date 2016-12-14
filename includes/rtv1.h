@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 12:26:30 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/14 15:41:47 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,23 @@
 
 typedef	struct			s_mem_ocl
 {
-	cl_mem				Amobj;	
-	cl_mem				Bmobj;	
-	cl_mem				Cmobj;	
+	cl_mem				Amobj;
+	cl_mem				Bmobj;
+	cl_mem				Cmobj;
 	float				*A;
 	float				*B;
 	float				*C;
+
+
+	cl_mem				ocl_time;
+	cl_mem				ocl_data;
+	int					*img_data;
 }						t_mem_ocl;
 
 typedef	struct			s_ocl
 {
 	cl_context			context;
 	cl_command_queue	command_queue;
-
 	cl_program			program;
 	cl_kernel			kernel;
 }						t_ocl;
@@ -121,8 +125,8 @@ int				window_destroy(t_win **w);
 int	init_opencl(t_env *e, int size_x, int size_y);
 
 t_ocl		*init_kernel(int size_x, int size_y, const char *name_file);
-t_mem_ocl	*init_mem_ocl(t_ocl *ocl, int size_x, int size_y);
-int			main_while_ocl(t_mem_ocl *mem, t_ocl *ocl);
+t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl);
+int			main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
 void		actual_ocl_data(t_mem_ocl *mem);
 int			destroy_ocl(t_ocl **ocl);
 int	destroy_mem_ocl(t_mem_ocl **mem);

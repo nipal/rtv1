@@ -19,3 +19,12 @@ __kernel void dataParallel(__global float* A, __global float* B, __global float*
 	C[base+2] = A[base+2] * B[base+2];
 	C[base+3] = A[base+3] / B[base+3];
 }
+
+__kernel void test_image(__global int *time, __global int* data)
+{
+	int	id = get_global_id(0);
+	int	val;
+	
+	val = (id + *time) % 256;
+	data[id] = val << 16 | (256 - val) << 8 | abs(128 - val) * 2;
+}
