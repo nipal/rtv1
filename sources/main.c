@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/26 07:31:16 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 08:24:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/16 08:24:20 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 #include <OpenCL/opencl.h>
 
-#define MAX_SOURCE_SIZE (0x100000)	
 
 int main()
 {	

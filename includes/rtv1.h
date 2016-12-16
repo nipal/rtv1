@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 22:53:44 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/16 11:03:23 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 #include <stdlib.h>
 
 #include <OpenCL/opencl.h>
-#define MAX_SOURCE_SIZE (0x100000)	
+#define MAX_SOURCE_SIZE (0xf00000)	
 
 
 /*
@@ -45,8 +45,11 @@
 	(en mode interface a lib)
  */
 
-# define SIZE_X 1024
-# define SIZE_Y 768
+//	# define SIZE_X 1024
+//	# define SIZE_Y 768
+# define SIZE_X 15
+# define SIZE_Y 30
+# define NB_KERNEL 10
 
 /*
 **	dans t_ocl on a juste les variable de base pour lancer un kernel
@@ -67,6 +70,10 @@ typedef	struct			s_mem_ocl
 	cl_mem				ocl_time;
 	cl_mem				ocl_data;
 	int					*img_data;
+	float				cam[4 * 4];
+	cl_mem				ocl_cam;
+	cl_mem				ocl_ray_dir;
+	float				*ray_dir;
 }						t_mem_ocl;
 
 typedef	struct			s_ocl
@@ -74,7 +81,7 @@ typedef	struct			s_ocl
 	cl_context			context;
 	cl_command_queue	command_queue;
 	cl_program			program;
-	cl_kernel			kernel;
+	cl_kernel			kernel[NB_KERNEL];
 }						t_ocl;
 
 typedef	union	u_pix
@@ -151,4 +158,10 @@ int		release_cursor(int button, int x, int y, t_win *w);
 **	exit
 */
 int		ft_exit(t_env *e);
+
+/*
+**	hook
+*/
+int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
+t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl);
 #endif
