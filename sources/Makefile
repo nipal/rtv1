@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/16 06:28:25 by fjanoty          ###   ########.fr        #
+#    Updated: 2016/12/17 19:08:34 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC		= 	main.c			\
 			init_opencl.c	\
 			event.c 		\
 			hook.c			\
+			math_vector.c	\
 			exit.c 
 
 OBJ		= $(SRC:.c=.o)

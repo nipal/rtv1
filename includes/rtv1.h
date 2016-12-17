@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/16 11:03:23 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/17 21:04:41 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 #include <stdlib.h>
 
 #include <OpenCL/opencl.h>
+# include <math.h>
 #define MAX_SOURCE_SIZE (0xf00000)	
 
 
@@ -47,8 +48,8 @@
 
 //	# define SIZE_X 1024
 //	# define SIZE_Y 768
-# define SIZE_X 15
-# define SIZE_Y 30
+# define SIZE_X 5
+# define SIZE_Y 5
 # define NB_KERNEL 10
 
 /*
@@ -104,8 +105,20 @@ typedef	struct	s_win
 	char		*name;
 	int			size_x;
 	int			size_y;
+
+	float		cam_ang_incr;
+	float		cam_angle[4];
+	float		cam_pos[4];
+	float		mouse_pos[4];
+	float		mouse_prev_pos[4];
+	int			mode_cursor;
+	int			cursor_on;
 }				t_win;
 
+typedef	struct	s_cam
+{
+	float		landmark[16];
+}				t_cam;
 
 
 struct			s_env
@@ -164,4 +177,16 @@ int		ft_exit(t_env *e);
 */
 int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
 t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl);
+
+/*
+**	math_vector
+*/
+void	mat_vector_prod(float *mat, float *vect);
+void	set_vect_val(float *vect, float a, float b, float c);
+void	set_identity_in(float *dest);
+void	set_rot_mat4(float *mat, float angle, int id1, int id2);
+void	mult_mat4_in(float *mat1, float *mat2, float *mat_in);
+void	set_landmark(float *landmark, float *ang, float *pos);
+void	print_mat4(float *mat);
+void	print_vect4(float *vect);
 #endif

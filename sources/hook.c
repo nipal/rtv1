@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 05:46:36 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/16 11:03:33 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/17 21:44:39 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,26 @@ t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
 	mem->ocl_ray_dir = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, size * 4 * sizeof(float), NULL, &ret);
 	mem->ocl_cam = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, 4 * 4 * sizeof(float), NULL, &ret);
 	mem->ray_dir = malloc(sizeof(float) * 4 * w->size_x * w->size_y);
+	
+	mem->cam[0 * 4 + 0] = 0;
+	mem->cam[0 * 4 + 1] = 0;
+	mem->cam[0 * 4 + 2] = 0;
+	mem->cam[0 * 4 + 3] = 0;
+
+	mem->cam[1 * 4 + 0] = 1;
+	mem->cam[1 * 4 + 1] = 0;
+	mem->cam[1 * 4 + 2] = 0;
+	mem->cam[1 * 4 + 3] = 0;
+
+	mem->cam[2 * 4 + 0] = 0;
+	mem->cam[2 * 4 + 1] = 1;
+	mem->cam[2 * 4 + 2] = 0;
+	mem->cam[2 * 4 + 3] = 0;
+
+	mem->cam[3 * 4 + 0] = 0;
+	mem->cam[3 * 4 + 1] = 0;
+	mem->cam[3 * 4 + 2] = 1;
+	mem->cam[3 * 4 + 3] = 0;
 //	mem->cam = malloc(100);
 	return (mem);
 }
@@ -54,6 +74,7 @@ void	print_test(t_mem_ocl *mem, t_win *w)
 		printf("\n");
 		j++;
 	}
+	printf("------------------------------------------------------------------------------------------\n");
 }
 
 
@@ -71,43 +92,28 @@ int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w)
 	local_item_size = 1;
 
 
+
+
+
 //****************************	On va calculer tout les angle des vecteur ****************************
-	
-	mem->cam[0 * 4 + 0] = 0;
-	mem->cam[0 * 4 + 1] = 0;
-	mem->cam[0 * 4 + 2] = 0;
-	mem->cam[0 * 4 + 3] = 0;
 
-	mem->cam[1 * 4 + 0] = 1;
-	mem->cam[1 * 4 + 1] = 0;
-	mem->cam[1 * 4 + 2] = 0;
-	mem->cam[1 * 4 + 3] = 0;
-
-	mem->cam[2 * 4 + 0] = 0;
-	mem->cam[2 * 4 + 1] = 1;
-	mem->cam[2 * 4 + 2] = 0;
-	mem->cam[2 * 4 + 3] = 0;
-
-	mem->cam[3 * 4 + 0] = 0;
-	mem->cam[3 * 4 + 1] = 0;
-	mem->cam[3 * 4 + 2] = 1;
-	mem->cam[3 * 4 + 3] = 0;
 
 //	ret =  
+		
+	set_landmark(mem->cam, w->cam_angle, w->cam_pos);
 	ret = clEnqueueWriteBuffer(ocl->command_queue, mem->ocl_cam, CL_TRUE, 0, 4 * 4 * sizeof(float), mem->cam, 0, NULL, NULL);
-printf("ret0:%d\n", ret);
+//	printf("ret0:%d\n", ret);
 
 	ret = clSetKernelArg((ocl->kernel)[1], 0, sizeof(cl_mem), (void *)&(mem->ocl_ray_dir));
-printf("ret1:%d\n", ret);
+//	printf("ret1:%d\n", ret);
 	ret = clSetKernelArg((ocl->kernel)[1], 1, sizeof(cl_mem), (void *)&(mem->ocl_cam));
-printf("ret2:%d\n", ret);
+//	printf("ret2:%d\n", ret);
 	ret = clEnqueueNDRangeKernel(ocl->command_queue, (ocl->kernel)[1], 1, NULL,&global_item_size, &local_item_size, 0, NULL, NULL);
-printf("ret3:%d\n", ret);
+//	printf("ret3:%d\n", ret);
 	ret = clEnqueueReadBuffer(ocl->command_queue, mem->ocl_ray_dir, CL_TRUE, 0, 4 * size * sizeof(float), mem->ray_dir, 0, NULL, NULL);
-printf("ret4:%d\n", ret);
+//	printf("ret4:%d\n", ret);
 
 
-print_test(mem, w);
 
 //mlx_put_image_to_window(w->e->mlx, w->win, w->img, 0, 0);
 
@@ -122,7 +128,8 @@ print_test(mem, w);
 //ret = clEnqueueReadBuffer(ocl->command_queue, mem->ocl_data, CL_TRUE, 0,size * sizeof(int), mem->img_data, 0, NULL, NULL);
 	
 //	mlx_put_image_to_window(w->e->mlx, w->win, w->img, 0, 0);
-	printf("------------------------------------------------------------------------------------------\n");
+print_test(mem, w);
+
 	ret = clFlush((ocl)->command_queue);	
 	ret = clFinish((ocl)->command_queue);
 	count++;

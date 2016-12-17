@@ -15,8 +15,8 @@
 # define CYLINDRE	2
 # define CONE		3
 
-# define WIDTH		15
-# define HEIGHT		30
+# define WIDTH		5
+# define HEIGHT		5
 
 float	get_sphere_distance(float3 pos_s, float size_s, float3 pos_c, float3 dir_c)
 {

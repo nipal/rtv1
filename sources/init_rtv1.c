@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 07:46:21 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 15:42:20 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/17 17:06:09 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	run_rtv1()
 
 int	main_bcl(t_env *e)
 {
-	(void)e;
+
+
 	main_while_ocl(e->mem_ocl, e->ocl, e->win_rt);
 //	init_opencl(e, SIZE_X, SIZE_Y);
 	return (0);

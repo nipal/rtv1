@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/14 17:05:07 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/17 18:05:08 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_win		*window_init(t_env *e, int size_x, int size_y, char *name)
 			|| !(w->name = ft_strdup(name)))
 		return (NULL);
 	init_win_event(w);
+	w->cursor_on = 1;
+	w->cam_ang_incr = 5 * ((2 * M_PI) / 360);
 	w->e = e;
 	w->size_x = size_x;
 	w->size_y = size_y;
