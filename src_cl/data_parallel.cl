@@ -15,8 +15,8 @@
 # define CYLINDRE	2
 # define CONE		3
 
-# define WIDTH		5
-# define HEIGHT		5
+# define WIDTH		10
+# define HEIGHT		10
 
 __global	
 
@@ -124,7 +124,7 @@ float	dist_sphere_cam(float4 diff, float4 dir)
 }
 
 
-__kernel void test_image(__global int* time, __global int* data)
+__kernel void test_image(__global int *time, __global int *data)
 {
 	int	id = get_global_id(0);
 	int	val;
@@ -133,7 +133,7 @@ __kernel void test_image(__global int* time, __global int* data)
 	data[id] = ((val * 7)% 256) << 16 | (256 - val) << 8 | abs(128 - val) * 2;
 }
 
-__kernel void define_ray_dir(__global float4* dir, __global float4* landmark)
+__kernel void init_frame(__global float4 *dir, __global float4 *landmark, __global float2 *zbuffer_id)
 {
 	int		id;
 	float	coefx;
@@ -151,4 +151,5 @@ __kernel void define_ray_dir(__global float4* dir, __global float4* landmark)
 	coefx = -2 * (0.5f - (ww / WW));
 	coefy = -2 * (0.5f - (hh / HH));
 	dir[id] = coefx * landmark[1] + coefy * landmark[2] + landmark[3];
+	zbuffer_id[id] = (float2)(-1, -1);	
 }

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 08:12:19 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/19 02:37:55 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/19 06:51:07 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ t_ocl		*init_kernel(int size_x, int size_y, const char *name_file)
 	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ret = clBuildProgram(ocl->program, 1, &device_id, NULL, NULL, NULL);
 	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
-	(ocl->kernel)[0] = clCreateKernel(ocl->program, "test_image", &ret);
+	(ocl->kernel)[TEST_IMAGE] = clCreateKernel(ocl->program, "test_image", &ret);
 	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
-	(ocl->kernel)[1] = clCreateKernel(ocl->program, "define_ray_dir", &ret);
+	(ocl->kernel)[INIT_FRAME] = clCreateKernel(ocl->program, "init_frame", &ret);
 	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	free(source_str);
 	return (ocl);

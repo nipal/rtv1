@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/19 06:02:38 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/19 07:18:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,13 @@ char* g_ocl_error[100];
 
 //	# define SIZE_X 1024
 //	# define SIZE_Y 768
-# define SIZE_X 5
-# define SIZE_Y 5
+# define SIZE_X 1024
+# define SIZE_Y 768
 # define NB_KERNEL 10
+
+//	on pourrai avoir un kernel dinitialisation
+# define TEST_IMAGE 0
+# define INIT_FRAME 1
 
 /*
 **	dans t_ocl on a juste les variable de base pour lancer un kernel
@@ -77,13 +81,17 @@ typedef	struct			s_mem_ocl
 	cl_mem				ocl_cam;
 	cl_mem				ocl_ray_dir;
 	float				*ray_dir;
+
+	cl_mem				ocl_zbuffer_id;
+	cl_mem				ocl_tab_obj;
+	float				*tab_obj;
 }						t_mem_ocl;
 
 typedef	struct			s_ocl
 {
+	cl_program			program;
 	cl_context			context;
 	cl_command_queue	command_queue;
-	cl_program			program;
 	cl_kernel			kernel[NB_KERNEL];
 }						t_ocl;
 
