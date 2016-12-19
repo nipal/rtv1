@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 08:12:19 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/16 08:42:37 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/19 02:37:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,21 @@ t_ocl		*init_kernel(int size_x, int size_y, const char *name_file)
 	source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
 	fclose(fp);
 	ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
-printf("ret1:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &device_id, &ret_num_devices);
-printf("ret2:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ocl->context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &ret);
-printf("ret3:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ocl->command_queue = clCreateCommandQueue(ocl->context, device_id, 0, &ret);
-printf("ret4:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ocl->program = clCreateProgramWithSource(ocl->context, 1, (const char **)&source_str, (const size_t *)&source_size, &ret);	
-printf("ret5:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ret = clBuildProgram(ocl->program, 1, &device_id, NULL, NULL, NULL);
-printf("ret6:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	(ocl->kernel)[0] = clCreateKernel(ocl->program, "test_image", &ret);
-printf("ret7:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	(ocl->kernel)[1] = clCreateKernel(ocl->program, "define_ray_dir", &ret);
-printf("ret8:%d\n", ret);
+	(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	free(source_str);
 	return (ocl);
 }

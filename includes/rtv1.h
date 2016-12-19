@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/17 21:04:41 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/19 06:02:38 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,23 @@
 # define BUTTON_RELEASE           5
 # define MOTION_NOTIFY            6
 
-#include <mlx.h>
-#include "libft.h"
-#include "c_maths.h"
+# include "mlx.h"
+# include "libft.h"
+# include "c_maths.h"
 
-#include <stdio.h>	
-#include <stdlib.h>
-#include <OpenCL/opencl.h>
-#include <fcntl.h>
-#include <string.h>
-#include <stdio.h>	
-#include <stdlib.h>
+# include <stdio.h>	
+# include <stdlib.h>
+# include <OpenCL/opencl.h>
+# include <fcntl.h>
+# include <string.h>
+# include <stdio.h>	
+# include <stdlib.h>
 
-#include <OpenCL/opencl.h>
+# include <OpenCL/opencl.h>
 # include <math.h>
-#define MAX_SOURCE_SIZE (0xf00000)	
+# define MAX_SOURCE_SIZE (0xf0000)	
+
+char* g_ocl_error[100];
 
 
 /*
@@ -189,4 +191,11 @@ void	mult_mat4_in(float *mat1, float *mat2, float *mat_in);
 void	set_landmark(float *landmark, float *ang, float *pos);
 void	print_mat4(float *mat);
 void	print_vect4(float *vect);
+
+/*
+**	error_opencl
+*/
+void	init_ocl_error();
+void	print_ocl_error(int err_cl, int nb, char *name);
+//	void	print_ocl_error_test(int err_cl, int nb, char *name);
 #endif
