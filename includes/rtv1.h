@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/19 07:18:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/19 12:59:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,81 @@ char* g_ocl_error[100];
 # define TEST_IMAGE 0
 # define INIT_FRAME 1
 
+# define 
+
 /*
 **	dans t_ocl on a juste les variable de base pour lancer un kernel
 **	apres on aurras sois une structure par kernel sois un tableau sois un verra
 */
 
-typedef	struct	s_obj
-{
-	float		position[3];				
-	float		direction[3];
-	float		size;
-	int			type;
 
-}				t_obj;
+
+typedef	struct	s_light
+{
+	int			id;
+	float		pos[4];
+	int			color;
+}				t_light;
+
+typedef	struct	s_sphere
+{
+	int			id;
+	float		pos[4];		//  4eme = size
+	int			color;
+}				t_sphere;
+
+typedef	struct	s_plan
+{
+	int			id;
+	float		pos[4];
+	int			color;
+	float		dir[4];
+}				t_plan;
+
+typedef	struct	s_cylindre
+{
+	int			id;
+	float		pos[4];
+	int			color;
+	float		ang[4];
+	float		mat_rot[16];
+}				s_cylindre;
+
+typedef	struct	s_cone
+{
+	int			id;
+	float		pos[4];
+	int			color;
+	float		ang[4];
+	float		mat_rot[16];
+}				t_cone;
+
+/*
+**	t_obj est la structure qui correspond
+**	aux buffer de parametrisation q'on donne aux elements.
+**	sa pourrai etre interressant de developper apres une api a base
+**	de kernel pour pouvoir modifier seuleument un petit nombre d'objet
+**	Il y a une distinction pour la cammera comme ca on ne modifie pas tout les ellement a chaque fois
+**	qu'on deplace un truc.
+*/
+
+typedef	struct		s_obj
+{
+	float			*all_pos;			//	float4
+	int				*all_color;			//	int
+	float			*all_coef;			//	float	==> ca pourrait etre le 4eme
+	float			*all_rot_mat;		//	flaot16 initialiser sut mat_identite
+	int				*max_pop;			//	liste 
+}					t_obj;
+
+typedef	struct	s_obj_ocl
+{
+	float			*all_pos;			//	float4
+	int				*all_color;			//	int
+	float			*all_coef;			//	float	==> ca pourrait etre le 4eme
+	float			*all_rot_mat;		//	flaot16 initialiser sut mat_identite
+	int				*max_pop;			//	liste 
+}					t_ocl_obj;
 
 typedef	struct			s_mem_ocl
 {
