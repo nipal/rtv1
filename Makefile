@@ -6,13 +6,13 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:28:32 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/14 07:21:44 by fjanoty          ###   ########.fr        #
+#    Updated: 2016/12/19 09:02:36 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean all fclean re gdb
 
-export CFLAGS		= -Wall -Wextra -Werror  -Ofaste
+export CFLAGS		= -Wall -Wextra -Werror  -fsanitize=address -g
 export CC			= gcc
 export NAME			= rtv1
 

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 16:14:03 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/17 20:46:10 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/19 09:06:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,13 @@ void	actu_mouse_cursor(t_win *w, int x, int y)
 
 int press_key(int key_code, t_win *w)
 {
+	char *oui = malloc(sizeof(t_win));
 	(key_code == 4) ? w->cam_angle[1] += w->cam_ang_incr : 0;
 	(key_code == 37) ? w->cam_angle[1] -= w->cam_ang_incr : 0;
 	(key_code == 38) ? w->cam_angle[0] += w->cam_ang_incr : 0;
 	(key_code == 40) ? w->cam_angle[0] -= w->cam_ang_incr : 0;
+	int toto = (key_code == 12) ? oui[19999] = 1 : 0;
+	(void)toto;
 	if (key_code == 53)
 		ft_exit(w->e);
 	if (key_code == 48)
