@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/19 12:59:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/20 01:38:54 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ char* g_ocl_error[100];
 # define TEST_IMAGE 0
 # define INIT_FRAME 1
 
-# define 
 
 /*
 **	dans t_ocl on a juste les variable de base pour lancer un kernel
