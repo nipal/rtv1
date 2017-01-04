@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 05:46:36 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/20 01:39:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/20 03:20:21 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w)
 //		ft_strcat(tmp, __func__);
 //	//		
 //		set_landmark(mem->cam, w->cam_angle, w->cam_pos);
-//		ret = clEnqueueWriteBuffer(ocl->command_queue, mem->ocl_cam, CL_TRUE, 0, 4 * 4 * sizeof(float), mem->cam, 0, NULL, NULL);
+//		ret = clEnqueueWriteBuffer(ocl->command_queue[INIT_FRAME], mem->ocl_cam, CL_TRUE, 0, 4 * 4 * sizeof(float), mem->cam, 0, NULL, NULL);
 //			(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, tmp) : 0;
 //	//	
 //	//		ret = clSetKernelArg((ocl->kernel)[INIT_FRAME], 0, sizeof(cl_mem), (void *)&(mem->ocl_ray_dir));
@@ -130,9 +130,9 @@ int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w)
 //	//		ret = clSetKernelArg((ocl->kernel)[INIT_FRAME], 2, sizeof(cl_mem), (void *)&(mem->ocl_zbuffer_id));
 //	//			(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, tmp) : 0;
 //	//		
-//		ret = clEnqueueNDRangeKernel(ocl->command_queue, ocl->kernel[INIT_FRAME], 1, NULL, &global_item_size, &local_item_size, 0, NULL, NULL);
+//		ret = clEnqueueNDRangeKernel(ocl->command_queue[INIT_FRAME], ocl->kernel[INIT_FRAME], 1, NULL, &global_item_size, &local_item_size, 0, NULL, NULL);
 //			(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, tmp) : 0;
-//		ret = clEnqueueReadBuffer(ocl->command_queue, mem->ocl_ray_dir, CL_TRUE, 0, 4 * size * sizeof(float), mem->ray_dir, 0, NULL, NULL);
+//		ret = clEnqueueReadBuffer(ocl->command_queue[INIT_FRAME], mem->ocl_ray_dir, CL_TRUE, 0, 4 * size * sizeof(float), mem->ray_dir, 0, NULL, NULL);
 //			(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, tmp) : 0;
 //	
 
@@ -141,12 +141,12 @@ int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w)
 
 
 //****************************	On fait juste la couleur bizard	 ****************************
-	ret = clEnqueueWriteBuffer(ocl->command_queue, mem->ocl_time, CL_TRUE, 0, sizeof(int), &count, 0, NULL, NULL);
+	ret = clEnqueueWriteBuffer(ocl->command_queue[TEST_IMAGE], mem->ocl_time, CL_TRUE, 0, sizeof(int), &count, 0, NULL, NULL);
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 
-	ret = clEnqueueNDRangeKernel(ocl->command_queue, (ocl->kernel)[TEST_IMAGE], 1, NULL,&global_item_size, &local_item_size, 0, NULL, NULL);
+	ret = clEnqueueNDRangeKernel(ocl->command_queue[TEST_IMAGE], (ocl->kernel)[TEST_IMAGE], 1, NULL,&global_item_size, &local_item_size, 0, NULL, NULL);
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
-	ret = clEnqueueReadBuffer(ocl->command_queue, mem->ocl_data, CL_TRUE, 0,size * sizeof(int), mem->img_data, 0, NULL, NULL);
+	ret = clEnqueueReadBuffer(ocl->command_queue[TEST_IMAGE], mem->ocl_data, CL_TRUE, 0,size * sizeof(int), mem->img_data, 0, NULL, NULL);
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	mlx_put_image_to_window(w->e->mlx, w->win, w->img, 0, 0);
 	(void)tmp;

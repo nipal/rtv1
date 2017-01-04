@@ -33,7 +33,6 @@ float	solve_2nd_equation_dist(float3 coef)
 	dist2 = (-coef.y + delta) / (2 * a);
 
 
-/*
 if ((prod = dist * dist2) < 0 && dist > 0)
 		return (dist);
 	if (prod < 0 && dist > 0)
@@ -64,7 +63,6 @@ if ((prod = dist * dist2) < 0 && dist > 0)
 			return (dist2);
 		return (dist);
 	}
-*/
 
 
 	if (dist * dist2 < 0)

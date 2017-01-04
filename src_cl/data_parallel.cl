@@ -18,31 +18,29 @@
 # define WIDTH		10
 # define HEIGHT		10
 
-__global	
 
 float	solve_2nd_equation_dist(float3 coef)
 {
 	float	dist;
 	float	dist2;
+	float	result[3];
 	float	delta;
 	float	mult;
+	int		id;
 
 	delta = coef.y * coef.y - 4 * coef.x * coef.z;
-	if (delta < 0 || coef.x == 0)
+	if (delta < 0)
 		return (-1);
+	id = 0;
 	delta = sqrt(delta);
 	dist = (-coef.y - delta) / (2 * coef.x);
 	dist2 = (-coef.y + delta) / (2 * coef.x);
+	result[1] = dist;
+	result[2] = dist2;
+	result[0] = -1;
 	mult = dist * dist2;
-	if (mult < 0 && dist > 0)
-		return (dist);
-	else if (mult < 0 && dist > 0)
-		return (dist2);
-	else if (dist > 0 && dist > dist2)
-			return (dist2);
-	else if (dist > 0 && dist < dist2)
-		return (dist);
-	return (-1);
+	id = ((mult < 0 && dist > 0) || (dist > 0 && dist < dist2)) + ((mult < 0 && dist > 0) || (dist > 0 && dist > dist2)) * 2;
+	return (result[id]);
 }
 
 float4	mat4_vect4_product(float16 mat_rot, float4 vect)
@@ -80,9 +78,8 @@ float	dist_plan_cam(float4 diff, float4 dir_ray, float4 dir_plan)
 	float	result;
 
 	tmp = dot(dir_plan, dir_ray);
-	if (tmp == 0)
-		return (-1.);
-	return (-dir_plan.w - dot(dir_plan, diff) / tmp);
+	result = (tmp) ? -dir_plan.w - dot(dir_plan, diff) / tmp : -1;
+	return (result);
 }
 
 float	dist_cylindre_cam(float4 diff, float4 ray, float size2)
@@ -153,3 +150,11 @@ __kernel void init_frame(__global float4 *dir, __global float4 *landmark, __glob
 	dir[id] = coefx * landmark[1] + coefy * landmark[2] + landmark[3];
 	zbuffer_id[id] = (float2)(-1, -1);	
 }
+
+/*
+
+__kernel void set_difuse(__global )
+{
+
+}
+*/

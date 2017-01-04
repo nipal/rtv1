@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/17 18:06:37 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/17 21:50:19 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/12/20 14:09:46 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,21 @@
 **	Genere un reper a partir de 3 angle et d'un position
 **	on ne travialle que avec des float[4]
 */
+
+float	vect_dot4(float *vecta, float *vectb)
+{
+	int		i;
+	float	sum;
+
+	i = 0;
+	sum = 0;
+	while (i < 4)
+	{
+		sum += vecta[i] * vectb[i];
+		i++;
+	}
+	return (sum);
+}
 
 void	mult_mat4_in(float *mat1, float *mat2, float *mat_in)
 {
@@ -72,6 +87,21 @@ void	set_identity_in(float *dest)
 			0, 0, 0, 1};
 
 	ft_memcpy(dest, identity, sizeof(identity));
+}
+
+void	set_rot_mat4_all(float *mat, float x, float y, float z)
+{
+	float	mult[16];
+	float	tmp[16];
+
+	set_identity_in(mult);
+	set_rot_mat4(tmp, x, 1, 2);
+	mult_mat4_in(mult, tmp, mult);
+	set_rot_mat4(tmp, y, 2, 0);
+	mult_mat4_in(mult, tmp, mult);
+	set_rot_mat4(tmp, z, 0, 1);
+	mult_mat4_in(mult, tmp, mult);
+	ft_memmove(mat, mult, sizeof(mult));
 }
 
 void	set_vect_val(float *vect, float a, float b, float c)

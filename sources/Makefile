@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2016/12/19 01:26:44 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/01/04 04:42:47 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRC		= 	main.c			\
 			hook.c			\
 			math_vector.c	\
 			error_opencl.c	\
+			manage_objet.c	\
+			read_file.c		\
 			exit.c 
 
 OBJ		= $(SRC:.c=.o)

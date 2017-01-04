@@ -6,17 +6,12 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/20 01:38:54 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/04 05:14:47 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
-
-# define SPHERE 	0
-# define PLAN 		1
-# define CYLINDRE	2
-# define CONE		3
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -44,9 +39,9 @@ char* g_ocl_error[100];
 
 
 /*
- 	ON va faire une structure keybord et mousse avec plein de truc cool
-	(en mode interface a lib)
- */
+   ON va faire une structure keybord et mousse avec plein de truc cool
+   (en mode interface a lib)
+   */
 
 //	# define SIZE_X 1024
 //	# define SIZE_Y 768
@@ -58,80 +53,80 @@ char* g_ocl_error[100];
 # define TEST_IMAGE 0
 # define INIT_FRAME 1
 
+/*
+ **	dans t_ocl on a juste les variable de base pour lancer un kernel
+ **	apres on aurras sois une structure par kernel sois un tableau sois un verra
+ */
+
+
+
+# define BUFF_FILE_SIZE 128
+
+typedef	struct	s_buff_file	t_buff_file;
+struct			s_buff_file
+{
+	int			size;
+	char		buff[BUFF_FILE_SIZE];
+		t_buff_file	*next;
+};
+
+
+
 
 /*
-**	dans t_ocl on a juste les variable de base pour lancer un kernel
-**	apres on aurras sois une structure par kernel sois un tableau sois un verra
-*/
+ **	Il y aurra un tableau d'index.
+ **	Pour chaque classe, une liste d'id d'objet
+ **	ca pourra etre chiant pour les lumier,  a moins qu'elles aient un plage d'id resever
+ */
 
+# define LIGHT 0
+# define SPHERE 1
+# define PLAN 2
+# define CYLINDER 3
+# define CONE 4
 
+# define NB_OBJ 50
 
-typedef	struct	s_light
+typedef	struct			s_init_ocl_param
 {
-	int			id;
-	float		pos[4];
-	int			color;
-}				t_light;
+	cl_platform_id		platform_id;
+	cl_device_id		device_id;
+}						t_init_ocl_param;
 
-typedef	struct	s_sphere
+typedef	struct			s_param_buffer
 {
-	int			id;
-	float		pos[4];		//  4eme = size
-	int			color;
-}				t_sphere;
+	int					all_type[NB_OBJ];
+	int					all_collor[NB_OBJ];
+	float				all_coef[NB_OBJ];
+	float				all_pos[NB_OBJ * 4];
+	float				all_angle[NB_OBJ * 4];
+	float				all_mat_rot[NB_OBJ * 16];
+	int					current;
 
-typedef	struct	s_plan
-{
-	int			id;
-	float		pos[4];
-	int			color;
-	float		dir[4];
-}				t_plan;
-
-typedef	struct	s_cylindre
-{
-	int			id;
-	float		pos[4];
-	int			color;
-	float		ang[4];
-	float		mat_rot[16];
-}				s_cylindre;
-
-typedef	struct	s_cone
-{
-	int			id;
-	float		pos[4];
-	int			color;
-	float		ang[4];
-	float		mat_rot[16];
-}				t_cone;
+	cl_mem				ocl_type;
+	cl_mem				ocl_collor;
+	cl_mem				ocl_coef;
+	cl_mem				ocl_pos;
+	cl_mem				ocl_mat_rot;
+	cl_mem				ocl_angle;   
+	cl_mem				ocl_normal;
+}						t_param_buffer;
 
 /*
-**	t_obj est la structure qui correspond
-**	aux buffer de parametrisation q'on donne aux elements.
-**	sa pourrai etre interressant de developper apres une api a base
-**	de kernel pour pouvoir modifier seuleument un petit nombre d'objet
-**	Il y a une distinction pour la cammera comme ca on ne modifie pas tout les ellement a chaque fois
-**	qu'on deplace un truc.
-*/
+ **	c'est la structure generique des objet. On s'en servira pour avoir un backup 
+ **	des parametre de l'objet cote cpu
+ */	
 
-typedef	struct		s_obj
+typedef	struct			s_obj
 {
-	float			*all_pos;			//	float4
-	int				*all_color;			//	int
-	float			*all_coef;			//	float	==> ca pourrait etre le 4eme
-	float			*all_rot_mat;		//	flaot16 initialiser sut mat_identite
-	int				*max_pop;			//	liste 
-}					t_obj;
-
-typedef	struct	s_obj_ocl
-{
-	float			*all_pos;			//	float4
-	int				*all_color;			//	int
-	float			*all_coef;			//	float	==> ca pourrait etre le 4eme
-	float			*all_rot_mat;		//	flaot16 initialiser sut mat_identite
-	int				*max_pop;			//	liste 
-}					t_ocl_obj;
+	int					id;
+	int					color;
+	int					type;
+	float				coef;
+	float				position[4];
+	float				angle[4];
+	float				mat_rot[16];
+}						t_obj;
 
 typedef	struct			s_mem_ocl
 {
@@ -152,119 +147,152 @@ typedef	struct			s_ocl
 {
 	cl_program			program;
 	cl_context			context;
-	cl_command_queue	command_queue;
+	cl_command_queue	command_queue[NB_KERNEL];
 	cl_kernel			kernel[NB_KERNEL];
 }						t_ocl;
 
-typedef	union	u_pix
+/*
+ **	t_kernel sert a avoir une tache en particulier
+ */
+
+typedef	struct			s_kernel
 {
-	int			nb;
-	char		comp[4];
-}				t_pix;
+	cl_command_queue	command_queue;
+	cl_kernel			kernel;
+}						t_kernel;
 
-typedef	struct	s_env	t_env;
-
-typedef	struct	s_win
+typedef	union			u_pix
 {
-	void		*img;
-	void		*win;
-	int			size_line;
-	int			depth;
-	int			endian;
-	t_pix		*data;
-	t_env		*e;
-	char		*name;
-	int			size_x;
-	int			size_y;
+	int					nb;
+	char				comp[4];
+}						t_pix;
 
-	float		cam_ang_incr;
-	float		cam_angle[4];
-	float		cam_pos[4];
-	float		mouse_pos[4];
-	float		mouse_prev_pos[4];
-	int			mode_cursor;
-	int			cursor_on;
-}				t_win;
+typedef	struct			s_env	t_env;
 
-typedef	struct	s_cam
+typedef	struct			s_win
 {
-	float		landmark[16];
-}				t_cam;
+	void				*img;
+	void				*win;
+	int					size_line;
+	int					depth;
+	int					endian;
+	t_pix				*data;
+	t_env				*e;
+	char				*name;
+	int					size_x;
+	int					size_y;
 
+	float				cam_ang_incr;
+	float				cam_angle[4];
+	float				cam_pos[4];
+	float				mouse_pos[4];
+	float				mouse_prev_pos[4];
+	int					mode_cursor;
+	int					cursor_on;
 
-struct			s_env
+	t_param_buffer		param;
+}						t_win;
+
+typedef	struct			s_cam
 {
-	void		*mlx;
-	t_win		*win_rt;
-	t_ocl		*ocl;
-	t_mem_ocl	*mem_ocl;
+	float				landmark[16];
+}						t_cam;
+
+
+struct					s_env
+{
+	void				*mlx;
+	t_win				*win_rt;
+	t_ocl				*ocl;
+	t_mem_ocl			*mem_ocl;
 };
 
 
 /*
-**	init_rtv1
-*/
-int	run_rtv1();
-int	main_bcl(t_env *e);
+ **	init_rtv1
+ */
+int						run_rtv1();
+int						main_bcl(t_env *e);
 
 
 /*
-**	init_win
-*/
-t_win			*window_init(t_env *e, int size_x, int size_y, char *name);
-int				ft_free(void **ptr);
-int				window_destroy(t_win **w);
-void			init_win_event(t_win *w);
+ **	init_win
+ */
+t_win					*window_init(t_env *e, int size_x, int size_y, char *name);
+int						ft_free(void **ptr);
+int						window_destroy(t_win **w);
+void					init_win_event(t_win *w);
 
 /*
-**	init_opencl
-*/
-int	init_opencl(t_env *e, int size_x, int size_y);
+ **	init_opencl
+ */
+int						init_opencl(t_env *e, int size_x, int size_y);
 
-t_ocl		*init_kernel(int size_x, int size_y, const char *name_file);
-t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl);
-int			main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
-void		actual_ocl_data(t_mem_ocl *mem);
-int			destroy_ocl(t_ocl **ocl);
-int			destroy_mem_ocl(t_mem_ocl **mem);
-
-/*
-**	event
-*/
-
-int		press_key(int key_code, t_win *w);
-int		release_key(int key_code, t_win *w);
-int		motion_cursor(int x, int y, t_win *w);
-int		press_cursor(int button, int x, int y, t_win *w);
-int		release_cursor(int button, int x, int y, t_win *w);
+t_ocl					*init_kernel(int size_x, int size_y, const char *name_file);
+t_mem_ocl				*init_mem_ocl(t_win *w, t_ocl *ocl);
+int						main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
+void					actual_ocl_data(t_mem_ocl *mem);
+int						destroy_ocl(t_ocl **ocl);
+int						destroy_mem_ocl(t_mem_ocl **mem);
 
 /*
-**	exit
-*/
-int		ft_exit(t_env *e);
+ **	event
+ */
+
+int						press_key(int key_code, t_win *w);
+int						release_key(int key_code, t_win *w);
+int						motion_cursor(int x, int y, t_win *w);
+int						press_cursor(int button, int x, int y, t_win *w);
+int						release_cursor(int button, int x, int y, t_win *w);
 
 /*
-**	hook
-*/
-int		main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
-t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl);
+ **	exit
+ */
+int						ft_exit(t_env *e);
 
 /*
-**	math_vector
-*/
-void	mat_vector_prod(float *mat, float *vect);
-void	set_vect_val(float *vect, float a, float b, float c);
-void	set_identity_in(float *dest);
-void	set_rot_mat4(float *mat, float angle, int id1, int id2);
-void	mult_mat4_in(float *mat1, float *mat2, float *mat_in);
-void	set_landmark(float *landmark, float *ang, float *pos);
-void	print_mat4(float *mat);
-void	print_vect4(float *vect);
+ **	hook
+ */
+int						main_while_ocl(t_mem_ocl *mem, t_ocl *ocl, t_win *w);
+t_mem_ocl				*init_mem_ocl(t_win *w, t_ocl *ocl);
 
 /*
-**	error_opencl
-*/
-void	init_ocl_error();
-void	print_ocl_error(int err_cl, int nb, char *name);
-//	void	print_ocl_error_test(int err_cl, int nb, char *name);
+ **	math_vector
+ */
+void					mat_vector_prod(float *mat, float *vect);
+void					set_vect_val(float *vect, float a, float b, float c);
+void					set_identity_in(float *dest);
+void					set_rot_mat4(float *mat, float angle, int id1, int id2);
+void					set_rot_mat4_all(float *mat, float x, float y, float z);
+void					mult_mat4_in(float *mat1, float *mat2, float *mat_in);
+void					set_landmark(float *landmark, float *ang, float *pos);
+void					print_mat4(float *mat);
+void					print_vect4(float *vect);
+float					vect_dot4(float *vecta, float *vectb);
+void					set_rot_mat4(float *mat, float angle, int id1, int id2);
+
+/*
+ **	manage_objet
+ */
+int						add_light(t_param_buffer *param, float *pos, int color);
+int						add_sphere(t_param_buffer *param, float *pos, int color, float radius);
+int						add_plan(t_param_buffer *param, float *pos, int color, float *dir);
+int						add_cylindre(t_param_buffer *param, float *pos, int color, float *dir);
+int						add_cone(t_param_buffer *param, float *pos, int color, float *dir);
+
+/*
+ **	read_oclfile
+ */
+int						open_file(const char *name);
+t_buff_file				*get_next(int fd);
+t_buff_file				*stack_buff_file(int fd, int *total_size, int *nb_buff);
+int						destroy_buff_file_stack(t_buff_file **beg);
+int						copy_stack_in_str(t_buff_file *beg, int nb_buff, int size, char *str);
+char					*read_file(const char *name, size_t *str_size);
+
+/*
+ **	error_opencl
+ */
+void					init_ocl_error();
+void					print_ocl_error(int err_cl, int nb, char *name);
 #endif
