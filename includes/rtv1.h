@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/04 05:14:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/05 10:08:31 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ typedef	struct			s_mem_ocl
 
 typedef	struct			s_ocl
 {
+	cl_platform_id		platform_id;		// on peut init a null
+	cl_device_id		device_id;			// on peut init a null
 	cl_program			program;
 	cl_context			context;
 	cl_command_queue	command_queue[NB_KERNEL];
@@ -294,5 +296,5 @@ char					*read_file(const char *name, size_t *str_size);
  **	error_opencl
  */
 void					init_ocl_error();
-void					print_ocl_error(int err_cl, int nb, char *name);
+int						print_ocl_error(int err_cl, int nb, char *name);
 #endif

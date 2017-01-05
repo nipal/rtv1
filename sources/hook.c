@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 05:46:36 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/20 03:20:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/05 10:08:26 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
 
 	mem->ocl_zbuffer_id = clCreateBuffer(ocl->context, CL_MEM_READ_ONLY, 2 * size * sizeof(float), NULL, &ret);
 
+	// kernel, id_arg, size_buffer, cl_adrr
 	ret = clSetKernelArg((ocl->kernel)[INIT_FRAME], 0, sizeof(cl_mem), (void *)&(mem->ocl_ray_dir));
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	ret = clSetKernelArg((ocl->kernel)[INIT_FRAME], 1, sizeof(cl_mem), (void *)&(mem->ocl_cam));

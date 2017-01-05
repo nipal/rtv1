@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 08:12:19 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/04 04:50:17 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/05 09:39:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,6 @@ t_ocl		*init_kernel(int size_x, int size_y, const char *name_file)
 	if (!(source_str = read_file(name_file, &source_size)))
 		return (NULL);
 
-	/*
-	fp = fopen(name_file, "r");
-	if (!fp)
-	{
-		fprintf(stderr, "Failed to load kernel.\n");	
-		exit(1);
-	}	
-	source_str = (char *)malloc(MAX_SOURCE_SIZE);
-	source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
-	fclose(fp);
-*/
-
 
 	ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
@@ -69,6 +57,10 @@ t_ocl		*init_kernel(int size_x, int size_y, const char *name_file)
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	(ocl->kernel)[INIT_FRAME] = clCreateKernel(ocl->program, "init_frame", &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
+
+
+	ocl->platform_id = platform_id;
+	ocl->device_id = device_id;
 	free(source_str);
 	return (ocl);
 }

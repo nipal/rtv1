@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/19 01:24:46 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/12/19 02:36:41 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/05 05:52:49 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	init_ocl_error()
 	g_ocl_error[63]	= "CL_INVALID_GLOBAL_WORK_SIZE";
 }
 
-void	print_ocl_error(int err_cl, int nbl, char *name)
+int		print_ocl_error(int err_cl, int nbl, char *name)
 {
 	ft_putstr("file:");
 	ft_putstr(name);
@@ -74,7 +74,7 @@ void	print_ocl_error(int err_cl, int nbl, char *name)
 	if (err_cl > 0)
 	{
 		ft_putstr("not a cl error ***\n");
-		return ;
+		return (1);
 	}
 	err_cl *= -1;
 	if ((err_cl > 12 && err_cl < 30) || err_cl > 63)
@@ -86,6 +86,7 @@ void	print_ocl_error(int err_cl, int nbl, char *name)
 		ft_putstr(g_ocl_error[err_cl]);
 		ft_putstr(" ***\n");
 	}
+	return (1);
 }
 
 /*
