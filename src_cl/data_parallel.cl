@@ -18,28 +18,39 @@
 # define WIDTH		10
 # define HEIGHT		10
 
+/*
+**	sign
+*/
 
 float	solve_2nd_equation_dist(float3 coef)
 {
-	float	dist;
-	float	dist2;
+//	char4	state;
+	char	err;	// 1 si ok 0 si non ...  ou l'invers
+	char	r1_pos;			// 1 => r1 < 0
+	char	r2_pos;			// 1 => r2 < 0
+	char	r1_inf_r2;		// 1 => r1 < r2
+	float	r1;
+	float	r2;
 	float	result[3];
 	float	delta;
-	float	mult;
 	int		id;
 
 	delta = coef.y * coef.y - 4 * coef.x * coef.z;
-	if (delta < 0)
-		return (-1);
+	err = delta >= 0;
+//	delta = delta & 2147483647
+	delta = abs(delta);
 	id = 0;
 	delta = sqrt(delta);
-	dist = (-coef.y - delta) / (2 * coef.x);
-	dist2 = (-coef.y + delta) / (2 * coef.x);
-	result[1] = dist;
-	result[2] = dist2;
+	r1 = (-coef.y - delta) / (2 * coef.x);
+	r2 = (-coef.y + delta) / (2 * coef.x);
+	result[1] = r1;
+	result[2] = r2;
 	result[0] = -1;
-	mult = dist * dist2;
-	id = ((mult < 0 && dist > 0) || (dist > 0 && dist < dist2)) + ((mult < 0 && dist > 0) || (dist > 0 && dist > dist2)) * 2;
+	r1_pos = r1 >= 0;
+	r2_pos = r2 >= 0;
+	err = err & (r1_pos || r2_pos);
+	r1_inf_r2 = r1 < r2;	
+	id = ((r1_pos && (!r2_pos || r1_inf_r2)) + 2 * (r2_pos && (!r1_pos || !r1_inf_r2))) * err;
 	return (result[id]);
 }
 
