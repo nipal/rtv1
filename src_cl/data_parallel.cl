@@ -18,17 +18,50 @@
 # define WIDTH		10
 # define HEIGHT		10
 
+
 /*
-**	sign
+**	PARAMETRE D'UN OBJET
 */
+typedef	struct			s_obj
+{
+	int					id;
+	int					color;
+	int					type;
+	float				coef;
+	float4				position;
+	float4				angle;
+	float16				mat_rot;
+}						t_obj;
+
+/*
+**	STRUCTURE DU BUFFER DE L"ECRAN" 
+**	autan on pourra simplifier la fignature du truc
+*/
+
+typedef	struct			s_lbuffer
+{
+	float4				dir_cam_obj;
+	float4				dir_obj_lum;
+	float4				dir_normal;
+	float4				pos_tmp;
+	float				dist_cam_obj;
+	float				dist_obj_lum;
+	int					obj_color;
+	int					lum_color;
+	int					id;
+	int					form;
+}						t_lbuffer;
+
+
+
 
 float	solve_2nd_equation_dist(float3 coef)
 {
-//	char4	state;
-	char	err;	// 1 si ok 0 si non ...  ou l'invers
-	char	r1_pos;			// 1 => r1 < 0
-	char	r2_pos;			// 1 => r2 < 0
-	char	r1_inf_r2;		// 1 => r1 < r2
+	char4	state;
+	int	err;	// 1 si ok 0 si non ...  ou l'invers
+	int	r1_pos;			// 1 => r1 < 0
+	int	r2_pos;			// 1 => r2 < 0
+	int	r1_inf_r2;		// 1 => r1 < r2
 	float	r1;
 	float	r2;
 	float	result[3];
@@ -37,8 +70,7 @@ float	solve_2nd_equation_dist(float3 coef)
 
 	delta = coef.y * coef.y - 4 * coef.x * coef.z;
 	err = delta >= 0;
-//	delta = delta & 2147483647
-	delta = abs(delta);
+	delta = max(delta, -delta);
 	id = 0;
 	delta = sqrt(delta);
 	r1 = (-coef.y - delta) / (2 * coef.x);
@@ -53,6 +85,7 @@ float	solve_2nd_equation_dist(float3 coef)
 	id = ((r1_pos && (!r2_pos || r1_inf_r2)) + 2 * (r2_pos && (!r1_pos || !r1_inf_r2))) * err;
 	return (result[id]);
 }
+
 
 float4	mat4_vect4_product(float16 mat_rot, float4 vect)
 {
@@ -162,10 +195,28 @@ __kernel void init_frame(__global float4 *dir, __global float4 *landmark, __glob
 	zbuffer_id[id] = (float2)(-1, -1);	
 }
 
-/*
-
-__kernel void set_difuse(__global )
+__kernel	void	test_struct(__global t_obj *dest, __global t_obj *src)
 {
+	int	id;
 
+	id = get_global_id(0);
+	dest[id].id = src[id].id;
+	dest[id].color = src[id].color;
+	dest[id].type = src[id].type;
+	dest[id].coef = src[id].coef;
+	dest[id].position = src[id].position;
+	dest[id].angle = src[id].angle;
+	dest[id].mat_rot = src[id].mat_rot;
 }
-*/
+
+//	typedef	struct			s_obj
+//	{
+//		int					id;
+//		int					color;
+//		int					type;
+//		float				coef;
+//		float4				position;
+//		float4				angle;
+//		float16				mat_rot;
+//	}
+

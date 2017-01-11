@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 02:08:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/05 10:08:31 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/11 15:37:00 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char* g_ocl_error[100];
 //	on pourrai avoir un kernel dinitialisation
 # define TEST_IMAGE 0
 # define INIT_FRAME 1
+# define TEST_STRUCT 2
 
 /*
  **	dans t_ocl on a juste les variable de base pour lancer un kernel
@@ -78,14 +79,60 @@ struct			s_buff_file
  **	Pour chaque classe, une liste d'id d'objet
  **	ca pourra etre chiant pour les lumier,  a moins qu'elles aient un plage d'id resever
  */
-
+ 
 # define LIGHT 0
 # define SPHERE 1
 # define PLAN 2
 # define CYLINDER 3
 # define CONE 4
 
-# define NB_OBJ 50
+# define NB_OBJ 10
+/*
+**	C'est la structure qui caraterise un objet
+*/	
+
+typedef	struct			s_obj
+{
+	int					id;
+	int					color;
+	int					type;
+	float				coef;
+	float				position[4];
+	float				angle[4];
+	float				mat_rot[16];
+}						t_obj;
+
+/*
+**	Il faudrait aussi faire la structure du buffer de rendue:
+**	C'est lui qui serra calculer pour definir les lumiere
+**		donc un a le lot d'info:
+**			(distance (cam, obj), vecteur (cam, obj) [&&]  distance (obj, lum) , vecteur (obj, lum) [&&] couleur obj, couleur lum)
+**		## pour l'instant la question c'est de savoir si il y a une importance a se placer dans un repere ou un autre...
+**
+**	Normalement tout les vecteur sont norme
+**
+** 	C'est le buffer pour calculer les lumiere
+**   |
+**   |
+**   V
+*/
+
+/*	on a une structure a 4 * 16 octet maiiii	*/
+typedef	struct			s_lbuffer
+{
+	float				dir_cam_obj[4];
+	float				dir_obj_lum[4];
+	float				dir_normal[4];
+	float				dist_cam_obj;
+	float				dist_obj_lum;
+	int					obj_color;
+	int					lum_color;
+	int					id;
+	int					form;
+	float				pos_tmp[4];
+	
+}						t_lbuffer;
+
 
 typedef	struct			s_init_ocl_param
 {
@@ -112,21 +159,7 @@ typedef	struct			s_param_buffer
 	cl_mem				ocl_normal;
 }						t_param_buffer;
 
-/*
- **	c'est la structure generique des objet. On s'en servira pour avoir un backup 
- **	des parametre de l'objet cote cpu
- */	
 
-typedef	struct			s_obj
-{
-	int					id;
-	int					color;
-	int					type;
-	float				coef;
-	float				position[4];
-	float				angle[4];
-	float				mat_rot[16];
-}						t_obj;
 
 typedef	struct			s_mem_ocl
 {
@@ -141,6 +174,13 @@ typedef	struct			s_mem_ocl
 	cl_mem				ocl_zbuffer_id;
 	cl_mem				ocl_tab_obj;
 	float				*tab_obj;
+
+
+	t_obj				all_obj[NB_OBJ];
+	t_obj				all_obj_out[NB_OBJ];	//	pour verifier si le pading est bon
+	cl_mem				ocl_obj;
+	cl_mem				ocl_obj_out;			//	pour verifier si le pading est bon
+
 }						t_mem_ocl;
 
 typedef	struct			s_ocl

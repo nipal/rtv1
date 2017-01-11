@@ -6,12 +6,34 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 05:46:36 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/05 10:08:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/11 15:32:43 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
+
+int	init_obj(t_param_buffer *param)
+{
+	int	i;
+
+	i = 0;
+	while (i < NB_OBJ)
+	{
+		param[i] = {i, 10*i, 100*i, 1000*i, {i / 10, i 10 * i}, -i, 
+		{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+		/*
+		all_obj[i].id = i;
+		all_obj[i].color = 10 * i;
+		all_obj[i].type = 100 * i;
+		all_obj[i].coef = 1000 * i;
+		all_obj[i].position = {};
+		all_obj[i].angle = src.angle;
+		all_obj[i].mat_rot = src.mat_rot;
+	*/
+		i++;
+	}
+}
 
 t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
 {
@@ -69,6 +91,16 @@ t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 
 
+		/////////////////////// oui je sais il faudra faire le menage dans tout ca
+	//NEW PARRT sauf que on est pas dans la bonne structure...
+	mem->ocl_obj = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(mem->all_obj), NULL, &ret);   
+		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
+	mem->ocl_obj_out = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(mem->all_obj_out), NULL, &ret);   
+		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
+	ret = clSetKernelArg((ocl->kernel)[TEST_STRUCT], 0, sizeof(cl_mem), (void *)&(mem->ocl_obj_out));
+		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
+	ret = clSetKernelArg((ocl->kernel)[TEST_STRUCT], 1, sizeof(cl_mem), (void *)&(mem->ocl_obj));
+		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 
 
 //	mem->cam = malloc(100);

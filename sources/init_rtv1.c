@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 07:46:21 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/05 10:08:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/11 15:32:06 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 
 /*
 **	On va juste alouer le memoir pour opencl. On ne fait ca qu'une fois au debut.
+**		EN FAIT: ici on avait le genre de buffer qui etait alouer en mode tableau
 */
 
 int	init_param_buffer(t_param_buffer *param, t_ocl *ocl)
 {
 	cl_int		ret;
 
+
+	//OLD_PART
 	param->ocl_type = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(param->all_type), NULL, &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	param->ocl_collor = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(param->all_collor), NULL, &ret);
-			(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
+		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	param->ocl_coef = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(param->all_coef), NULL, &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	param->ocl_pos = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(param->all_pos), NULL, &ret);
@@ -34,6 +37,7 @@ int	init_param_buffer(t_param_buffer *param, t_ocl *ocl)
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	param->ocl_normal = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(param->all_pos), NULL, &ret);   
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
+
 	return (0);
 }
 

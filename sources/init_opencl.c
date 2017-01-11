@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 08:12:19 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/05 09:39:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/01/11 13:46:34 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ t_ocl		*init_kernel(int size_x, int size_y, const char *name_file)
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ocl->command_queue[INIT_FRAME] = clCreateCommandQueue(ocl->context, device_id, 0, &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
+	ocl->command_queue[TEST_STRUCT] = clCreateCommandQueue(ocl->context, device_id, 0, &ret);
+		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ocl->program = clCreateProgramWithSource(ocl->context, 1, (const char **)&source_str, (const size_t *)&source_size, &ret);	
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	ret = clBuildProgram(ocl->program, 1, &device_id, NULL, NULL, NULL);
@@ -56,6 +58,8 @@ t_ocl		*init_kernel(int size_x, int size_y, const char *name_file)
 	(ocl->kernel)[TEST_IMAGE] = clCreateKernel(ocl->program, "test_image", &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 	(ocl->kernel)[INIT_FRAME] = clCreateKernel(ocl->program, "init_frame", &ret);
+		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
+	(ocl->kernel)[TEST_STRUCT] = clCreateKernel(ocl->program, "test_struct", &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__, __FILE__) : 0;
 
 
