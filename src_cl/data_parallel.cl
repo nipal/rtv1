@@ -209,6 +209,8 @@ __kernel	void	test_struct(__global t_obj *dest, __global t_obj *src)
 	dest[id].mat_rot = src[id].mat_rot;
 }
 
+
+
 //	typedef	struct			s_obj
 //	{
 //		int					id;
@@ -220,3 +222,75 @@ __kernel	void	test_struct(__global t_obj *dest, __global t_obj *src)
 //		float16				mat_rot;
 //	}
 
+//	/*
+//	**	img			: le buffer de l' image le truc qu' on envoie a la mlx
+//	**	line_width	: les dimmention de l' image Mais ...
+//	**				  peu etre qu' on peut les recuperer avec les dim_ekernel_truc
+//	**	p1			: positoin 1
+//	**	c1			: couleur 1
+//	**	P2			: position 2
+//	**	c2			: couleur 2
+//	**
+//	*/
+
+//	__kernel void draw_test(int t1, int test2, int t3, int t4, int t5, int t6, int t7, float4 youpi)
+//	{
+//		t1[0] = 1;
+//	}
+
+float	get_line_length(float2 p1, float2 p2)
+{
+	float	dist;
+	int		id_max;
+	int		max_p[2];
+
+	max_p[0] = p1.x - p2.x;
+	max_p[1] = p1.y - p2.y;
+	max_p[0] *= (max_p[0] > 0) ? 1 : -1; 
+	max_p[1] *= (max_p[1] > 0) ? 1 : -1; 
+	id_max = (max_p[0] > max_p[1]) ? 0 : 1;
+	return (max_p[id_max]);
+}
+
+__kernel	void	draw_line(__global int *img, int line_width, float2 p1, float4 c1, float2 p2, float4 c2)
+{
+
+	//	2  vecteur unitaire : {direction + couleur}
+	//	nombre d' iteration 
+	// comment faire pour ne pas avoir de boucle???
+	// si c' est une ligne qui est juste le prolongement d' une autre,
+	// on peu se permetre de smplifier des calcule mais on verra ca plus tard 
+
+	float2	diff_pos;
+	float4	diff_col;
+	float2	unit_pos;
+	float4	unit_col;
+	int		indice;
+	int		col_value;
+	float	dist;
+	int		nb_point;
+	int		i;
+
+	diff_pos = p2 - p1;
+	diff_col = c2 - c1;
+	dist = get_line_length(p1, p2);
+	nb_point = dist;
+	unit_pos = diff_pos / dist;
+	unit_col = diff_col / dist;
+	i = 0;
+
+	while(i < nb_point)
+	{
+		indice = ((int) unit_pos.x) + ((int)unit_pos.y * line_width);
+		col_value = (((int)c1.x) << 16) | (((int)c1.y) << 8) | (((int)c1.z));
+		img[indice] = col_value;
+		p1 += unit_pos;
+		c1 += unit_col;
+		i++;
+	}
+}
+
+/*
+**	au debut on peu juste tester avec un truc qui ne remet pas a zero
+**	puis on pourra faire un genre de bzero_cl
+*/
