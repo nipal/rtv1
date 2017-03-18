@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 05:46:36 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/11 15:32:43 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/03/18 18:32:28 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ int	init_obj(t_param_buffer *param)
 {
 	int	i;
 
+	(void)param;
 	i = 0;
 	while (i < NB_OBJ)
 	{
-		param[i] = {i, 10*i, 100*i, 1000*i, {i / 10, i 10 * i}, -i, 
-		{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+//		param[i] = {0, 10*i, 100*i, 1000*i, {i / 10, i 10 * i}, -i, 
+//		{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
 		/*
 		all_obj[i].id = i;
 		all_obj[i].color = 10 * i;
@@ -33,6 +34,7 @@ int	init_obj(t_param_buffer *param)
 	*/
 		i++;
 	}
+	return (0);
 }
 
 t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
