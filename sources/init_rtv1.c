@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 07:46:21 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/01/11 15:32:06 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/03/19 22:26:10 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,31 @@ int	run_rtv1()
 	t_env	e;
 
 
+	// initialisation de la mlx
 	if (!(e.mlx = mlx_init()))
 		return (-1);
+	// initialisation de mon micro module de fenetre
 	if (!(e.win_rt = window_init(&e, SIZE_X, SIZE_Y, "rtv1")))
 		return (-2);
+	//*	initialisation des:
+	//	recuperation des source opencl
+	//	allocation de la structure qui garde un peu les info des opoiteur tout ca
+	//	recuperation de info sur le materiel (cg, cpu etc..)
+	//	initialisation des commande_queu (pour les kjernel apres)
+	//	compilation des sources au runtime en fonciton du materiel
+	//	creation des kernel aves les source compiler + (il sont cree mais pas associer a des comandeque ni des argument ni rien, les buffer on pas ete alouer)
+	//		|
+	//		|
+	//*/	v
 	if (!(e.ocl = init_kernel(SIZE_X, SIZE_Y, "src_cl/data_parallel.cl"))
 		|| !(e.mem_ocl = init_mem_ocl(e.win_rt, e.ocl)))
 		return (-3);
+
+	//	la on va finir l'initialisation d'opencl
 	init_param_buffer(&(e.win_rt->param), e.ocl);
 	mlx_loop_hook(e.mlx, main_bcl, &e);
 	mlx_loop(e.mlx);
-	mlx_do_sync(e.mlx);
+//	mlx_do_sync(e.mlx);
 	return (0);
 }
 

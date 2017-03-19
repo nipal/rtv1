@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 05:46:36 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/03/18 19:46:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/03/19 22:25:29 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
 	mem->img_data = (int*)w->data;
 	mem->ocl_time = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, sizeof(int), NULL, &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
+
+//	la c'est le buffer de l'image
 	mem->ocl_data = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, size * sizeof(int), NULL, &ret);
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	mem->ocl_ray_dir = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE, size * 4 * sizeof(float), NULL, &ret);
@@ -57,6 +59,7 @@ t_mem_ocl	*init_mem_ocl(t_win *w, t_ocl *ocl)
 		(ret < 0) ? print_ocl_error(ret, __LINE__ - 1, __FILE__) : 0;
 	mem->ray_dir = malloc(sizeof(float) * 4 * w->size_x * w->size_y);
 		
+	// La on set aussi les valeur des vecteur de la camera
 	mem->cam[0 * 4 + 0] = 0;
 	mem->cam[0 * 4 + 1] = 0;
 	mem->cam[0 * 4 + 2] = 0;
