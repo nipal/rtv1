@@ -294,26 +294,3 @@ __kernel	void	draw_line(__global int *img, int line_width, float2 p1, float4 c1,
 **	au debut on peu juste tester avec un truc qui ne remet pas a zero
 **	puis on pourra faire un genre de bzero_cl
 */
-
-
-__kernel	void	calcul_ifs_point(__global float2 *pt_ifs, __global float2 *transform, __global int *beg_data_id, int trans_len, int num_iter)
-{
-	int		glob_id;
-	float2	ux;
-	float2	uy;
-	float2	new;
-	int		id_trans;
-	int		id_parent;
-	int		id_now;
-
-//	calcule des id pour se balader facilement
-	glob_id = get_global_id(0);
-	id_trans = glob_id % trans_len;
-	id_parent = (glob_id / trans_len) + beg_data_id[num_iter - 1];
-	id_now = glob_id + beg_data_id[num_iter];
-
-	ux = pt_ifs[id_parent + 1] - pt_ifs[id_parent];
-	uy = (float2)(-ux.y, ux.x);
-
-	pt_ifs[id_now] = pt_ifs[id_parent] + transform[id_trans].x * ux + transform[id_trans].y * uy;
-}
