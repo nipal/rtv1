@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/18 18:14:50 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/18 19:32:00 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ DEPS = ../inc/rtv1.h ../inc/vec_math.h
 SRC		= 	main.c						\
 			event.c						\
 			exit.c						\
+			cam.c						\
+			object.c					\
 			mlx_win.c					
 
 

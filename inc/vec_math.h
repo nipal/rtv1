@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:04:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/18 16:28:51 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/18 18:49:59 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ typedef	union	u_axes
 	float		comp[VDIM][VDIM];
 	float		all[VDIM * VDIM];
 }				t_axes;
+
+
+/*
+**	si la base a bien ete initialiser, axes[0-2] corespond a ux, uy et uz
+*/
 
 typedef	struct	s_basis
 {

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/18 18:18:04 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/18 22:55:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int			win_mlx_init(t_mlx_win *w, int size_x, int size_y, char *name)
 			|| !(w->win = mlx_new_window(e->mlx, size_x, size_y, name))
 			|| !(w->img = mlx_new_image(e->mlx, size_x, size_y))
 			|| !(w->data = (t_pix*)mlx_get_data_addr(w->img, &(w->depth)
-					, &(w->size_x), &(w->endian))))
+					, &(w->size_x), &(w->endian)))
+			|| !(w->z_buff = (t_zbuff*)malloc(sizeof(t_zbuff) * size_x * size_y)))
 		return (-1);
 	w->name = name;
 	vec3_init(w->mouse, 0, 0, 0);
@@ -51,9 +52,9 @@ void		init_win_event(t_mlx_win *w)
 }
 ////////////// pck voila
 
-void		mlx_finish(t_env *e)
+void		win_mlx_finish(t_mlx_win *w)
 {
-	(void)e;
+	free(w->z_buff);
 			/*	les evenltuel fonction de fin de la mlx	*/
 			/*	mais bon voila	*/
 }
