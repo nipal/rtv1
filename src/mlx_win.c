@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/18 22:55:55 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/18 23:01:45 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int			win_mlx_init(t_mlx_win *w, int size_x, int size_y, char *name)
 	w->size_y = size_y;
 	return (0);
 }
-
 
 // il faudra encore un pe trier de truc
 void		init_win_event(t_mlx_win *w)
