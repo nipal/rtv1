@@ -6,13 +6,13 @@
 #    By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/01 03:02:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/05/01 05:56:35 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/18 16:52:13 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean all fclean re
 
-NAME	=	libvec_mat
+NAME	=	libvec_math.a
 DEPS 	= vec_math.h
 
 SRC		= 	basis.c		\
@@ -28,7 +28,7 @@ $(NAME): $(OBJ)
 	ranlib $(NAME)
 
 %.o: %.c $(DEPS)
-	$(CC) $(CFLAGS) -o $@ -c $< -I ../includes
+	$(CC) $(CFLAGS)  -c $(SRC) -I ../inc
 
 clean:
 	rm -f $(OBJ)

@@ -5,51 +5,46 @@
 #                                                     +:+ +:+         +:+      #
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/01/05 01:28:32 by fjanoty           #+#    #+#              #
-#    Updated: 2017/05/01 06:13:11 by fjanoty          ###   ########.fr        #
+#    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
+#    Updated: 2017/09/18 18:14:50 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: clean all fclean re gdb
+.PHONY: clean all fclean re
 
-# -g -fsanitize=address 
-# -Ofast
-#  -Wall -Wextra -Werror
-#export CFLAGS	= -g -fsanitize=address 
-export CFLAGS	= -O3 -Werror #-Wall -Wextra
-#export CFLAGS	= -g3 #-Wall -Wextra
+#-fsanitize=address -g3
+NAME	=	../rtv1
+DEPS = ../inc/rtv1.h ../inc/vec_math.h
 
-#-fsanitize=address
-export CC	= gcc
-
-#-g -fsanitize=address
+SRC		= 	main.c						\
+			event.c						\
+			exit.c						\
+			mlx_win.c					
 
 
-NAME			= fdf
-SRC_DIR			= ./sources
-LIB_FT			= ./libft
-LIB_M			= ./c_maths
-LIB_MV			= ./vec_math
-LIB_MLX			= ./minilibx_macos
+OBJ			= $(SRC:.c=.o)
 
-all:
-	make -C $(LIB_MLX)
-	make -C $(LIB_FT)
-	make -C $(LIB_M)
-	make -C $(LIB_MV)
-	make -C $(SRC_DIR)
+
+
+LIB_DIR		= -L ../libft -L ../vec_math -L ../libft
+
+LIB_NAME	= -lvec_math -lmlx -lft
+
+FRAMEWORK	= -framework OpenGl -framework AppKit -framework opencl
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+		$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB_DIR) $(LIB_NAME) $(FRAMEWORK) 
+#		-L /usr/lib/ -lmlx -lm -lX11 -lXext
+
+%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../vec_math
 
 clean:
-	make -C $(LIB_MLX)	clean
-	make -C $(LIB_FT)  clean
-	make -C $(LIB_M)  clean
-	make -C $(LIB_MV)  clean
-	make -C $(SRC_DIR) clean
+	rm -f $(OBJ)
 
 fclean: clean
-	make -C $(LIB_FT)  fclean
-	make -C $(LIB_M)  fclean
-	make -C $(LIB_MV)  fclean
-	make -C $(SRC_DIR) fclean
+	rm -f $(NAME)
 
 re: fclean all

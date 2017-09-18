@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:22 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/05/01 05:27:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/18 14:43:20 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	basis_reset(t_basis *b)
 	basis_init(b);
 }
 
-void	basis_set(t_basis *b, float ux[DIM], float uy[DIM], float uz[DIM])
+void	basis_set(t_basis *b, float ux[VDIM], float uy[VDIM], float uz[VDIM])
 {
 	memmove(b->ux, ux, sizeof(float) * 3);
 	memmove(b->uy, uy, sizeof(float) * 3);
@@ -60,15 +60,15 @@ void	basis_orthonormalise(t_basis *b)
 }
 
 // vec: World -> Basis
-void	basis_vec_w2b(t_basis *b, float src[DIM], float dst[DIM])
+void	basis_vec_w2b(t_basis *b, float src[VDIM], float dst[VDIM])
 {
-	float	diff[DIM];
-	float	tmp[DIM];
+	float	diff[VDIM];
+	float	tmp[VDIM];
 	int		i;
 
 	vec_sub(src, b->pos, diff);
 	i = 0;
-	while (i < DIM)
+	while (i < VDIM)
 	{
 		tmp[i] = vec_dot(b->axes[i], diff);
 		i++;
@@ -77,15 +77,15 @@ void	basis_vec_w2b(t_basis *b, float src[DIM], float dst[DIM])
 }
 
 // vec: Basis -> World
-void	basis_vec_b2w(t_basis *b, float src[DIM], float dst[DIM])
+void	basis_vec_b2w(t_basis *b, float src[VDIM], float dst[VDIM])
 {
-	float	tmp[DIM];
-	float	result[DIM];
+	float	tmp[VDIM];
+	float	result[VDIM];
 	int		i;
 
 	memmove(result, b->pos, sizeof(result));
 	i = 0;
-	while (i < DIM)
+	while (i < VDIM)
 	{
 		vec_scalar_prod(b->axes[i], src[i], tmp);
 		vec_add(result, tmp, result);

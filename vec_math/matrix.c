@@ -6,23 +6,23 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/05/01 05:28:51 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/18 18:10:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_math.h"
 
 
-void	mat_set_id(float mat[DIM][DIM])
+void	mat_set_id(float mat[VDIM][VDIM])
 {
 	int	i;
 	int	j;
 
 	j = 0;
-	while (j < DIM)
+	while (j < VDIM)
 	{
 		i = 0;
-		while (i < DIM)
+		while (i < VDIM)
 		{
 			mat[j][i] = (i == j);
 			i++;
@@ -31,24 +31,23 @@ void	mat_set_id(float mat[DIM][DIM])
 	}
 }
 
-void	mat_set_one_rot(float mat[DIM][DIM], int id1, int id2, float ang)
+void	mat_set_one_rot(float mat[VDIM][VDIM], int id1, int id2, float ang)
 {
-	bzero(mat, sizeof(float) * DIM * DIM);
+	bzero(mat, sizeof(float) * VDIM * VDIM);
 	mat[id1][id1] = cos(ang);
 	mat[id2][id2] = cos(ang);
 	mat[id1][id2] = -sin(ang);
 	mat[id2][id1] = sin(ang);
 }
 
-void	mat_set_all_rot(float mat[DIM][DIM], float ang[DIM])
+void	mat_set_all_rot(float mat[VDIM][VDIM], float ang[VDIM])
 {
-	float	rot_tmp[DIM][DIM];
+	float	rot_tmp[VDIM][VDIM];
 	int	i;
-	int	j;
 
 	mat_set_id(mat);
 	i = 0;
-	while (i < DIM)
+	while (i < VDIM)
 	{
 		mat_set_one_rot(rot_tmp, (i + 1) % 3, (i + 2) % 3, ang[i]);
 		mat_mult_mat(rot_tmp, mat, mat);
@@ -56,35 +55,43 @@ void	mat_set_all_rot(float mat[DIM][DIM], float ang[DIM])
 	}
 }
 
-void	mat_mult_mat(float src_l[DIM][DIM], float src_r[DIM][DIM], float dst[DIM][DIM])
+void	mat_mult_mat(float src_l[VDIM][VDIM], float src_r[VDIM][VDIM], float dst[VDIM][VDIM])
 {
 	int	i;
 	int	j;
+	int	k;
 
 	j = 0;
-	while (j < DIM)
+	while (j < VDIM)
 	{
 		i = 0;
-		while (i < DIM)
+		while (i < VDIM)
 		{
+			dst[j][i] = 0;
+			k = 0;
+			while (k < VDIM)
+			{
+				dst[j][i] += src_l[j][k] * src_r[k][i];
+				k++;
+			}
 			i++;
 		}
 		j++;
 	}
 }
 
-void	mat_mult_vec(float mat[DIM][DIM], float vec_src[DIM], float vec_dst[DIM])
+void	mat_mult_vec(float mat[VDIM][VDIM], float vec_src[VDIM], float vec_dst[VDIM])
 {
-	float	tmp[DIM];
+	float	tmp[VDIM];
 	int	i;
 	int	j;
 
 	j = 0;
-	while (j < DIM)
+	while (j < VDIM)
 	{
 		tmp[j] = 0;
 		i = 0;
-		while (i < DIM)
+		while (i < VDIM)
 		{
 			tmp[j] += vec_src[i] * mat[j][i];
 			i++;

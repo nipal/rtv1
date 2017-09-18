@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/09/13 19:48:58 by fjanoty           #+#    #+#              #
-#    Updated: 2017/05/01 03:07:44 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/18 14:41:01 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,7 @@ $(NAME): $(OBJ)
 #	    $(CC) $(CFLAGS) -I ../includes/ -c $(SRC)
 
 %.o: %.c $(DEPS)
-	$(CC) $(CFLAGS) -o $@ -c $< -I ../includes
+	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc
 
 clean:
 	rm -f $(OBJ)

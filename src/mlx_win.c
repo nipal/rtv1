@@ -6,24 +6,30 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/15 01:42:54 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/18 18:18:04 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "rtv1.h"
+#include "vec_math.h"
+#include "libft.h"
 #include <mlx.h>
 
 /*suppresion de size_ine dans la structure win_mlx*/
 
-int			*win_mlx_init(t_win_mlx *w, int size_x, int size_y, char *name)
+int			win_mlx_init(t_mlx_win *w, int size_x, int size_y, char *name)
 {
+	t_env	*e;
+
+	e = get_env(NULL);
+	ft_bzero(&e->scene, sizeof(t_mlx_win));
 	if (!name)
 		name = "new w";
-	if (!e || !(size_x > 0 && size_y > 0 || !w)
+	if (!(size_x > 0 && size_y > 0) || !w
 			|| !(w->win = mlx_new_window(e->mlx, size_x, size_y, name))
 			|| !(w->img = mlx_new_image(e->mlx, size_x, size_y))
 			|| !(w->data = (t_pix*)mlx_get_data_addr(w->img, &(w->depth)
-					, &(w->size_x), &(w->endian)))
+					, &(w->size_x), &(w->endian))))
 		return (-1);
 	w->name = name;
 	vec3_init(w->mouse, 0, 0, 0);
@@ -35,28 +41,26 @@ int			*win_mlx_init(t_win_mlx *w, int size_x, int size_y, char *name)
 
 
 // il faudra encore un pe trier de truc
-void		init_win_event(t_win *w, t_env *e)
+void		init_win_event(t_mlx_win *w)
 {
-	(void)e;
-
-	mlx_hook(w->win, KEY_PRESS, (1 << 24) - 1, press_key, w);
-	mlx_hook(w->win, KEY_RELEASE, (1 << 24) - 1, release_key, w);
-	mlx_hook(w->win, BUTTON_PRESS, (1 << 24) - 1, press_button, w);
-	mlx_hook(w->win, BUTTON_RELEASE, (1 << 24) - 1, release_button, w);
-	mlx_hook(w->win, MOTION_NOTIFY, (1 << 24) - 1, motion_cursor, w);
+	mlx_hook(w->win, KEY_PRESS, (1 << 24) - 1, key_press, w);
+	mlx_hook(w->win, KEY_RELEASE, (1 << 24) - 1, key_release, w);
+	mlx_hook(w->win, BUTTON_PRESS, (1 << 24) - 1, mousse_press, w);
+	mlx_hook(w->win, BUTTON_RELEASE, (1 << 24) - 1, mousse_release, w);
+	mlx_hook(w->win, MOTION_NOTIFY, (1 << 24) - 1, mousse_motion, w);
 }
 ////////////// pck voila
 
-void		win_mlx_finish()
+void		mlx_finish(t_env *e)
 {
+	(void)e;
 			/*	les evenltuel fonction de fin de la mlx	*/
 			/*	mais bon voila	*/
 }
 
-void	start_mlx()
+void	mlx_start(t_env *e)
 {
-	
-	mlx_loop_hook(e->mlx, main_work, e);
+	mlx_loop_hook(e->mlx, main_bcl, e);
 	mlx_loop(e->mlx);
 	mlx_do_sync(e->mlx);
 }
