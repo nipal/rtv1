@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/19 00:28:36 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/19 16:26:57 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,7 @@ void	plan_init(t_obj *plan)
 	plan->radius = -vec_dot(plan->dir, plan->pos);	
 }
 
-float	get_dist_plan(t_basis *cam, t_obj *plan, float ray_dir[3])
-{
-	float	dist;
 
-	dist = (vec_dot(plan->dir, cam->pos) + plan->radius) / (vec_dot(plan->dir, ray_dir)) ;	
-	return (dist = 0.0);
-}
 
 float	get_min2(float a, float b)
 {
@@ -62,13 +56,19 @@ float	solve_eq_2nd(float a, float b, float c)
 	if (delta < 0)
 		return (-1);
 	delta = sqrt(delta);
-	r1 = (-b - delta) / (2 * a);
-	r2 = (-b + delta) / (2 * a);
-	if (r1 < 0 && r2 > 0)
-		return (r2);
-	if (r1 > 0 && r2 < 0)
-		return (r1);
+	r1 = -(delta + b) / (2 * a);
+	r2 = -(delta - b) / (2 * a);
+	if (r1 < 0 && r2 < 0)
+		return (-1);
 	return ((r1 < r2) ? r1 : r2);
+}
+
+float	get_dist_plan(t_basis *cam, t_obj *plan, float ray_dir[3])
+{
+	float	dist;
+
+	dist = (vec_dot(plan->dir, cam->pos) + plan->radius) / (vec_dot(plan->dir, ray_dir)) ;	
+	return (dist = 0.0);
 }
 
 float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3])
@@ -81,31 +81,47 @@ float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3])
 	a = vec_dot(ray_dir, ray_dir);
 	b = 2 * (vec_dot(ray_dir, cam->pos) - vec_dot(ray_dir, sphere->dir));
 	c = vec_dot(cam->pos, cam->pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(cam->pos, sphere->dir);
-
-		
-	return (dist = 0.0);
+	dist = solve_eq_2nd(a, b, c);
+	return (dist);
 }
 
 float	get_dist_cylinder(t_basis *cam, t_obj *cylinder, float ray_dir[3])
 {
 	float	dist;
-	(void)cam;
-	(void)cylinder;
-	(void)ray_dir;
+	float	a;
+	float	b;
+	float	c;
 
-	return (dist = 0.0);
+	// must adapte position then orientation
+	a = ray_dir[0] * ray_dir[0] + ray_dir[1] * ray_dir[1];
+	b = 2 * (ray_dir[0] * cam->pos[0] + ray_dir[1] * cam->pos[1]);
+	c = cam->pos[0] * cam->pos[0] + cam->pos[1] * cam->pos[1] - obj->radius * obj->radius;
+	dist = solve_eq_2nd(a, b, c);
+	return (dist);
 }
 
 float	get_dist_cone(t_basis *cam, t_obj *cone, float ray_dir[3])
 {
 	float	dist;
-	(void)cam;
-	(void)cone;
-	(void)ray_dir;
+	float	a;
+	float	b;
+	float	c;
 
-	return (dist = 0.0);
+	// must adapte position then orientation
+	a = ray_dir[0] * ray_dir[0] + ray_dir[1] * ray_dir[1];
+	b = 2 * (ray_dir[0] * cam->pos[0] + ray_dir[1] * cam->pos[1]) - obj->radius * obj->radius *ray_dir[2];
+	c = cam->pos[0] * cam->pos[0] + cam->pos[1] * cam->pos[1] - obj->radius * obj->radius * cam->pos[1];
+	dist = solve_eq_2nd(a, b, c);
+	return (dist);
 }
 
+
+void	set_position(float ray_dir[3], float ray_pos[3], float dist, float new_pos[3])
+{
+
+	vec_scalar_prod(ray_dir, dist, new_pos);
+	vec_add(new_pos, ray_pos, new_pos);
+}
 
 /*
 **	Pour dessiner la scene on va faire des baille.
