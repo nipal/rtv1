@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/18 19:32:00 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/20 17:43:38 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,14 @@
 NAME	=	../rtv1
 DEPS = ../inc/rtv1.h ../inc/vec_math.h
 
-SRC		= 	main.c						\
+SRC		= 								\
+			cam.c						\
 			event.c						\
 			exit.c						\
-			cam.c						\
+			main.c						\
+			mlx_win.c					\
 			object.c					\
-			mlx_win.c					
+			test.c						\
 
 
 OBJ			= $(SRC:.c=.o)

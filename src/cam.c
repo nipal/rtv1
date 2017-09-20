@@ -6,11 +6,50 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/19 17:47:09 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 00:29:26 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+void	cam_turn_left(t_basis *cam, float ang)
+{
+	// il faut une matrice de rotation autour de y exprimer dans le repere du monde
+	float	rot[3][3];
+//	float	tmp[3][3];
+	int		i;
+
+	mat_set_one_rot(rot, 2, 0, ang); // autoure de Y
+	i = 0;
+	while (i < 3) // oui c'est en dure je sais
+	{
+		mat_mult_vec(rot, cam->axes[i], cam->axes[i]);
+		i++;
+	}
+	printf("left\n");
+}
+
+void	cam_turn_right(t_basis *cam, float ang)
+{
+	(void)cam;
+	(void)ang;
+	printf("right\n");
+}
+
+void	cam_turn_down(t_basis *cam, float ang)
+{
+	(void)cam;
+	(void)ang;
+	printf("down\n");
+}
+
+void	cam_turn_up(t_basis *cam, float ang)
+{
+	(void)cam;
+	(void)ang;
+	printf("up\n");
+
+}
 
 void	cam_init_draw_func(t_env *e)
 {
@@ -48,29 +87,34 @@ void	reset_zbuff(t_mlx_win *w)
 // on enverra l'addresse decaler au bon endroi comme ca plus besoin de x, y
 void	find_collision(t_env *e, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
 {
-	float	dist
+	int		i;
+	float	dist;
 	float	best_dist;
-	int		best_type;
+	int		best_id;
 
-	best_type = -1;
+	best_id = -1;
 	best_dist = -1;
 	i = 0;
 	while (obj[i].type >= 0)
 	{
-		dist = e->obj_dist[obj[i].type](e->cam, obj + i, ray_dir);
-		if (dist > 0 && dist < best_dist && best_didst >= 0)
+		dist = e->obj_dist[obj[i].type](&e->cam, obj + i, ray_dir);
+//		printf("dist:%f\n", dist);
+		if (dist > 0 && ((dist < best_dist && best_dist >= 0) || best_dist < 0))
 		{
 			best_dist = dist;
 			best_id = i;
+//			printf("ouiii:%.20f\n", dist);
 		}
 		i++;
 	}
-	zbuff[0].id = best_id;
-	zbuff[0].dist = best_dist;
+//	if (best_dist == 0)
+//		printf("best_dist:%f\n", best_dist);
+	zbuff->id = best_id;
+	zbuff->dist = best_dist;
 	// sur tout les objet on teste le rayon et un enregistre dans le z buffer l'object le plus proche
 }
 
-void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
+void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj)
 {
 	int		i;
 	int		j;
@@ -80,9 +124,11 @@ void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
 
 	// on initialise les increment
 	// on initialise la direction en haut a gauche
-	dir = cam->dz - cam->dx / 2 - cam->dy / 2;
-	dx = cam->dx / size_x;
-	dy = cam->dy / size_y;
+	vec_add(cam->ux, cam->uy, dir);
+	vec_scalar_prod(dir, 0.5, dir);
+	vec_sub(cam->uz, dir, dir);
+	vec_scalar_prod(cam->ux, 1.0 / (float)w->size_x, dx);
+	vec_scalar_prod(cam->uy, 1.0 / (float)w->size_y, dx);
 	j = 0;
 	while (j < w->size_y)
 	{
@@ -92,12 +138,12 @@ void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
 			// on incremente la direction
 			// on teste sur tout les objet le quel est le plus pres pour
 			//		apres faire les calcul de lumiere et tout et tout
-			
-			dir += dx;
+			find_collision(e, w->z_buff + i + j * w->size_x, obj, dir);
+			vec_add(dir, dx, dir);
 			i++;
 		}
-		dir -= cam->dx
-		dir += dy;
+		vec_sub(dir, dx, dir);
+		vec_add(dir, dy, dir);
 		j++;
 	}
 }
@@ -105,3 +151,33 @@ void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
 // le nombre d'operation mais on peu cummuler des erreur lier aux imprecision
 // des calcule avec des float. En faisant a chaque fois une multiplication en plus
 // on a pas d'ereur qui se cumule.
+
+// On pourrai aussi ne faire qu'une seule boucle...
+void	color_scene(t_mlx_win *w, t_obj *obj)
+{
+	// on va juste doner une couleur en fpnction des objet
+	int		i;
+	int		max;
+	float	color;
+	(void)obj;
+
+	i = 0;
+	max = w->size_x * w->size_y;
+	while (i < max)
+	{
+		color = w->z_buff[i].dist;
+		if (color < 0)
+			color = 0;
+		if (color > 0)
+		{
+			color = 1;
+//			printf("color:%f\n", color);
+			w->data[i].nb = 2^24 - 1;
+		}
+		else
+			w->data[i].nb = 0;
+//		printf("color:%f	x:%d	y:%d\n", color, (i % w->size_x), (i / w->size_x));
+		w->data[i].nb = (int)(color * 255) << 16 | (int)(color * 255) << 8 | ((int)(color * 255));
+		i++;
+	}
+}

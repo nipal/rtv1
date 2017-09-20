@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:22 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/18 14:43:20 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 00:00:00 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 
 void	basis_init(t_basis *b)
 {
-	b->axes[0] = (b->ux);
-	b->axes[1] = (b->uy);
-	b->axes[2] = (b->uz);
+	b->axes[0] = b->ux;
+	b->axes[1] = b->uy;
+	b->axes[2] = b->uz;
+	printf("reset::%p\n", b->axes);
+	printf("	reset::%p\n", b->axes[0]);
+	printf("	reset::%p\n", b->axes[1]);
+	printf("	reset::%p\n", b->axes[2]);
 }
 
 void	basis_reset(t_basis *b)
@@ -93,3 +97,5 @@ void	basis_vec_b2w(t_basis *b, float src[VDIM], float dst[VDIM])
 	}
 	memmove(dst, result, sizeof(result));
 }
+
+// ici on poura faire les fonction pour tourner comme il faut les base

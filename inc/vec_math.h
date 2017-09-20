@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:04:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/19 16:35:49 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/20 22:34:08 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void			mat_mult_mat(float src_l[VDIM][VDIM], float src_r[VDIM][VDIM], float dst[
 void			mat_mult_vec(float mat[VDIM][VDIM], float vec_src[VDIM], float vec_dst[VDIM]);
 
 void			basis_init(t_basis *b);
+void			basis_reset(t_basis *b);
 void			basis_set(t_basis *b, float ux[VDIM], float uy[VDIM], float uz[VDIM]);
 void			basis_normalise(t_basis *b);
 void			basis_orthonormalise(t_basis *b);

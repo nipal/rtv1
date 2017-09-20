@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/19 16:26:57 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/20 18:55:26 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,14 @@ float	solve_eq_2nd(float a, float b, float c)
 	if (delta < 0)
 		return (-1);
 	delta = sqrt(delta);
-	r1 = -(delta + b) / (2 * a);
-	r2 = -(delta - b) / (2 * a);
+	r1 = (-delta - b) / (2 * a);
+	r2 = (delta - b) / (2 * a);
 	if (r1 < 0 && r2 < 0)
 		return (-1);
+	if (r1 < 0)
+		return (r2);
+	if (r2 < 0)
+		return (r1);
 	return ((r1 < r2) ? r1 : r2);
 }
 
@@ -79,9 +83,15 @@ float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3])
 	float	c;
 
 	a = vec_dot(ray_dir, ray_dir);
-	b = 2 * (vec_dot(ray_dir, cam->pos) - vec_dot(ray_dir, sphere->dir));
-	c = vec_dot(cam->pos, cam->pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(cam->pos, sphere->dir);
+	b = 2 * (vec_dot(ray_dir, cam->pos) - vec_dot(ray_dir, sphere->pos));
+	c = vec_dot(cam->pos, cam->pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(cam->pos, sphere->pos) - sphere->radius * sphere->radius;
 	dist = solve_eq_2nd(a, b, c);
+	if (dist != 0)
+	{
+//		if (dist > 0)
+//			printf("		");
+//		printf("dist:%f\n", dist);
+	}
 	return (dist);
 }
 
@@ -95,7 +105,7 @@ float	get_dist_cylinder(t_basis *cam, t_obj *cylinder, float ray_dir[3])
 	// must adapte position then orientation
 	a = ray_dir[0] * ray_dir[0] + ray_dir[1] * ray_dir[1];
 	b = 2 * (ray_dir[0] * cam->pos[0] + ray_dir[1] * cam->pos[1]);
-	c = cam->pos[0] * cam->pos[0] + cam->pos[1] * cam->pos[1] - obj->radius * obj->radius;
+	c = cam->pos[0] * cam->pos[0] + cam->pos[1] * cam->pos[1] - cylinder->radius * cylinder->radius;
 	dist = solve_eq_2nd(a, b, c);
 	return (dist);
 }
@@ -109,8 +119,8 @@ float	get_dist_cone(t_basis *cam, t_obj *cone, float ray_dir[3])
 
 	// must adapte position then orientation
 	a = ray_dir[0] * ray_dir[0] + ray_dir[1] * ray_dir[1];
-	b = 2 * (ray_dir[0] * cam->pos[0] + ray_dir[1] * cam->pos[1]) - obj->radius * obj->radius *ray_dir[2];
-	c = cam->pos[0] * cam->pos[0] + cam->pos[1] * cam->pos[1] - obj->radius * obj->radius * cam->pos[1];
+	b = 2 * (ray_dir[0] * cam->pos[0] + ray_dir[1] * cam->pos[1]) - cone->radius * cone->radius *ray_dir[2];
+	c = cam->pos[0] * cam->pos[0] + cam->pos[1] * cam->pos[1] - cone->radius * cone->radius * cam->pos[1];
 	dist = solve_eq_2nd(a, b, c);
 	return (dist);
 }

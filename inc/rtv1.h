@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/18 22:52:34 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/20 22:34:06 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@
 # define BUTTON_RELEASE           5
 # define MOTION_NOTIFY            6
 
+#include <mlx.h>
 #include <stdlib.h>
+#include "mlx_key.h"
 #include "vec_math.h"
+#include "libft.h"
 
 typedef	struct	s_env	t_env;
 
@@ -73,6 +76,21 @@ typedef	struct	s_env
 }				t_env;
 
 /*
+**	cam.c
+*/
+
+void	cam_turn_up(t_basis *cam, float ang);
+void	cam_turn_down(t_basis *cam, float ang);
+void	cam_turn_right(t_basis *cam, float ang);
+void	cam_turn_left(t_basis *cam, float ang);
+void	cam_init_draw_func(t_env *e);
+void	cam_rot(t_basis *cam, int x, int y);
+void	reset_zbuff(t_mlx_win *w);
+void	find_collision(t_env *e, t_zbuff *zbuff, t_obj *obj, float ray_dir[3]);
+void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj);
+void	color_scene(t_mlx_win *w, t_obj *obj);
+
+/*
 **	object.c
 */
 
@@ -111,6 +129,13 @@ t_env	*get_env();
 /*
 **	exit.c
 */
+
 void	rtv1_exit(t_env *e);
+
+/*
+**	test.c
+*/
+
+void	test_basique(t_env *e);
 
 #endif
