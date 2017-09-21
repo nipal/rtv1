@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/20 22:34:06 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 15:46:15 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define RTV1_H
 
 # define SCENE_X		640
-# define SCENE_Y 		480
+# define SCENE_Y 		640
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -94,6 +94,7 @@ void	color_scene(t_mlx_win *w, t_obj *obj);
 **	object.c
 */
 
+void	plan_init(t_obj *plan);
 float	get_dist_plan(t_basis *cam, t_obj *plan, float ray_dir[3]);
 float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3]);
 float	get_dist_cone(t_basis *cam, t_obj *cone, float ray_dir[3]);
@@ -137,5 +138,6 @@ void	rtv1_exit(t_env *e);
 */
 
 void	test_basique(t_env *e);
+void	rotation_test();
 
 #endif

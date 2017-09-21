@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:04:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/20 22:34:08 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 14:18:11 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,15 @@ void			mat_set_all_rot(float mat[VDIM][VDIM], float ang[VDIM]);
 void			mat_mult_mat(float src_l[VDIM][VDIM], float src_r[VDIM][VDIM], float dst[VDIM][VDIM]);
 void			mat_mult_vec(float mat[VDIM][VDIM], float vec_src[VDIM], float vec_dst[VDIM]);
 
+void			basis_describe(t_basis *b);
 void			basis_init(t_basis *b);
-void			basis_reset(t_basis *b);
-void			basis_set(t_basis *b, float ux[VDIM], float uy[VDIM], float uz[VDIM]);
 void			basis_normalise(t_basis *b);
 void			basis_orthonormalise(t_basis *b);
+void			basis_reset(t_basis *b);
+void			basis_rot_x(t_basis *b, float ang);
+void			basis_rot_y(t_basis *b, float ang);
+void			basis_rot_z(t_basis *b, float ang);
+void			basis_set(t_basis *b, float ux[VDIM], float uy[VDIM], float uz[VDIM]);
 void			basis_vec_w2b(t_basis *b, float src[VDIM], float dst[VDIM]); // vec: World -> Basis
 void			basis_vec_b2w(t_basis *b, float src[VDIM], float dst[VDIM]); // vec: Basis -> World
 

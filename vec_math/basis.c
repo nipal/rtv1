@@ -6,21 +6,28 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:22 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 00:00:00 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 14:19:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_math.h"
+
+void	basis_describe(t_basis *b)
+{
+	printf("pos:	{%f, %f, %f}\n\
+			ux :	{%f, %f, %f}\n\
+			uy :	{%f, %f, %f}\n\
+			uz :	{%f, %f, %f}\n", b->pos[0], b->pos[1], b->pos[2],
+									b->ux[0], b->ux[1], b->ux[2],
+									b->uy[0], b->uy[1], b->uy[2],
+									b->uz[0], b->uz[1], b->uz[2]);
+}
 
 void	basis_init(t_basis *b)
 {
 	b->axes[0] = b->ux;
 	b->axes[1] = b->uy;
 	b->axes[2] = b->uz;
-	printf("reset::%p\n", b->axes);
-	printf("	reset::%p\n", b->axes[0]);
-	printf("	reset::%p\n", b->axes[1]);
-	printf("	reset::%p\n", b->axes[2]);
 }
 
 void	basis_reset(t_basis *b)
@@ -98,4 +105,45 @@ void	basis_vec_b2w(t_basis *b, float src[VDIM], float dst[VDIM])
 	memmove(dst, result, sizeof(result));
 }
 
-// ici on poura faire les fonction pour tourner comme il faut les base
+
+void	basis_rot_x(t_basis *b, float ang)
+{
+	float	rot[VDIM][VDIM];
+	int		i;
+
+	mat_set_one_rot(rot, 1, 2, ang); // autoure de X
+	i = 0;
+	while (i < VDIM)
+	{
+		mat_mult_vec(rot, b->axes[i], b->axes[i]);
+		i++;
+	}
+}
+
+void	basis_rot_y(t_basis *b, float ang)
+{
+	float	rot[VDIM][VDIM];
+	int		i;
+
+	mat_set_one_rot(rot, 2, 0, ang); // autoure de Y
+	i = 0;
+	while (i < VDIM)
+	{
+		mat_mult_vec(rot, b->axes[i], b->axes[i]);
+		i++;
+	}
+}
+
+void	basis_rot_z(t_basis *b, float ang)
+{
+	float	rot[VDIM][VDIM];
+	int		i;
+
+	mat_set_one_rot(rot, 0, 1, ang); // autoure de Z
+	i = 0;
+	while (i < VDIM)
+	{
+		mat_mult_vec(rot, b->axes[i], b->axes[i]);
+		i++;
+	}
+}

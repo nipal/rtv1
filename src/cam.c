@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 00:29:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 14:32:42 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,25 @@
 
 void	cam_turn_left(t_basis *cam, float ang)
 {
-	// il faut une matrice de rotation autour de y exprimer dans le repere du monde
-	float	rot[3][3];
-//	float	tmp[3][3];
-	int		i;
-
-	mat_set_one_rot(rot, 2, 0, ang); // autoure de Y
-	i = 0;
-	while (i < 3) // oui c'est en dure je sais
-	{
-		mat_mult_vec(rot, cam->axes[i], cam->axes[i]);
-		i++;
-	}
+	basis_rot_y(cam, ang);
 	printf("left\n");
 }
 
 void	cam_turn_right(t_basis *cam, float ang)
 {
-	(void)cam;
-	(void)ang;
+	basis_rot_y(cam, -ang);
 	printf("right\n");
 }
 
 void	cam_turn_down(t_basis *cam, float ang)
 {
-	(void)cam;
-	(void)ang;
+	basis_rot_x(cam, ang);
 	printf("down\n");
 }
 
 void	cam_turn_up(t_basis *cam, float ang)
 {
-	(void)cam;
-	(void)ang;
+	basis_rot_x(cam, -ang);
 	printf("up\n");
 
 }
@@ -114,6 +100,7 @@ void	find_collision(t_env *e, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
 	// sur tout les objet on teste le rayon et un enregistre dans le z buffer l'object le plus proche
 }
 
+
 void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj)
 {
 	int		i;
@@ -124,11 +111,12 @@ void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj)
 
 	// on initialise les increment
 	// on initialise la direction en haut a gauche
+	// dir = 
 	vec_add(cam->ux, cam->uy, dir);
-	vec_scalar_prod(dir, 0.5, dir);
-	vec_sub(cam->uz, dir, dir);
+	vec_scalar_prod(dir, -0.5, dir);
+	vec_add(cam->uz, dir, dir);
 	vec_scalar_prod(cam->ux, 1.0 / (float)w->size_x, dx);
-	vec_scalar_prod(cam->uy, 1.0 / (float)w->size_y, dx);
+	vec_scalar_prod(cam->uy, 1.0 / (float)w->size_y, dy);
 	j = 0;
 	while (j < w->size_y)
 	{
@@ -138,11 +126,12 @@ void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj)
 			// on incremente la direction
 			// on teste sur tout les objet le quel est le plus pres pour
 			//		apres faire les calcul de lumiere et tout et tout
-			find_collision(e, w->z_buff + i + j * w->size_x, obj, dir);
+			// dir = i * dx + j * dy
 			vec_add(dir, dx, dir);
+			find_collision(e, w->z_buff + i + j * w->size_x, obj, dir);
 			i++;
 		}
-		vec_sub(dir, dx, dir);
+		vec_sub(dir, cam->ux, dir);
 		vec_add(dir, dy, dir);
 		j++;
 	}
@@ -170,9 +159,10 @@ void	color_scene(t_mlx_win *w, t_obj *obj)
 			color = 0;
 		if (color > 0)
 		{
-			color = 1;
+			color /= 5;
+//			color = 1;
 //			printf("color:%f\n", color);
-			w->data[i].nb = 2^24 - 1;
+//			w->data[i].nb = 2^24 - 1;
 		}
 		else
 			w->data[i].nb = 0;

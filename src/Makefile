@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/20 17:43:38 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/21 15:44:28 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ SRC		= 								\
 
 
 OBJ			= $(SRC:.c=.o)
-
 
 
 LIB_DIR		= -L ../libft -L ../vec_math -L ../libft

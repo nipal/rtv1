@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:48:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 00:25:08 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 12:32:57 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ int		main()
 	t_env		e;
 	ft_bzero(&e, sizeof(t_env));
 
+
+//	rotation_test();
+//	/*
 	get_env(&e);
 	e.mlx = mlx_init();
 	e.scene.env = &e;
@@ -47,5 +50,6 @@ int		main()
 
 	init_win_event(&e.scene);
 	mlx_start(&e);
+//	*/
 	return (0);
 }

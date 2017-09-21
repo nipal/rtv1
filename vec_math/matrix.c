@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/20 23:00:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 14:27:26 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	mat_set_id(float mat[VDIM][VDIM])
 
 void	mat_set_one_rot(float mat[VDIM][VDIM], int id1, int id2, float ang)
 {
-	bzero(mat, sizeof(float) * VDIM * VDIM);
+	mat_set_id(mat);
 	mat[id1][id1] = cos(ang);
 	mat[id2][id2] = cos(ang);
 	mat[id1][id2] = -sin(ang);
