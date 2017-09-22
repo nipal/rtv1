@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 15:46:15 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/22 01:27:16 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ typedef	struct	s_zbuff
 {
 	int			id;
 	float		dist;
+	//	position
+	//	normale surface
+
+
+	//	rayon
+	//	dir lumiere
 }				t_zbuff;
 
 typedef	struct	s_win_mlx

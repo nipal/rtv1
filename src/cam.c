@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 14:32:42 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/22 01:15:02 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,15 +155,8 @@ void	color_scene(t_mlx_win *w, t_obj *obj)
 	while (i < max)
 	{
 		color = w->z_buff[i].dist;
-		if (color < 0)
+		if (color <= 0)
 			color = 0;
-		if (color > 0)
-		{
-			color /= 5;
-//			color = 1;
-//			printf("color:%f\n", color);
-//			w->data[i].nb = 2^24 - 1;
-		}
 		else
 			w->data[i].nb = 0;
 //		printf("color:%f	x:%d	y:%d\n", color, (i % w->size_x), (i / w->size_x));
@@ -171,3 +164,8 @@ void	color_scene(t_mlx_win *w, t_obj *obj)
 		i++;
 	}
 }
+
+/*
+**	Pour la coloration.
+**		
+*/

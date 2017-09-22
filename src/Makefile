@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/21 15:44:28 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/22 01:19:36 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRC		= 								\
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft -L ../vec_math -L ../libft
+LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../minilibx_macos/
 
 LIB_NAME	= -lvec_math -lmlx -lft
 
@@ -40,6 +40,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 		$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB_DIR) $(LIB_NAME) $(FRAMEWORK) 
 #		-L /usr/lib/ -lmlx -lm -lX11 -lXext
+#
 
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../vec_math

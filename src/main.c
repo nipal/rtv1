@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:48:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 12:32:57 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 18:49:36 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_cam(t_basis *cam)
 {
 	cam_init_draw_func(get_env(NULL)); // need to init the pontiner on function
 	basis_reset(cam);
-
+	cam->pos[2] = 10;
 }
 
 void	init_rtv1()

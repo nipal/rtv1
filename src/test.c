@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 15:58:52 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/21 18:15:05 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 void	test_init_obj(t_obj *obj)
 {
 	ft_bzero(obj, sizeof(obj) * 5);
-	obj[0].type = 1;
+	obj[0].type = 3;
 	obj[0].radius = 4;
 	vec_set(obj->ang, 0, 0, 0);
-	vec_set(obj->pos, 0, 0, 10);
-	vec_set(obj->dir, 0, 1, 0);
+	vec_set(obj->pos, 0.1, 0.1, 4);
+	vec_set(obj->dir, 1, 1, 1);
 
+//	plan_init(obj);
 	obj[1].type = -1;
+//	printf("plan d:%f\n", obj[0].radius);
 }
 
 
@@ -36,7 +38,7 @@ void	test_basique(t_env *e)
 	fill_zbuff(e, &e->scene, &e->cam, obj);
 	color_scene(&e->scene, obj); 
 	mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
-	basis_describe(&e->cam);
+//	basis_describe(&e->cam);
 //	mlx_do_sync(e->mlx);
 }
 
