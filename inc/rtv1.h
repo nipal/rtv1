@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/22 01:27:16 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/22 05:36:18 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ typedef	struct	s_win_mlx
 typedef	struct	s_obj
 {
 	int			type;
-	float		ang[3];
+	float		rot_inv[3][3];
+	float		ang[3];	// on peut reconstruire ses transformation
 	float		pos[3];
 	float		dir[3];
 	float		radius;

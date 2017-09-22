@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/22 05:16:51 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/22 06:02:36 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,26 @@ float	solve_eq_2nd(float a, float b, float c)
 
 //						   |  GET_DIST 	|	
 //	###################### V 			V ############################
+
+void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz)
+{
+	obj->rot[0] = x;
+	obj->rot[1] = y;
+	obj->rot[2] = z;
+	mat_set_all_rot(obj->rot_inv, obj->rot);
+}
+
+//	la new pos de l'abjet est nul mais 
+void	adapt_cam_pos(t_obj *obj, float cam_pos[3], float new_pos[3])
+{
+	vec_sub(cam_pos, obj->pos, new_pos);
+	mat_mult_vec(obj->rot_inv, new_pos, new_pos);
+}
+
+void	adapt_ray_dir(t_obj *obj, float ray_dir[3], float ray_result[3])
+{
+	mat_mult_vec(obj->rot_inv, ray_dir, ray_result);
+}
 
 float	get_dist_plan(t_basis *cam, t_obj *plan, float ray_dir[3])
 {
@@ -160,6 +180,7 @@ void	set_normal_sphere(t_obj *sphere, float pos_impact[3], float result[3])
 {
 	//	du centre de la sphere auy point d'impact
 	vec_sub(pos_impact, sphere->pos, result);
+	vec_normalise(result);
 }
 
 void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3])
@@ -172,6 +193,7 @@ void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3])
 	vec_scalar_prod(cone->dir, coef, result);
 	vec_add(result, cone->pos, result);
 	vec_sub(impact, result, result);
+	vec_normalise(result);
 }
 
 void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3])
@@ -183,9 +205,8 @@ void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3])
 	coef = -(vec_dot(u, u)) / vec_dot(cone->dir, u);
 	vec_scalar_prod(cone->dir, coef, result);
 	vec_add(result, u, result);
+	vec_normalise(result);
 }
-
-
 /*
  
 	// ca depent de l'orientation qui a ete faite
