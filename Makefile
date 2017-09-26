@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:28:32 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/22 01:14:11 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/26 20:36:58 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 # -g -fsanitize=address 
 # -Ofast
 #  -Wall -Wextra -Werror
-export CFLAGS	= -g -fsanitize=address # -Wall -Wextra -Werror
+export CFLAGS	= -g -fsanitize=address -Wall -Wextra -Werror
 #export CFLAGS	= -O3 -Werror #-Wall -Wextra
 #export CFLAGS	= -g3 #-Wall -Wextra
 
@@ -38,13 +38,11 @@ all:
 	make -C $(SRC_DIR)
 
 clean:
-	make -C $(LIB_MLX) clean
 	make -C $(LIB_FT)  clean
 	make -C $(LIB_VM)  clean
 	make -C $(SRC_DIR) clean
 
 fclean: clean
-	make -C $(LIB_MLX) clean
 	make -C $(LIB_FT)  fclean
 	make -C $(LIB_VM)  fclean
 	make -C $(SRC_DIR) fclean
