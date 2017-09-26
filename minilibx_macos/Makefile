@@ -7,6 +7,8 @@ OBJ1=$(SRC:.c=.o)
 OBJ=$(OBJ1:.m=.o)
 #CFLAGS+=-O2
 
+export CFLAGS	= -g -fsanitize=address # -Wall -Wextra -Werror
+
 all: $(NOM)
 
 $(NOM):	$(OBJ)
