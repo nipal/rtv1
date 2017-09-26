@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/22 01:15:02 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 20:00:15 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,22 @@ void	reset_zbuff(t_mlx_win *w)
 }
 
 // on enverra l'addresse decaler au bon endroi comme ca plus besoin de x, y
-void	find_collision(t_env *e, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
+void	find_collision(t_mlx_win *w, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
 {
 	int		i;
 	float	dist;
 	float	best_dist;
 	int		best_id;
+//	float	(**obj_dist)(t_basis *c, t_obj *o, float ray_dir[3]) obj_dist;
+
 
 	best_id = -1;
 	best_dist = -1;
+//	obj_dist = w->env->obj_dist;
 	i = 0;
 	while (obj[i].type >= 0)
 	{
-		dist = e->obj_dist[obj[i].type](&e->cam, obj + i, ray_dir);
+		dist = w->env->obj_dist[obj[i].type](&w->cam, obj + i, ray_dir);
 //		printf("dist:%f\n", dist);
 		if (dist > 0 && ((dist < best_dist && best_dist >= 0) || best_dist < 0))
 		{
@@ -101,7 +104,7 @@ void	find_collision(t_env *e, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
 }
 
 
-void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj)
+void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
 {
 	int		i;
 	int		j;
@@ -128,7 +131,7 @@ void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj)
 			//		apres faire les calcul de lumiere et tout et tout
 			// dir = i * dx + j * dy
 			vec_add(dir, dx, dir);
-			find_collision(e, w->z_buff + i + j * w->size_x, obj, dir);
+			find_collision(w, w->z_buff + i + j * w->size_x, obj, dir);
 			i++;
 		}
 		vec_sub(dir, cam->ux, dir);
@@ -167,5 +170,6 @@ void	color_scene(t_mlx_win *w, t_obj *obj)
 
 /*
 **	Pour la coloration.
+**	Il faut des lumiere:	
 **		
 */

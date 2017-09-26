@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/22 06:02:36 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 20:46:34 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ float	solve_eq_2nd(float a, float b, float c)
 
 void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz)
 {
-	obj->rot[0] = x;
-	obj->rot[1] = y;
-	obj->rot[2] = z;
-	mat_set_all_rot(obj->rot_inv, obj->rot);
+	obj->ang[0] = rx;
+	obj->ang[1] = ry;
+	obj->ang[2] = rz;
+	mat_set_all_rot(obj->rot_inv, obj->ang);
 }
 
 //	la new pos de l'abjet est nul mais 
@@ -173,14 +173,15 @@ void	set_pos_obj(float ray_pos[3], float ray_dir[3], float dist, float result[3]
 void	set_normal_plan(t_obj *plan, float pos_impact[3], float result[3])
 {
 	//	c'est directement la normale du plan
-	ft_memmove(result, plan->dir, sizeof(result));
+	(void)pos_impact;
+	ft_memmove(result, plan->dir, sizeof(float) * 3);
 }
 
 void	set_normal_sphere(t_obj *sphere, float pos_impact[3], float result[3])
 {
 	//	du centre de la sphere auy point d'impact
 	vec_sub(pos_impact, sphere->pos, result);
-	vec_normalise(result);
+	vec_normalise(result, result);
 }
 
 void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3])
@@ -188,12 +189,12 @@ void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3])
 	float	coef;
 	float	u[3];
 
-	vec_sub(pos_impact, cone->pos, u);
-	coef = vec_dot(cone->dir, u);
-	vec_scalar_prod(cone->dir, coef, result);
-	vec_add(result, cone->pos, result);
-	vec_sub(impact, result, result);
-	vec_normalise(result);
+	vec_sub(pos_impact, cylinder->pos, u);
+	coef = vec_dot(cylinder->dir, u);
+	vec_scalar_prod(cylinder->dir, coef, result);
+	vec_add(result, cylinder->pos, result);
+	vec_sub(pos_impact, result, result);
+	vec_normalise(result, result);
 }
 
 void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3])
@@ -205,7 +206,7 @@ void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3])
 	coef = -(vec_dot(u, u)) / vec_dot(cone->dir, u);
 	vec_scalar_prod(cone->dir, coef, result);
 	vec_add(result, u, result);
-	vec_normalise(result);
+	vec_normalise(result, result);
 }
 /*
  
