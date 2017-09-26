@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/22 05:36:18 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 19:19:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef	struct	s_win_mlx
 	int			endian;
 	t_pix		*data;
 	t_zbuff		*z_buff;
+	t_basis		cam;
 	char		*name;
 	int			size_x;
 	int			size_y;
@@ -78,7 +79,6 @@ typedef	struct	s_env
 {
 	void		*mlx;
 	t_mlx_win	scene;
-	t_basis		cam;
 	float		(*obj_dist[4])(t_basis *cam, t_obj *o, float ray_dir[3]);
 }				t_env;
 
@@ -93,8 +93,8 @@ void	cam_turn_left(t_basis *cam, float ang);
 void	cam_init_draw_func(t_env *e);
 void	cam_rot(t_basis *cam, int x, int y);
 void	reset_zbuff(t_mlx_win *w);
-void	find_collision(t_env *e, t_zbuff *zbuff, t_obj *obj, float ray_dir[3]);
-void	fill_zbuff(t_env *e, t_mlx_win *w, t_basis *cam, t_obj *obj);
+void	find_collision(t_mlx_win *w, t_zbuff *zbuff, t_obj *obj, float ray_dir[3]);
+void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj);
 void	color_scene(t_mlx_win *w, t_obj *obj);
 
 /*
