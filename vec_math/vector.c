@@ -6,11 +6,23 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 19:25:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 23:38:19 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_math.h"
+
+void			vec_copy(float src[VDIM], float dst[VDIM])
+{
+	int		i;
+	
+	i = 0;
+	while (i < VDIM)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+}
 
 void	vec_add(float src_a[VDIM], float src_b[VDIM], float dst[VDIM])
 {

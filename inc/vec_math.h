@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:04:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 14:18:11 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 23:36:47 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ typedef	struct	s_basis
 }				t_basis;
 
 void			vec_add(float src_a[VDIM], float src_b[VDIM], float dst[VDIM]);
-void			vec_sub(float src_a[VDIM], float src_b[VDIM], float dst[VDIM]);
+void			vec_copy(float src[VDIM], float dst[VDIM]);
 void			vec_cross(float src_a[VDIM], float src_b[VDIM], float dst[VDIM]);
-void			vec_scalar_prod(float src[VDIM], float factor, float dst[VDIM]);
-void			vec_set(float vec[VDIM], float a, float b, float c);
 float			vec_dot(float src_a[VDIM], float src_b[VDIM]);
-void			vec_normalise(float src[VDIM], float dst[VDIM]);
 float			vec_get_norme(float vec[VDIM]);
+void			vec_normalise(float src[VDIM], float dst[VDIM]);
+void			vec_scalar_prod(float src[VDIM], float factor, float dst[VDIM]);
+void			vec_set(float vec[VDIM], float a, float b, float c);				// mouahahaha c'est juste lalable ou VDIM = 3 cette fonction
+void			vec_sub(float src_a[VDIM], float src_b[VDIM], float dst[VDIM]);
 void			vec3_init(float *vec, float v0, float v1, float v2);
 
 void			mat_set_id(float mat[VDIM][VDIM]);

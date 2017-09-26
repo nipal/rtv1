@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 20:46:34 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 00:04:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,17 @@
 #include <math.h>
 
 /*
-**	on va mettre dans le radius la valur du 'd' de l'eq cartesienne du plan
+**	on va mettre dans le value la valur du 'd' de l'eq cartesienne du plan
 */
 
-void	ray_adapt(t_obj *obj, float ray_adapted[3], float ray[3])
+void	ray_adapt(t_obj *obj, float ray_src[3], float ray_dst[3])
 {
-	(void)ray_adapted;
-	(void)ray;
-	(void)obj;
+	mat_mult_vec(obj->rot_inv, ray_src, ray_dst);
 }
 
 void	plan_init(t_obj *plan)
 {
-	plan->radius = -vec_dot(plan->dir, plan->pos);	
+	plan->value = -vec_dot(plan->dir, plan->pos);	
 }
 
 
@@ -73,10 +71,19 @@ float	solve_eq_2nd(float a, float b, float c)
 
 void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz)
 {
-	obj->ang[0] = rx;
-	obj->ang[1] = ry;
-	obj->ang[2] = rz;
+	float	rot_dir[3][3];
+	float	ang[3];
+
+	obj->ang[0] = -rx;
+	obj->ang[1] = -ry;
+	obj->ang[2] = -rz;
 	mat_set_all_rot(obj->rot_inv, obj->ang);
+	ang[0] = rx;
+	ang[1] = ry;
+	ang[2] = rz;
+	mat_set_all_rot(rot_dir, ang);
+	vec_set(obj->dir, 0, 0, 1);
+	mat_mult_vec(rot_dir, obj->dir, obj->dir);
 }
 
 //	la new pos de l'abjet est nul mais 
@@ -95,7 +102,7 @@ float	get_dist_plan(t_basis *cam, t_obj *plan, float ray_dir[3])
 {
 	float	dist;
 
-	dist = -(vec_dot(plan->dir, cam->pos) + plan->radius) / (vec_dot(plan->dir, ray_dir)) ;	
+	dist = -(vec_dot(plan->dir, cam->pos) + plan->value) / (vec_dot(plan->dir, ray_dir)) ;	
 	return (dist);
 }
 
@@ -108,60 +115,51 @@ float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3])
 
 	a = vec_dot(ray_dir, ray_dir);
 	b = 2 * (vec_dot(ray_dir, cam->pos) - vec_dot(ray_dir, sphere->pos));
-	c = vec_dot(cam->pos, cam->pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(cam->pos, sphere->pos) - sphere->radius * sphere->radius;
+	c = vec_dot(cam->pos, cam->pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(cam->pos, sphere->pos) - sphere->value * sphere->value;
 	dist = solve_eq_2nd(a, b, c);
 	return (dist);
 }
 
 float	get_dist_cylinder(t_basis *cam, t_obj *cylinder, float ray_dir[3])
 {
-	float	dist;
 	float	a;
 	float	b;
 	float	c;
+	float	ray_pos2[3];
+	float	ray_dir2[3];
 
 	// must adapte position then orientation
-	a = ray_dir[0] * ray_dir[0] + ray_dir[1] * ray_dir[1];
-	b = 2 * (ray_dir[0] * cam->pos[0] + ray_dir[1] * cam->pos[1]);
-	c = cam->pos[0] * cam->pos[0] + cam->pos[1] * cam->pos[1] - cylinder->radius * cylinder->radius;
-	dist = solve_eq_2nd(a, b, c);
-	return (dist);
+	// ray_pos2 = cam->pos - obj->pos;
+	vec_sub(cam->pos, cylinder->pos, ray_pos2);
+	mat_mult_vec(cylinder->rot_inv, ray_dir, ray_dir2);
+	a = ray_dir2[0] * ray_dir2[0] + ray_dir2[1] * ray_dir2[1];
+	b = 2 * (ray_dir2[0] * ray_pos2[0] + ray_dir2[1] * ray_pos2[1]);
+	c = ray_pos2[0] * ray_pos2[0] + ray_pos2[1] * ray_pos2[1] - cylinder->value * cylinder->value;
+	return (solve_eq_2nd(a, b, c));
 }
-
-# define RD0 ray_dir[0]
-# define RD1 ray_dir[1]
-# define RD2 ray_dir[2]
-# define RP0 cam->pos[0]
-# define RP1 cam->pos[1]
-# define RP2 cam->pos[2]
-
-# define OP0 cam->pos[2]
-# define OP1 cone->pos[1]
-# define OP2 cone->pos[2]
-
 
 float	get_dist_cone(t_basis *cam, t_obj *cone, float ray_dir[3])
 {
-	float	r2;
-	float	dist;
 	float	a;
 	float	b;
 	float	c;
+	float	ray_pos2[3]; // on pourrai laisser le r2 (cone->radisu)
+	float	ray_dir2[3];
 
 	// must adapte position then orientation
-	r2 = cone->radius;
-	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * r2;
-	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * r2);
-	c = RP0 * RP0 + RP1 * RP1 - RP2 * RP2 * r2;
-	dist = solve_eq_2nd(a, b, c);
-	return (dist);
+	vec_sub(cam->pos, cone->pos, ray_pos2);
+	mat_mult_vec(cone->rot_inv, ray_dir, ray_dir2);
+	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
+	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * cone->value);
+	c = RP0 * RP0 + RP1 * RP1 - RP2 * RP2 * cone->value;
+	return (solve_eq_2nd(a, b, c));
 }
 
 //						   |     SET_POS	|	
 //	###################### V 				V ############################
 
 //	bug si deux fois le meme objet
-void	set_pos_obj(float ray_pos[3], float ray_dir[3], float dist, float result[3])
+void	obj_set_pos(float ray_pos[3], float ray_dir[3], float dist, float result[3])
 {
 	// rayon normalise ? ... c'est aussi celui qui a servie
 	vec_scalar_prod(ray_dir, dist, result);

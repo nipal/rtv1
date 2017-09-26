@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 20:47:20 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 23:16:04 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,41 @@
 void	set_plan_test(t_obj *obj)
 {
 	obj->type = 0;
+	vec_set(obj->col, 0, 206, 209); // bleu cian
 	vec_set(obj->ang, 0, 0, 0);		
 	vec_set(obj->pos, 0, -2, 0);		
-	vec_set(obj->dir, 0, -1, 0.1);
+	vec_set(obj->dir, 0, -1, 0.1);	// may be obj_set_invrot_dir to adapt obj->dir
 	vec_normalise(obj->dir, obj->dir);
-	plan_init(obj); 					// dans radius on met le coef 'd' de l'eq du plan
+	plan_init(obj); 					// dans value on met le coef 'd' de l'eq du plan
 }
 
 void	set_sphere_test(t_obj *obj)
 {
 	obj->type = 1;
-	obj->radius = 1;
+	obj->value = 1;
+	vec_set(obj->col, 238, 44, 44); // rouge lillte darck
 	vec_set(obj->ang, 0, 0, 0);
-	vec_set(obj->pos, -2, 3, -5);
+	vec_set(obj->pos, 2, 3, -5);
 	vec_set(obj->dir, 0, 0, 0);
 }
 
 void	set_cylindre_test(t_obj *obj)
 {
 	obj->type = 2;
-	obj->radius = 4;
-	vec_set(obj->ang, 0, 0, 0);
-	vec_set(obj->pos, 0.1, 0.1, 4);
-	vec_set(obj->dir, 1, 1, 1);
+	obj->value = 1;
+	vec_set(obj->col, 239, 28, 98); // move
+	vec_set(obj->pos, -5, 2, 0);
+	obj_set_invrot(obj, 0,  10 * M_PI / 180, 0);
 }
 
 void	set_cone_test(t_obj *obj)
 {
 	obj->type = 3;
-	obj->radius = 4;
+	obj->value = 4;
+	vec_set(obj->col, 108, 139, 61); // vert dark olive
 	vec_set(obj->ang, 0, 0, 0);
 	vec_set(obj->pos, 0, 0, -4);
-	vec_set(obj->dir, 1, 1, 1);
+	obj_set_invrot(obj, 0, 0, 0);
 }
 
 void	test_init_obj(t_obj *obj)
@@ -66,17 +69,33 @@ void	test_init_obj(t_obj *obj)
 //	obj[4].type = -1;		// la fin de la serie d'objet
 }
 
+void	test_init_light(t_light *light, int nb_light)
+{
+	int	i;
+
+	memset(light, 0, sizeof(t_light) * nb_light);
+	i = 0;
+	while (i < nb_light)
+		light[i++].power = -1; // condition d'arret de la boucle
+
+	// light 0
+	vec_set(light[0].pos, 0, 0, 0);
+	vec_set(light[0].col, 1, 1, 1); // hume
+	light[0].power = 1;
+}
 
 void	test_basique(t_env *e)
 {
 	t_obj	obj[5];
+	t_light	light[5];
 	(void)e;
 	(void)obj;
 
 	test_init_obj(obj);
+	test_init_light(light, sizeof(light) / sizeof(t_light));
 
 	fill_zbuff(&e->scene, &e->scene.cam, obj);
-	color_scene(&e->scene, obj); 
+	color_scene(&e->scene, light, obj); 
 	mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 //	basis_describe(&e->cam);
 //	mlx_do_sync(e->mlx);
