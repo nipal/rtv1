@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/18 18:12:44 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 19:25:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	vec_normalise(float src[VDIM], float dst[VDIM])
 	if ((dist = sqrt(vec_dot(src, src))) == 0)
 		printf("Error length_vec = 0\n");
 	else
-		vec_scalar_prod(src, 1 / dist, src);
+		vec_scalar_prod(src, 1 / dist, dst);
 }
 
 float	vec_get_norme(float vec[VDIM])
