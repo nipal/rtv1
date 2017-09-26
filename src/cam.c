@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 20:00:15 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/26 21:05:22 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,30 +77,26 @@ void	find_collision(t_mlx_win *w, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
 	float	dist;
 	float	best_dist;
 	int		best_id;
-//	float	(**obj_dist)(t_basis *c, t_obj *o, float ray_dir[3]) obj_dist;
+	float		(**obj_dist)(t_basis *cam, t_obj *o, float ray_dir[3]);
+	(void)obj_dist;
 
 
 	best_id = -1;
 	best_dist = -1;
-//	obj_dist = w->env->obj_dist;
+	obj_dist = w->env->obj_dist;
 	i = 0;
 	while (obj[i].type >= 0)
 	{
-		dist = w->env->obj_dist[obj[i].type](&w->cam, obj + i, ray_dir);
-//		printf("dist:%f\n", dist);
+		dist = obj_dist[obj[i].type](&w->cam, obj + i, ray_dir);
 		if (dist > 0 && ((dist < best_dist && best_dist >= 0) || best_dist < 0))
 		{
 			best_dist = dist;
 			best_id = i;
-//			printf("ouiii:%.20f\n", dist);
 		}
 		i++;
 	}
-//	if (best_dist == 0)
-//		printf("best_dist:%f\n", best_dist);
 	zbuff->id = best_id;
 	zbuff->dist = best_dist;
-	// sur tout les objet on teste le rayon et un enregistre dans le z buffer l'object le plus proche
 }
 
 
