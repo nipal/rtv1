@@ -6,15 +6,15 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 19:14:10 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 21:49:28 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		640
-# define SCENE_Y 		640
+# define SCENE_X		300
+# define SCENE_Y 		300
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -39,6 +39,12 @@
 # define RP1 ray_pos[1]
 # define RP2 ray_pos[2]
 
+
+typedef	struct	s_val
+{
+	float	v1;
+	float	v2;
+}				t_val;
 
 typedef	struct	s_env	t_env;
 

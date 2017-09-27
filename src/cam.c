@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 19:27:38 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/28 00:37:18 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,23 @@ void	reset_zbuff(t_mlx_win *w)
 
 void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3])
 {
+	(void)zbuff;
+	(void)item;
+	(void)ray_dir;
+//	/*
 	int		i;
 	float	dist;
 	float	best_dist;
 	int		best_id;
 	float		(**obj_dist)(t_obj *o, float ray_pos[3], float ray_dir[3]);
+	(void)i;(void)dist;(void)best_dist;(void)best_id;(void)obj_dist;
 
+	dist = -1;
 	best_id = -1;
 	best_dist = -1;
 	obj_dist = item->obj_dist;
 	i = 0;
+//	printf("---------OBJ:%d\n", item->nb_obj);
 	while (i < item->nb_obj)
 	{
 		dist = obj_dist[item->obj[i].type](item->obj + i, item->cam->pos, ray_dir);
@@ -113,8 +120,12 @@ void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3])
 	}
 	zbuff->id = best_id;
 	zbuff->dist = best_dist;
+	if (best_id < 0)
+		return ;
 	obj_set_pos(item->cam->pos, ray_dir, best_dist, zbuff->pos);
 	item->obj_nrm[item->obj[best_id].type](item->obj + best_id, zbuff->pos, zbuff->nrm);
+//	vec3_print_str(zbuff->nrm, "plan_nrm");
+//	*/
 }
 
 void	find_normale(t_env *e)
@@ -141,24 +152,31 @@ static	inline	void	init_ray(t_item *item, float dir[3], float dx[3], float dy[3]
 	vec_scalar_prod(cam->uy, 1.0 / (float)item->size_y, dy);
 }
 
-int		is_free_path(t_item *item, float from[3], float to[3])
+// si on a pas calculer la distance (au carre), on met -1
+int		is_free_path(t_item *item, float from[3], float to[3], int self)
 {
 	t_obj	*obj;
 	int		nb_obj;
 	int		i;
-	(void)item;
-	(void)from;
-	(void)to;
-//	float		(**obj_dist)(t_obj *o, float ray_pos, float ray_dir[3]);
+	float		(**obj_dist)(t_obj *o, float ray_pos[3], float ray_dir[3]);
+	float	dir[3];
+	t_val	dist;
 
-//	obj_dist = item->obj_dist;
+	vec_sub(to, from, dir);
+	dist.v1 = vec_dot(dir, dir);
+	dist.v1 = sqrt(dist.v1);
+	vec_normalise(dir, dir);
+	obj_dist = item->obj_dist;
 	obj = item->obj;
 	nb_obj = item->nb_obj;
 	i = 0;
 	while (i < nb_obj)
 	{
-			if (1)
-				return (0);
+		if (i == self && ++i)
+			continue ;
+		dist.v2 = obj_dist[obj[i].type](obj + i, from, dir);
+		if (dist.v2 > 0 && dist.v2 < dist.v1)
+			return (0);
 		i++;
 	}
 	return (1);
@@ -171,18 +189,30 @@ int		get_color(t_item *item, t_zbuff *zbuff, float ray_dir[3])
 	(void)ray_dir;
 	int	color;
 	float	dist2;
-	float	light_diff[3];
+	float	light_dir[3];
+	float	coef;
 		
 	if (zbuff->dist < 0)
 		return (0);
+	/* pour chaque lumiere */ 
+	vec_sub(item->light[0].pos, zbuff->pos, light_dir);
+	dist2 = vec_dot(light_dir, light_dir);
+	vec_normalise(light_dir, light_dir);
+	if (is_free_path(item, zbuff->pos, item->light[0].pos, zbuff->id))
 	{
-		vec_sub(item->light->pos, zbuff->pos, light_diff);
-		dist2 = vec_dot(light_diff, light_diff);
-		if (is_free_path(item, zbuff->pos, item->light->pos))
-		{
-			color = 255 << 16 | 155 << 8 | 255;
-		}
-		else
+//		printf("FREE_path\n");
+		// need check si need mult by -1
+		coef = -(20 / (1 + dist2) * item->light[0].power * vec_dot(ray_dir, zbuff->nrm));
+		coef = (coef > 1) ? 1 : coef;
+		coef = (coef < 0) ? 0 : coef;
+		color = (int)(coef * item->obj[zbuff->id].col[0]) << 16
+			| (int)(coef * item->obj[zbuff->id].col[1]) << 8
+			| (int)(coef * item->obj[zbuff->id].col[2]); 
+//		printf("coef:%f	color:%d\n", coef, color);
+	}
+	else
+	{
+//		printf("NO_free_path\n");
 		color = 0;
 	}
 	return (color);
@@ -193,6 +223,7 @@ void	fill_zbuff(t_mlx_win *w, t_item *item)
 	int		i;
 	int		j;
 	float	dir[3];
+//	float	dir_nrm[3];
 	float	dx[3];
 	float	dy[3];
 
@@ -204,8 +235,9 @@ void	fill_zbuff(t_mlx_win *w, t_item *item)
 		while (i < w->size_x)
 		{
 			vec_add(dir, dx, dir);
+//			vec_normalise(dir, dir);
 			find_collision(w->z_buff + i + j * w->size_x, item, dir);
-			w->data[i].nb = get_color(item, w->z_buff + i + j * w->size_x, dir);
+			w->data[i + j * w->size_x].nb = get_color(item, w->z_buff + i + j * w->size_x, dir);
 			i++;
 		}
 		vec_sub(dir, item->cam->ux, dir);
@@ -213,6 +245,11 @@ void	fill_zbuff(t_mlx_win *w, t_item *item)
 		j++;
 	}
 }
+
+//	|
+//	|
+//	v	=========== Old way to define pixel's color
+
 // On fait une serie d'adition et de soustraction de vecteur. C'est bien pour
 // le nombre d'operation mais on peu cummuler des erreur lier aux imprecision
 // des calcule avec des float. En faisant a chaque fois une multiplication en plus

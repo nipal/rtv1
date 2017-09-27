@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 19:07:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 23:08:26 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,8 @@ void	set_normal_plan(t_obj *plan, float pos_impact[3], float result[3])
 {
 	//	c'est directement la normale du plan
 	(void)pos_impact;
-	ft_memmove(result, plan->dir, sizeof(float) * 3);
+	vec_scalar_prod(plan->dir, -1, result);
+//	ft_memmove(result, plan->dir, sizeof(float) * 3);
 }
 
 void	set_normal_sphere(t_obj *sphere, float pos_impact[3], float result[3])

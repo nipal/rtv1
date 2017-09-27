@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 18:06:02 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 23:29:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ int		key_press(int key_code, t_mlx_win *w)
 	
 //	printf("key_press:%d\n", key_code);	
 	(key_code == 53) ? rtv1_exit(w->env) : (void)w;
-	(key_code == KEY_LEFT) ? cam_turn_left(&w->cam, 1.0 * (2.0 * M_PI / 360.0)) : (void)w;
-	(key_code == KEY_RIGHT) ? cam_turn_right(&w->cam, 1.0 * (2.0 * M_PI / 360.0)) : (void)w;
-	(key_code == KEY_DOWN) ? cam_turn_down(&w->cam, 1.0 * (2.0 * M_PI / 360.0)) : (void)w;
-	(key_code == KEY_UP) ? cam_turn_up(&w->cam, 1.0 * (2.0 * M_PI / 360.0)) : (void)w;
+	(key_code == KEY_LEFT) ? cam_turn_left(&w->cam, 5.0 * (2.0 * M_PI / 360.0)) : (void)w;
+	(key_code == KEY_RIGHT) ? cam_turn_right(&w->cam, 5.0 * (2.0 * M_PI / 360.0)) : (void)w;
+	(key_code == KEY_DOWN) ? cam_turn_down(&w->cam, 5.0 * (2.0 * M_PI / 360.0)) : (void)w;
+	(key_code == KEY_UP) ? cam_turn_up(&w->cam, 5.0 * (2.0 * M_PI / 360.0)) : (void)w;
+	fill_zbuff(&w->env->scene, &w->env->item);
+	mlx_put_image_to_window(w->env->mlx, w->env->scene.win, w->env->scene.img, 0, 0);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 18:07:10 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 23:28:16 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_cam(t_basis *cam)
 {
 	cam_init_draw_func(get_env(NULL)); // need to init the pontiner on function
 	basis_reset(cam);
-	cam->pos[2] = -20;
+	vec_set(cam->pos, 0, 0, -21);
 }
 
 void	TEMP_set_obj_nb(t_item *item)
@@ -58,6 +58,7 @@ void	item_init(t_item *it, t_mlx_win *w)
 	it->size_x = w->size_x;
 	it->size_y = w->size_y;
 	it->cam = &w->cam;
+	TEMP_set_obj_nb(it);
 }
 
 void	item_destroy(t_item *it)
