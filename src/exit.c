@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 17:43:43 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/18 22:47:53 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 18:10:11 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 void	rtv1_exit(t_env *e)
 {
 	(void)e;
-	win_mlx_finish(&e->scene);
+	if (e)
+	{
+		mlx_win_finish(&e->scene);
+		item_destroy(&e->item);
+	}
 	exit(0);
 }

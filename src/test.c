@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 23:16:04 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 18:08:54 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,14 @@ void	test_basique(t_env *e)
 	t_light	light[5];
 	(void)e;
 	(void)obj;
+	(void)light;
 
-	test_init_obj(obj);
-	test_init_light(light, sizeof(light) / sizeof(t_light));
+//	test_init_obj(obj);
+//	test_init_light(light, sizeof(light) / sizeof(t_light));
+	item_init(&e->item, &e->scene);
 
-	fill_zbuff(&e->scene, &e->scene.cam, obj);
-	color_scene(&e->scene, light, obj); 
+	fill_zbuff(&e->scene, &e->item);
+	color_scene(&e->scene, e->item.light, e->item.obj); 
 	mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 //	basis_describe(&e->cam);
 //	mlx_do_sync(e->mlx);

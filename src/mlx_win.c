@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 00:27:28 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 17:59:36 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 /*suppresion de size_ine dans la structure win_mlx*/
 
-int			win_mlx_init(t_mlx_win *w, int size_x, int size_y, char *name)
+int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 {
 	t_env	*e;
 
@@ -51,7 +51,7 @@ void		init_win_event(t_mlx_win *w)
 }
 ////////////// pck voila
 
-void		win_mlx_finish(t_mlx_win *w)
+void		mlx_win_finish(t_mlx_win *w)
 {
 	free(w->z_buff);
 			/*	les evenltuel fonction de fin de la mlx	*/

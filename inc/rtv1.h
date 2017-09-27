@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 23:58:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 18:10:01 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,16 @@ typedef	struct	s_light
 	float		power;					// poura etre une condition d'arret si negatif
 }				t_light;
 
-typedef	struct	s_win_mlx
+typedef	struct	s_mlx_win
 {
 	t_env		*env;
 	void		*img;
 	void		*win;
+	t_basis		cam;
 	int			depth;
 	int			endian;
-	t_light		light[1];
 	t_pix		*data;
 	t_zbuff		*z_buff;
-	t_basis		cam;
 	char		*name;
 	int			size_x;
 	int			size_y;
@@ -97,12 +96,27 @@ typedef	struct	s_obj
 	float		value;
 }				t_obj;
 
+typedef	struct	s_item
+{
+	float		size_x;
+	float		size_y;
+	t_basis		*cam;
+	t_light		*light;
+	t_obj		*obj;
+	int			nb_light;
+	int			nb_obj;
+	float		(*obj_dist[4])(t_basis *cam, t_obj *o, float ray_dir[3]);
+	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
+}				t_item;
+
 typedef	struct	s_env
 {
 	void		*mlx;
+
 	t_mlx_win	scene;
 	float		(*obj_dist[4])(t_basis *cam, t_obj *o, float ray_dir[3]);
 	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
+	t_item		item;
 }				t_env;
 
 /*
@@ -116,8 +130,8 @@ void	cam_turn_left(t_basis *cam, float ang);
 void	cam_init_draw_func(t_env *e);
 void	cam_rot(t_basis *cam, int x, int y);
 void	reset_zbuff(t_mlx_win *w);
-void	find_collision(t_mlx_win *w, t_zbuff *zbuff, t_obj *obj, float ray_dir[3]);
-void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj);
+void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3]);
+void	fill_zbuff(t_mlx_win *w, t_item *item);
 void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
 
 /*
@@ -140,9 +154,9 @@ void	set_normal_sphere(t_obj *sphere, float pos_impact[3], float result[3]);
 **	mlx_win.c
 */
 
-int			win_mlx_init(t_mlx_win *w, int size_x, int size_y, char *name);
+int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name);
 void		init_win_event(t_mlx_win *w);
-void		win_mlx_finish(t_mlx_win *w);
+void		mlx_win_finish(t_mlx_win *w);
 void		mlx_start(t_env *e);
 
 
@@ -179,5 +193,16 @@ void	rtv1_exit(t_env *e);
 
 void	test_basique(t_env *e);
 void	rotation_test();
+
+void	test_init_obj(t_obj *obj);
+void	test_init_light(t_light *light, int nb_light);
+
+/*
+**	item.c
+*/
+
+void	init_cam(t_basis *cam);
+void	item_destroy(t_item *it);
+void	item_init(t_item *it, t_mlx_win *w);
 
 #endif

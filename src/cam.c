@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 00:04:18 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 18:06:04 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	cam_turn_up(t_basis *cam, float ang)
 //	ou si non on a juste une copie dans la cam
 void	cam_init_draw_func(t_env *e)
 {
-
+	// USELESS
 	e->obj_dist[0] = get_dist_plan;
 	e->obj_dist[1] = get_dist_sphere;
 	e->obj_dist[2] = get_dist_cylinder;
@@ -79,7 +79,17 @@ void	reset_zbuff(t_mlx_win *w)
 }
 
 // on enverra l'addresse decaler au bon endroi comme ca plus besoin de x, y
-void	find_collision(t_mlx_win *w, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
+
+/*
+**	On definie
+**		la distance
+**		l'objet toucher
+**		le point d'impacte
+**		la normale a la surface
+**	
+*/
+
+void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3])
 {
 	int		i;
 	float	dist;
@@ -89,11 +99,11 @@ void	find_collision(t_mlx_win *w, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
 
 	best_id = -1;
 	best_dist = -1;
-	obj_dist = w->env->obj_dist;
+	obj_dist = item->obj_dist;
 	i = 0;
-	while (obj[i].type >= 0)
+	while (i < item->nb_obj)
 	{
-		dist = obj_dist[obj[i].type](&w->cam, obj + i, ray_dir);
+		dist = obj_dist[item->obj[i].type](item->cam, item->obj + i, ray_dir);
 		if (dist > 0 && ((dist < best_dist && best_dist >= 0) || best_dist < 0))
 		{
 			best_dist = dist;
@@ -103,8 +113,8 @@ void	find_collision(t_mlx_win *w, t_zbuff *zbuff, t_obj *obj, float ray_dir[3])
 	}
 	zbuff->id = best_id;
 	zbuff->dist = best_dist;
-	obj_set_pos(w->cam.pos, ray_dir, best_dist, zbuff->pos);
-	w->env->obj_nrm[obj[best_id].type](obj + best_id, zbuff->pos, zbuff->nrm);
+	obj_set_pos(item->cam->pos, ray_dir, best_dist, zbuff->pos);
+	item->obj_nrm[item->obj[best_id].type](item->obj + best_id, zbuff->pos, zbuff->nrm);
 }
 
 void	find_normale(t_env *e)
@@ -119,7 +129,27 @@ void	find_normale(t_env *e)
 // 		 	apres faire les calcul de lumiere et tout et tout
 // 		dir = i * dx + j * dy
 
-void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
+static	inline	void	init_ray(t_item *item, float dir[3], float dx[3], float dy[3])
+{
+	t_basis	*cam;
+
+	cam = item->cam;	
+	vec_add(cam->ux, cam->uy, dir);
+	vec_scalar_prod(dir, -0.5, dir);
+	vec_add(cam->uz, dir, dir);
+	vec_scalar_prod(cam->ux, 1.0 / (float)item->size_x, dx);	
+	vec_scalar_prod(cam->uy, 1.0 / (float)item->size_y, dy);
+}
+
+void	get_colore(t_env *e, t_mlx_win *w, float ray_dir[3], t_light *light)
+{
+	(void)e;
+	(void)w;
+	(void)ray_dir;
+	(void)light;
+}
+
+void	fill_zbuff(t_mlx_win *w, t_item *item)
 {
 	int		i;
 	int		j;
@@ -127,14 +157,7 @@ void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
 	float	dx[3];
 	float	dy[3];
 
-	// on initialise les increment
-	// on initialise la direction en haut a gauche
-	// dir = 
-	vec_add(cam->ux, cam->uy, dir);
-	vec_scalar_prod(dir, -0.5, dir);
-	vec_add(cam->uz, dir, dir);
-	vec_scalar_prod(cam->ux, 1.0 / (float)w->size_x, dx);
-	vec_scalar_prod(cam->uy, 1.0 / (float)w->size_y, dy);
+	init_ray(item, dir, dx, dy);
 	j = 0;
 	while (j < w->size_y)
 	{
@@ -142,11 +165,10 @@ void	fill_zbuff(t_mlx_win *w, t_basis *cam, t_obj *obj)
 		while (i < w->size_x)
 		{
 			vec_add(dir, dx, dir);
-			find_collision(w, w->z_buff + i + j * w->size_x, obj, dir);
-			// 
+			find_collision(w->z_buff + i + j * w->size_x, item, dir);
 			i++;
 		}
-		vec_sub(dir, cam->ux, dir);
+		vec_sub(dir, item->cam->ux, dir);
 		vec_add(dir, dy, dir);
 		j++;
 	}
@@ -170,6 +192,18 @@ int		get_test_color(t_mlx_win *w, int i, float color)
 		return (col);
 }
 
+/*
+**	On a besoin du rayon, 
+*/
+
+int		define_color()
+{
+	int	col;
+
+	col = 0;
+	return (col);
+}
+
 // On pourrai aussi ne faire qu'une seule boucle...
 void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj)
 {
@@ -177,6 +211,7 @@ void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj)
 	int		i;
 	int		j;
 	int		max;
+	int		col;
 	(void)obj;
 	(void)light;
 	(void)j;
@@ -186,9 +221,10 @@ void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj)
 	while (i < max)
 	{
 		j = 0;
+		col = 0;
 		while (light[j].power >= 0)
 		{
-			// il 
+			col = define_color();
 			j++;
 		}
 		w->data[i].nb = get_test_color(w, i, w->z_buff[i].dist);

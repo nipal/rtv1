@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:48:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 20:44:43 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 17:58:20 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,6 @@ t_env	*get_env(t_env *e)
 	return (env);
 }
 
-void	init_cam(t_basis *cam)
-{
-	cam_init_draw_func(get_env(NULL)); // need to init the pontiner on function
-	basis_reset(cam);
-	cam->pos[2] = -20;
-}
 
 void	init_rtv1()
 {
@@ -44,7 +38,7 @@ int		main()
 	get_env(&e);
 	e.mlx = mlx_init();
 	e.scene.env = &e;
-	win_mlx_init(&e.scene, SCENE_X, SCENE_Y, "scene");
+	mlx_win_init(&e.scene, SCENE_X, SCENE_Y, "scene");
 	e.scene.env = &e; // il faudra mieux metre la camera dans la scene
 	init_cam(&e.scene.cam);
 
