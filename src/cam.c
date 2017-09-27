@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 18:06:04 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 19:27:38 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3])
 	float	dist;
 	float	best_dist;
 	int		best_id;
-	float		(**obj_dist)(t_basis *cam, t_obj *o, float ray_dir[3]);
+	float		(**obj_dist)(t_obj *o, float ray_pos[3], float ray_dir[3]);
 
 	best_id = -1;
 	best_dist = -1;
@@ -103,7 +103,7 @@ void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3])
 	i = 0;
 	while (i < item->nb_obj)
 	{
-		dist = obj_dist[item->obj[i].type](item->cam, item->obj + i, ray_dir);
+		dist = obj_dist[item->obj[i].type](item->obj + i, item->cam->pos, ray_dir);
 		if (dist > 0 && ((dist < best_dist && best_dist >= 0) || best_dist < 0))
 		{
 			best_dist = dist;
@@ -141,12 +141,51 @@ static	inline	void	init_ray(t_item *item, float dir[3], float dx[3], float dy[3]
 	vec_scalar_prod(cam->uy, 1.0 / (float)item->size_y, dy);
 }
 
-void	get_colore(t_env *e, t_mlx_win *w, float ray_dir[3], t_light *light)
+int		is_free_path(t_item *item, float from[3], float to[3])
 {
-	(void)e;
-	(void)w;
+	t_obj	*obj;
+	int		nb_obj;
+	int		i;
+	(void)item;
+	(void)from;
+	(void)to;
+//	float		(**obj_dist)(t_obj *o, float ray_pos, float ray_dir[3]);
+
+//	obj_dist = item->obj_dist;
+	obj = item->obj;
+	nb_obj = item->nb_obj;
+	i = 0;
+	while (i < nb_obj)
+	{
+			if (1)
+				return (0);
+		i++;
+	}
+	return (1);
+}
+
+int		get_color(t_item *item, t_zbuff *zbuff, float ray_dir[3])
+{
+	(void)item;
+	(void)zbuff;
 	(void)ray_dir;
-	(void)light;
+	int	color;
+	float	dist2;
+	float	light_diff[3];
+		
+	if (zbuff->dist < 0)
+		return (0);
+	{
+		vec_sub(item->light->pos, zbuff->pos, light_diff);
+		dist2 = vec_dot(light_diff, light_diff);
+		if (is_free_path(item, zbuff->pos, item->light->pos))
+		{
+			color = 255 << 16 | 155 << 8 | 255;
+		}
+		else
+		color = 0;
+	}
+	return (color);
 }
 
 void	fill_zbuff(t_mlx_win *w, t_item *item)
@@ -166,6 +205,7 @@ void	fill_zbuff(t_mlx_win *w, t_item *item)
 		{
 			vec_add(dir, dx, dir);
 			find_collision(w->z_buff + i + j * w->size_x, item, dir);
+			w->data[i].nb = get_color(item, w->z_buff + i + j * w->size_x, dir);
 			i++;
 		}
 		vec_sub(dir, item->cam->ux, dir);

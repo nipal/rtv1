@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 15:18:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 19:07:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,15 @@ void	adapt_ray_dir(t_obj *obj, float ray_dir[3], float ray_result[3])
 	mat_mult_vec(obj->rot_inv, ray_dir, ray_result);
 }
 
-float	get_dist_plan(t_basis *cam, t_obj *plan, float ray_dir[3])
+float	get_dist_plan(t_obj *plan, float ray_pos[3], float ray_dir[3])
 {
 	float	dist;
 
-	dist = -(vec_dot(plan->dir, cam->pos) + plan->value) / (vec_dot(plan->dir, ray_dir)) ;	
+	dist = -(vec_dot(plan->dir, ray_pos) + plan->value) / (vec_dot(plan->dir, ray_dir)) ;	
 	return (dist);
 }
 
-float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3])
+float	get_dist_sphere(t_obj *sphere, float ray_pos[3], float ray_dir[3])
 {
 	float	dist;
 	float	a;
@@ -114,13 +114,13 @@ float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3])
 	float	c;
 
 	a = vec_dot(ray_dir, ray_dir);
-	b = 2 * (vec_dot(ray_dir, cam->pos) - vec_dot(ray_dir, sphere->pos));
-	c = vec_dot(cam->pos, cam->pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(cam->pos, sphere->pos) - sphere->value * sphere->value;
+	b = 2 * (vec_dot(ray_dir, ray_pos) - vec_dot(ray_dir, sphere->pos));
+	c = vec_dot(ray_pos, ray_pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(ray_pos, sphere->pos) - sphere->value * sphere->value;
 	dist = solve_eq_2nd(a, b, c);
 	return (dist);
 }
 
-float	get_dist_cylinder(t_basis *cam, t_obj *cylinder, float ray_dir[3])
+float	get_dist_cylinder(t_obj *cylinder, float ray_pos[3], float ray_dir[3])
 {
 	float	a;
 	float	b;
@@ -129,8 +129,8 @@ float	get_dist_cylinder(t_basis *cam, t_obj *cylinder, float ray_dir[3])
 	float	ray_dir2[3];
 
 	// must adapte position then orientation
-	// ray_pos2 = cam->pos - obj->pos;
-	vec_sub(cam->pos, cylinder->pos, ray_pos2);
+	// ray_pos2 = ray_pos - obj->pos;
+	vec_sub(ray_pos, cylinder->pos, ray_pos2);
 	mat_mult_vec(cylinder->rot_inv, ray_dir, ray_dir2);
 	a = ray_dir2[0] * ray_dir2[0] + ray_dir2[1] * ray_dir2[1];
 	b = 2 * (ray_dir2[0] * ray_pos2[0] + ray_dir2[1] * ray_pos2[1]);
@@ -138,7 +138,7 @@ float	get_dist_cylinder(t_basis *cam, t_obj *cylinder, float ray_dir[3])
 	return (solve_eq_2nd(a, b, c));
 }
 
-float	get_dist_cone(t_basis *cam, t_obj *cone, float ray_dir[3])
+float	get_dist_cone(t_obj *cone, float ray_pos[3], float ray_dir[3])
 {
 	float	a;
 	float	b;
@@ -147,7 +147,7 @@ float	get_dist_cone(t_basis *cam, t_obj *cone, float ray_dir[3])
 	float	ray_dir2[3];
 
 	// must adapte position then orientation
-	vec_sub(cam->pos, cone->pos, ray_pos2);
+	vec_sub(ray_pos, cone->pos, ray_pos2);
 	mat_mult_vec(cone->rot_inv, ray_dir, ray_dir2);
 	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
 	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * cone->value);

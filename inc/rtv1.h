@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 18:10:01 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 19:14:10 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@
 # define RD0 ray_dir2[0]
 # define RD1 ray_dir2[1]
 # define RD2 ray_dir2[2]
-# define RP0 cam->pos[0]
-# define RP1 cam->pos[1]
-# define RP2 cam->pos[2]
+# define RP0 ray_pos[0]
+# define RP1 ray_pos[1]
+# define RP2 ray_pos[2]
 
 
 typedef	struct	s_env	t_env;
@@ -105,7 +105,7 @@ typedef	struct	s_item
 	t_obj		*obj;
 	int			nb_light;
 	int			nb_obj;
-	float		(*obj_dist[4])(t_basis *cam, t_obj *o, float ray_dir[3]);
+	float		(*obj_dist[4])(t_obj *obj, float ray_pos[3], float ray_dir[3]);
 	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
 }				t_item;
 
@@ -114,7 +114,7 @@ typedef	struct	s_env
 	void		*mlx;
 
 	t_mlx_win	scene;
-	float		(*obj_dist[4])(t_basis *cam, t_obj *o, float ray_dir[3]);
+	float		(*obj_dist[4])(t_obj *obj, float ray_pos[3], float ray_dir[3]);
 	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
 	t_item		item;
 }				t_env;
@@ -141,10 +141,10 @@ void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
 void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz);
 void	obj_set_pos(float ray_pos[3], float ray_dir[3], float dist, float result[3]);
 void	plan_init(t_obj *plan);
-float	get_dist_plan(t_basis *cam, t_obj *plan, float ray_dir[3]);
-float	get_dist_sphere(t_basis *cam, t_obj *sphere, float ray_dir[3]);
-float	get_dist_cone(t_basis *cam, t_obj *cone, float ray_dir[3]);
-float	get_dist_cylinder(t_basis *cam, t_obj *cylinder, float ray_dir[3]);
+float	get_dist_cone(t_obj *cone, float ray_pos[3], float ray_dir[3]);
+float	get_dist_cylinder(t_obj *cylinder, float ray_pos[3], float ray_dir[3]);
+float	get_dist_plan(t_obj *plan, float ray_pos[3], float ray_dir[3]);
+float	get_dist_sphere(t_obj *sphere, float ray_pos[3], float ray_dir[3]);
 void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3]);
 void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3]);
 void	set_normal_plan(t_obj *plan, float pos_impact[3], float result[3]);
