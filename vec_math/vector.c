@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 23:38:19 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 23:07:40 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,21 @@ void	vec3_init(float *vec, float v0, float v1, float v2)
 	vec[0] = v0;
 	vec[1] = v1;
 	vec[2] = v2;
+}
+
+void	vec3_print(float vec[3])
+{
+	float	norme;
+
+	norme = vec_get_norme(vec);
+	printf("vec:|{%f, %f, %f}| = %f\n", vec[0], vec[1], vec[2], norme);
+}
+
+void	vec3_print_str(float vec[3], char *str)
+{
+	float	norme;
+
+	norme = vec_get_norme(vec);
+	printf("%s :|{%f, %f, %f}| = %f\n", str, vec[0], vec[1], vec[2], norme);
+
 }

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:04:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 23:36:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/27 22:58:16 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void			vec_scalar_prod(float src[VDIM], float factor, float dst[VDIM]);
 void			vec_set(float vec[VDIM], float a, float b, float c);				// mouahahaha c'est juste lalable ou VDIM = 3 cette fonction
 void			vec_sub(float src_a[VDIM], float src_b[VDIM], float dst[VDIM]);
 void			vec3_init(float *vec, float v0, float v1, float v2);
+void			vec3_print(float vec[3]);
+void			vec3_print_str(float vec[3], char *str);
 
 void			mat_set_id(float mat[VDIM][VDIM]);
 void			mat_set_one_rot(float mat[VDIM][VDIM], int id1, int id2, float ang);
