@@ -6,15 +6,15 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 21:49:28 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/28 20:55:33 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		300
-# define SCENE_Y 		300
+# define SCENE_X		1200
+# define SCENE_Y 		1200
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -39,6 +39,12 @@
 # define RP1 ray_pos[1]
 # define RP2 ray_pos[2]
 
+typedef	struct	s_index
+{
+	int			i;
+	int			j;
+	// may be k also
+}				t_index;
 
 typedef	struct	s_val
 {
@@ -60,11 +66,7 @@ typedef	struct	s_zbuff
 	float		dist;
 	float		nrm[3];
 	float		pos[3];
-	//	normale surface
-
-
-	//	rayon
-	//	dir lumiere
+	//	dir lumiere		// est-ce qu'on la calcule deja une fois ??
 }				t_zbuff;
 
 typedef	struct	s_light
@@ -135,9 +137,9 @@ void	cam_turn_right(t_basis *cam, float ang);
 void	cam_turn_left(t_basis *cam, float ang);
 void	cam_init_draw_func(t_env *e);
 void	cam_rot(t_basis *cam, int x, int y);
+void	launch_ray(t_mlx_win *w, t_item *item);
 void	reset_zbuff(t_mlx_win *w);
 void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3]);
-void	fill_zbuff(t_mlx_win *w, t_item *item);
 void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
 
 /*

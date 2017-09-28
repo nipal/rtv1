@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/28 00:28:40 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/28 17:07:43 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	set_plan_test(t_obj *obj)
 void	set_sphere_test(t_obj *obj)
 {
 	obj->type = 1;
-	obj->value = 3;
+	obj->value = 2;
 	vec_set(obj->col, 238, 44, 44); // rouge lillte darck
 	vec_set(obj->ang, 0, 0, 0);
-	vec_set(obj->pos, 2, 3, -5);
+	vec_set(obj->pos, 2, 3, -3);
 	vec_set(obj->dir, 0, 0, 0);
 }
 
@@ -50,7 +50,7 @@ void	set_cone_test(t_obj *obj)
 	vec_set(obj->col, 108, 139, 61); // vert dark olive
 	vec_set(obj->ang, 0, 0, 0);
 	vec_set(obj->pos, 0, 0, -4);
-	obj_set_invrot(obj, 0.1, 0, 0);
+	obj_set_invrot(obj, 0.3, 0.2, 0.1);
 }
 
 void	test_init_obj(t_obj *obj)
@@ -79,7 +79,7 @@ void	test_init_light(t_light *light, int nb_light)
 		light[i++].power = -1; // condition d'arret de la boucle
 
 	// light 0
-	vec_set(light[0].pos, 0, 0, -10);
+	vec_set(light[0].pos, 0, 0, -7);
 	vec_set(light[0].col, 1, 1, 1); // hume
 	light[0].power = 1;
 }
@@ -95,7 +95,8 @@ void	test_basique(t_env *e)
 //	test_init_obj(obj);
 //	test_init_light(light, sizeof(light) / sizeof(t_light));
 
-//	fill_zbuff(&e->scene, &e->item);
+//void	launch_ray(t_mlx_win *w, t_item *item)
+//	launch_ray(&e->scene, &e->item);
 //	color_scene(&e->scene, e->item.light, e->item.obj); 
 //	mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 //	basis_describe(&e->cam);

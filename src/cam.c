@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/28 00:37:18 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/29 01:26:42 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ static	inline	void	init_ray(t_item *item, float dir[3], float dx[3], float dy[3]
 int		is_free_path(t_item *item, float from[3], float to[3], int self)
 {
 	t_obj	*obj;
-	int		nb_obj;
 	int		i;
 	float		(**obj_dist)(t_obj *o, float ray_pos[3], float ray_dir[3]);
 	float	dir[3];
@@ -168,9 +167,8 @@ int		is_free_path(t_item *item, float from[3], float to[3], int self)
 	vec_normalise(dir, dir);
 	obj_dist = item->obj_dist;
 	obj = item->obj;
-	nb_obj = item->nb_obj;
 	i = 0;
-	while (i < nb_obj)
+	while (i < item->nb_obj)
 	{
 		if (i == self && ++i)
 			continue ;
@@ -182,48 +180,88 @@ int		is_free_path(t_item *item, float from[3], float to[3], int self)
 	return (1);
 }
 
-int		get_color(t_item *item, t_zbuff *zbuff, float ray_dir[3])
+//	phong: Ambient, difuse, speculaire
+// is_free_path -> difuse, speculaire
+
+
+float	light_specular_coef(float nrm[3], float ray_dir[3], float light_dir[3])
 {
-	(void)item;
-	(void)zbuff;
-	(void)ray_dir;
-	int	color;
-	float	dist2;
-	float	light_dir[3];
+	float	ray_opp[3];
 	float	coef;
+	
+	// on construit le rayon reflechi
+	coef = vec_dot(nrm, ray_dir);
+	vec_scalar_prod(nrm, coef, ray_opp);
+	vec_sub(ray_opp, ray_dir, ray_opp);
+	vec_scalar_prod(ray_opp, 2, ray_opp);
+	vec_add(ray_dir, ray_opp, ray_opp);
+	// on le compar au rayon lumineux
+	coef = vec_dot(ray_opp, light_dir);
+	return ((coef > -0.999) ? 0 : -coef);
+}
+
+float	light_difuse_coef(float nrm[3], float ray_dir[3], float light_dir[3], float dist2)
+{
+	float	coef;
+	(void)ray_dir;
 		
-	if (zbuff->dist < 0)
+// TODO: find solution for light power
+	coef = -(10 / (0.1 + dist2) * vec_dot(light_dir, nrm));
+	if (coef > 1)
+		return (1);
+	else if (coef < 0)
 		return (0);
+	return (coef);
+}
+
+// TODO: put into obj_strture to each object have its properties
+typedef	struct	s_phong_coef
+{
+	float		ambient;
+	float		diffuse;
+	float		specular;
+}				t_coef_fong;
+
+int		set_color(float col[3], float coef, float spec)
+{
+	int		color;
+	float	c[3];
+	
+	vec_scalar_prod(col, coef, c);
+	color = (int)(c[0] + (255 - c[0]) * spec) << 16 
+		| (int)(c[1] + (255 - c[1] * spec)) << 8 
+		| (int)(c[2] + (255 - c[2]) * spec);
+	return (color);
+}
+
+int		get_phong_color(t_item *item, t_zbuff *zbuff, float ray_dir[3])
+{
+	float		light_dir[3];
+	float		dist2;
+	t_coef_fong	coef = {0.05, 0.95, 1};  // may be change
+	int			id;
+
+	id = zbuff->id;
 	/* pour chaque lumiere */ 
 	vec_sub(item->light[0].pos, zbuff->pos, light_dir);
 	dist2 = vec_dot(light_dir, light_dir);
 	vec_normalise(light_dir, light_dir);
-	if (is_free_path(item, zbuff->pos, item->light[0].pos, zbuff->id))
-	{
-//		printf("FREE_path\n");
-		// need check si need mult by -1
-		coef = -(20 / (1 + dist2) * item->light[0].power * vec_dot(ray_dir, zbuff->nrm));
-		coef = (coef > 1) ? 1 : coef;
-		coef = (coef < 0) ? 0 : coef;
-		color = (int)(coef * item->obj[zbuff->id].col[0]) << 16
-			| (int)(coef * item->obj[zbuff->id].col[1]) << 8
-			| (int)(coef * item->obj[zbuff->id].col[2]); 
-//		printf("coef:%f	color:%d\n", coef, color);
-	}
-	else
-	{
-//		printf("NO_free_path\n");
-		color = 0;
-	}
-	return (color);
+	if (zbuff->dist < 0)
+		return (0);
+	// on met la difuse
+	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id))
+		coef.diffuse = 0;
+	coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
+	coef.specular = 0;//light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
+	return (set_color(item->obj[id].col, coef.diffuse + coef.ambient, coef.specular));
 }
 
-void	fill_zbuff(t_mlx_win *w, t_item *item)
+void	launch_ray(t_mlx_win *w, t_item *item)
 {
 	int		i;
 	int		j;
 	float	dir[3];
-//	float	dir_nrm[3];
+	float	dir_nrm[3];
 	float	dx[3];
 	float	dy[3];
 
@@ -235,9 +273,10 @@ void	fill_zbuff(t_mlx_win *w, t_item *item)
 		while (i < w->size_x)
 		{
 			vec_add(dir, dx, dir);
-//			vec_normalise(dir, dir);
-			find_collision(w->z_buff + i + j * w->size_x, item, dir);
-			w->data[i + j * w->size_x].nb = get_color(item, w->z_buff + i + j * w->size_x, dir);
+			vec_normalise(dir, dir_nrm);
+			find_collision(w->z_buff + i + j * w->size_x, item, dir_nrm);
+			w->data[i + j * w->size_x].nb = get_phong_color(item, w->z_buff + i + j * w->size_x, dir_nrm);
+
 			i++;
 		}
 		vec_sub(dir, item->cam->ux, dir);
@@ -245,72 +284,3 @@ void	fill_zbuff(t_mlx_win *w, t_item *item)
 		j++;
 	}
 }
-
-//	|
-//	|
-//	v	=========== Old way to define pixel's color
-
-// On fait une serie d'adition et de soustraction de vecteur. C'est bien pour
-// le nombre d'operation mais on peu cummuler des erreur lier aux imprecision
-// des calcule avec des float. En faisant a chaque fois une multiplication en plus
-// on a pas d'ereur qui se cumule.
-
-int		get_test_color(t_mlx_win *w, int i, float color)
-{
-	int	col;
-		/* ici le  calcule de lumiere */
-		color = w->z_buff[i].dist;	
-		if (color <= 0)
-			color = 0;
-		else
-			w->data[i].nb = 0;
-//		printf("color:%f	x:%d	y:%d\n", color, (i % w->size_x), (i / w->size_x));
-		col = (int)(color * 255) << 16 | (int)(color * 255) << 8 | ((int)(color * 255));
-		return (col);
-}
-
-/*
-**	On a besoin du rayon, 
-*/
-
-int		define_color()
-{
-	int	col;
-
-	col = 0;
-	return (col);
-}
-
-// On pourrai aussi ne faire qu'une seule boucle...
-void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj)
-{
-	// on va juste doner une couleur en fpnction des objet
-	int		i;
-	int		j;
-	int		max;
-	int		col;
-	(void)obj;
-	(void)light;
-	(void)j;
-
-	i = 0;
-	max = w->size_x * w->size_y;
-	while (i < max)
-	{
-		j = 0;
-		col = 0;
-		while (light[j].power >= 0)
-		{
-			col = define_color();
-			j++;
-		}
-		w->data[i].nb = get_test_color(w, i, w->z_buff[i].dist);
-		i++;
-	}
-}
-
-/*
-**	Pour la coloration.
-**	Il faut des lumiere:	
-**		
-*/

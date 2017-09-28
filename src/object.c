@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 23:08:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/29 01:13:53 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	set_normal_plan(t_obj *plan, float pos_impact[3], float result[3])
 {
 	//	c'est directement la normale du plan
 	(void)pos_impact;
-	vec_scalar_prod(plan->dir, -1, result);
+	vec_scalar_prod(plan->dir, 1, result);
 //	ft_memmove(result, plan->dir, sizeof(float) * 3);
 }
 
@@ -181,6 +181,7 @@ void	set_normal_sphere(t_obj *sphere, float pos_impact[3], float result[3])
 	//	du centre de la sphere auy point d'impact
 	vec_sub(pos_impact, sphere->pos, result);
 	vec_normalise(result, result);
+	vec_scalar_prod(result, -1, result);
 }
 
 void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3])
@@ -194,6 +195,7 @@ void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3])
 	vec_add(result, cylinder->pos, result);
 	vec_sub(pos_impact, result, result);
 	vec_normalise(result, result);
+	vec_scalar_prod(result, -1, result);
 }
 
 void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3])
@@ -206,6 +208,7 @@ void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3])
 	vec_scalar_prod(cone->dir, coef, result);
 	vec_add(result, u, result);
 	vec_normalise(result, result);
+	vec_scalar_prod(result, -1, result);
 }
 /*
  
