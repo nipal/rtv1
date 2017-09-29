@@ -31,11 +31,11 @@ SRC		= 								\
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../minilibx_macos/
+LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../minilibx
 
-LIB_NAME	= -lvec_math -lmlx -lft
+LIB_NAME	= -lvec_math -lmlx -lft -lm -lX11 -lXext
 
-FRAMEWORK	= -framework OpenGl -framework AppKit -framework opencl
+FRAMEWORK	= #-framework OpenGl -framework AppKit #-framework opencl
 
 all: $(NAME)
 

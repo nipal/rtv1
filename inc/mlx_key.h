@@ -13,9 +13,6 @@
 #ifndef MLX_KEY_H
 # define MLX_KEY_H
 
-# define KEY_LEFT	123
-# define KEY_RIGHT	124
-# define KEY_DOWN	125
-# define KEY_UP		126
+# include "key_linux.h"
 
 #endif

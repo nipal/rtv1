@@ -22,8 +22,8 @@ int		key_press(int key_code, t_mlx_win *w)
 {
 	(void)key_code;
 	
-//	printf("key_press:%d\n", key_code);	
-	(key_code == 53) ? rtv1_exit(w->env) : (void)w;
+	printf("key_press:%d\n", key_code);	
+	(key_code == KEY_ESC) ? rtv1_exit(w->env) : (void)w;
 	(key_code == KEY_LEFT) ? cam_turn_left(&w->cam, 5.0 * (2.0 * M_PI / 360.0)) : (void)w;
 	(key_code == KEY_RIGHT) ? cam_turn_right(&w->cam, 5.0 * (2.0 * M_PI / 360.0)) : (void)w;
 	(key_code == KEY_DOWN) ? cam_turn_down(&w->cam, 5.0 * (2.0 * M_PI / 360.0)) : (void)w;

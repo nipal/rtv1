@@ -13,8 +13,8 @@
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		1200
-# define SCENE_Y 		1200
+# define SCENE_X		200
+# define SCENE_Y 		200
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3

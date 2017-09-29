@@ -75,7 +75,7 @@ SRC		= ft_atoi.c \
 		  get_next_line.c \
 		  ft_toupper.c 
 
-#CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
+#CFLAGS = -Wall -Werror -g -fsanitize=address 
 
 OBJ		= $(SRC:.c=.o)
 

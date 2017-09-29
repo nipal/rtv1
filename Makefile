@@ -16,7 +16,7 @@
 # -Ofast
 #  -Wall -Wextra -Werror
 #export CFLAGS	= -g -fsanitize=address -Wall -Wextra -Werror
-export CFLAGS	= -O2 -Werror -Wall -Wextra
+export CFLAGS	= -O2 #-Werror -Wall -Wextra
 #export CFLAGS	= -g3 #-Wall -Wextra
 
 #-fsanitize=address
@@ -29,7 +29,7 @@ NAME			= rtv1
 SRC_DIR			= ./src
 LIB_FT			= ./libft
 LIB_VM			= ./vec_math
-LIB_MLX			= ./minilibx_macos
+LIB_MLX			= ./minilibx
 
 all:
 	make -C $(LIB_MLX)
