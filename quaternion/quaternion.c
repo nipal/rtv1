@@ -6,7 +6,7 @@
 /*   q2y: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 19:45:03 q2y fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/04 00:10:45 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/04 00:13:51 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ t_quater	quaternion_product2(t_quater q1, t_quater q2)
 {
 	t_quater	r;
 
-	q.s = q1.s * q2.s - vec3_dot(q1.v, q2.v);
-	q.v = vec3_add(vec3_add(vec3_scalar(q2.v, q1.s), vec3_scalar(q1.v, q2.s)), vec3_cross(q1.v, q2.v));
+	r.s = q1.s * q2.s - vec3_dot(q1.v, q2.v);
+	r.v = vec3_add(vec3_add(vec3_scalar(q2.v, q1.s), vec3_scalar(q1.v, q2.s)), vec3_cross(q1.v, q2.v));
 	return (r);
 }
 
