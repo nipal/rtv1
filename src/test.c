@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/28 17:07:43 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/29 21:43:47 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	set_cylindre_test(t_obj *obj)
 	obj->value = 1;
 	vec_set(obj->col, 239, 28, 98); // move
 	vec_set(obj->pos, -5, 2, 0);
-	obj_set_invrot(obj, 0,  10 * M_PI / 180, 0);
+	obj_set_invrot(obj, 0,  10  * DEG, 0);
 }
 
 void	set_cone_test(t_obj *obj)
@@ -49,8 +49,8 @@ void	set_cone_test(t_obj *obj)
 	obj->value = 4;
 	vec_set(obj->col, 108, 139, 61); // vert dark olive
 	vec_set(obj->ang, 0, 0, 0);
-	vec_set(obj->pos, 0, 0, -4);
-	obj_set_invrot(obj, 0.3, 0.2, 0.1);
+	vec_set(obj->pos, 0, -3, -5);
+	obj_set_invrot(obj, 80 * DEG, 20 * DEG, 0);
 }
 
 void	test_init_obj(t_obj *obj)

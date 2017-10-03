@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/29 01:26:42 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/29 22:17:48 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,25 @@
 void	cam_turn_left(t_basis *cam, float ang)
 {
 	basis_rot_y(cam, ang);
-	printf("left\n");
+//	printf("left\n");
 }
 
 void	cam_turn_right(t_basis *cam, float ang)
 {
 	basis_rot_y(cam, -ang);
-	printf("right\n");
+//	printf("right\n");
 }
 
 void	cam_turn_down(t_basis *cam, float ang)
 {
 	basis_rot_x(cam, ang);
-	printf("down\n");
+//	printf("down\n");
 }
 
 void	cam_turn_up(t_basis *cam, float ang)
 {
 	basis_rot_x(cam, -ang);
-	printf("up\n");
+//	printf("up\n");
 
 }
 

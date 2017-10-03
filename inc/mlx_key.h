@@ -6,13 +6,14 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 21:20:43 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/20 22:19:36 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/29 21:16:11 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MLX_KEY_H
 # define MLX_KEY_H
 
-# include "key_linux.h"
+//# include "key_linux.h"
+# include "key_mac.h"
 
 #endif

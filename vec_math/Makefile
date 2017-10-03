@@ -6,14 +6,14 @@
 #    By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/01 03:02:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/18 16:52:13 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/04 00:01:11 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: clean all fclean re
+.PHONY: clean q1ll fclean re
 
 NAME	=	libvec_math.a
-DEPS 	= vec_math.h
+DEPS 	=	../vec_math.h
 
 SRC		= 	basis.c		\
 		  	matrix.c	\

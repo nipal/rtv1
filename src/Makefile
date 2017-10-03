@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/27 17:28:58 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/29 21:18:34 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 #-fsanitize=address -g3
 NAME	=	../rtv1
-DEPS = ../inc/rtv1.h ../inc/vec_math.h
+DEPS = ../inc/rtv1.h ../inc/vec_math.h ../inc/key_linux.h ../inc/key_mac.h
 
 SRC		= 								\
 			cam.c						\
@@ -31,11 +31,11 @@ SRC		= 								\
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../minilibx
+LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../minilibx_macos
 
-LIB_NAME	= -lvec_math -lmlx -lft -lm -lX11 -lXext
+LIB_NAME	= -lvec_math -lmlx -lft -lm #-lX11 -lXext
 
-FRAMEWORK	= #-framework OpenGl -framework AppKit #-framework opencl
+FRAMEWORK	= -framework OpenGl -framework AppKit #-framework opencl
 
 all: $(NAME)
 

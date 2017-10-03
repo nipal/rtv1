@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:28:32 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/28 15:40:39 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/09/29 21:14:53 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,13 +29,15 @@ NAME			= rtv1
 SRC_DIR			= ./src
 LIB_FT			= ./libft
 LIB_VM			= ./vec_math
-LIB_MLX			= ./minilibx
+#LIB_MLX			= ./minilibx
+LIB_MLX			= ./minilibx_macos
 
 all:
 	make -C $(LIB_MLX)
 	make -C $(LIB_FT)
 	make -C $(LIB_VM)
 	make -C $(SRC_DIR)
+	
 
 clean:
 	make -C $(LIB_FT)  clean

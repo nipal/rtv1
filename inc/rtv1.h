@@ -6,15 +6,15 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/28 20:55:33 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/04 00:26:47 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		200
-# define SCENE_Y 		200
+# define SCENE_X		1200
+# define SCENE_Y 		1200
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -22,6 +22,8 @@
 # define BUTTON_RELEASE           5
 # define MOTION_NOTIFY            6
 
+#include <sys/time.h>
+#include <time.h>
 #include <mlx.h>
 #include <stdlib.h>
 #include "mlx_key.h"
@@ -38,6 +40,10 @@
 # define RP0 ray_pos[0]
 # define RP1 ray_pos[1]
 # define RP2 ray_pos[2]
+
+# define DEG  (M_PI / 180)
+
+typedef	struct	timeval t_time;
 
 typedef	struct	s_index
 {
@@ -91,6 +97,7 @@ typedef	struct	s_mlx_win
 	int			size_y;
 	float		mouse[3];				//	position
 	float		prev_mouse[3];			// prev pposition
+	int			refresh;
 }				t_mlx_win;
 
 typedef	struct	s_obj
@@ -125,6 +132,8 @@ typedef	struct	s_env
 	float		(*obj_dist[4])(t_obj *obj, float ray_pos[3], float ray_dir[3]);
 	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
 	t_item		item;
+	long		frame;
+	long		last_frame;
 }				t_env;
 
 /*

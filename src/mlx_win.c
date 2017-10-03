@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 17:59:36 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/09/29 22:02:22 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 
 	e = get_env(NULL);
 	ft_bzero(&e->scene, sizeof(t_mlx_win));
+		e->scene.refresh = 1;
 	if (!name)
 		name = "new w";
 	if (!(size_x > 0 && size_y > 0) || !w
