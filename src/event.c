@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/04 00:29:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/04 20:48:41 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	print_time(long *histo, int size, int beg)
 
 void	actual_time(t_env *e)
 {
+	(void)e;
 	/*
 	t_time	t;
 	static	int	i = 0;

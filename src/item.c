@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/29 21:26:33 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/05 16:42:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,43 @@ void	TEMP_set_obj_nb(t_item *item)
 	item->nb_obj = i;
 }
 
-void	item_init(t_item *it, t_mlx_win *w)
+void	old_item_init(t_item *item, t_mlx_win *w)
 {
-	if (!it)
+	if (!item)
 		rtv1_exit(get_env());
-	ft_bzero(it, sizeof(it));
-	if (!(it->obj = (t_obj*)malloc(sizeof(t_obj) * 5))
-		|| !(it->light = (t_light*)malloc(sizeof(t_light) * 5)))
+	ft_bzero(item, sizeof(item));
+	if (!(item->obj = (t_obj*)malloc(sizeof(t_obj) * 5))
+		|| !(item->light = (t_light*)malloc(sizeof(t_light) * 5)))
 		rtv1_exit(get_env());
-	it->nb_light = 4;
-	it->nb_obj = 4;
-	it->obj_dist[0] = get_dist_plan;
-	it->obj_dist[1] = get_dist_sphere;
-	it->obj_dist[2] = get_dist_cylinder;
-	it->obj_dist[3] = get_dist_cone;
-	it->obj_nrm[0] = set_normal_plan;
-	it->obj_nrm[1] = set_normal_sphere;
-	it->obj_nrm[2] = set_normal_cylinder;
-	it->obj_nrm[3] = set_normal_cone;
-	test_init_obj(it->obj);
-	test_init_light(it->light, it->nb_light);
-	it->size_x = w->size_x;
-	it->size_y = w->size_y;
-	it->cam = &w->cam;
-	TEMP_set_obj_nb(it);
+	item->nb_light = 4;
+	item->nb_obj = 4;
+	item->obj_dist[0] = get_dist_plan;
+	item->obj_dist[1] = get_dist_sphere;
+	item->obj_dist[2] = get_dist_cylinder;
+	item->obj_dist[3] = get_dist_cone;
+	item->obj_nrm[0] = set_normal_plan;
+	item->obj_nrm[1] = set_normal_sphere;
+	item->obj_nrm[2] = set_normal_cylinder;
+	item->obj_nrm[3] = set_normal_cone;
+	test_init_obj(item->obj);
+	test_init_light(item->light, item->nb_light);
+	item->size_x = w->size_x;
+	item->size_y = w->size_y;
+	item->cam = &w->cam;
+	TEMP_set_obj_nb(item);
+
+}
+
+void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
+{
+	(void)w;
+	int		file_size;
+	char	*str;
+
+	if (!(str = file_str(file_path, &file_size)))
+		rtv1_exit(get_env(NULL));
+	rtv1_parse_file(str, file_size, item);
+//	old_item_init(item, w);
 }
 
 void	item_destroy(t_item *it)

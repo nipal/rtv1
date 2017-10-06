@@ -6,12 +6,13 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/12 01:56:40 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/10/01 18:51:37 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/05 00:30:07 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
 t_list	*ft_lstnew(const void *content, size_t content_size)
 {
 	t_list *new;
@@ -33,3 +34,13 @@ t_list	*ft_lstnew(const void *content, size_t content_size)
 	new->next = NULL;
 	return (new);
 }
+
+
+void				ft_lstadd(t_list **alst, t_list *new)
+{
+	if (!alst || !new)
+		return ;
+	new->next = *alst;
+	*alst = new;
+}
+*/

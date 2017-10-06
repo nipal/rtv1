@@ -6,15 +6,15 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/04 00:26:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/05 16:41:53 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		1200
-# define SCENE_Y 		1200
+# define SCENE_X		400
+# define SCENE_Y 		400
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -22,10 +22,17 @@
 # define BUTTON_RELEASE           5
 # define MOTION_NOTIFY            6
 
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <sys/time.h>
 #include <time.h>
 #include <mlx.h>
 #include <stdlib.h>
+#include <quaternion.h>
 #include "mlx_key.h"
 #include "vec_math.h"
 #include "libft.h"
@@ -120,6 +127,7 @@ typedef	struct	s_item
 	t_obj		*obj;
 	int			nb_light;
 	int			nb_obj;
+	int			nb_cam;
 	float		(*obj_dist[4])(t_obj *obj, float ray_pos[3], float ray_dir[3]);
 	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
 }				t_item;
@@ -220,6 +228,19 @@ void	test_init_light(t_light *light, int nb_light);
 
 void	init_cam(t_basis *cam);
 void	item_destroy(t_item *it);
-void	item_init(t_item *it, t_mlx_win *w);
+void	item_init(t_item *item, t_mlx_win *w, const char *str);
+
+/*
+**	get_file.c
+*/
+
+char	*file_str(const char *file_path, int *size);
+
+/*
+**	parseur.c
+*/
+
+
+void	rtv1_parse_file(char *file_content, int file_size, t_item *item);
 
 #endif

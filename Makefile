@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:28:32 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/29 21:14:53 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/04 20:51:38 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@
 # -g -fsanitize=address 
 # -Ofast
 #  -Wall -Wextra -Werror
-#export CFLAGS	= -g -fsanitize=address -Wall -Wextra -Werror
-export CFLAGS	= -O2 #-Werror -Wall -Wextra
+export CFLAGS	= -g -fsanitize=address -Wall -Wextra -Werror
+#export CFLAGS	= -O2 #-Werror -Wall -Wextra
 #export CFLAGS	= -g3 #-Wall -Wextra
 
 #-fsanitize=address

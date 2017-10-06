@@ -2,6 +2,7 @@
 *.a
 *.sw*
 *.swp
+*.out
 **/**.swp
 idee
 rtv1

@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/29 21:18:34 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/05 16:45:42 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,16 +16,19 @@
 NAME	=	../rtv1
 DEPS = ../inc/rtv1.h ../inc/vec_math.h ../inc/key_linux.h ../inc/key_mac.h
 
-SRC		= 								\
-			cam.c						\
-			event.c						\
-			exit.c						\
-			init.c						\
-			item.c						\
-			main.c						\
-			mlx_win.c					\
-			object.c					\
-			test.c						\
+SRC		= 						\
+			cam.c				\
+			event.c				\
+			exit.c				\
+			init.c				\
+			item.c				\
+			main.c				\
+			mlx_win.c			\
+			object.c			\
+			parseur.c			\
+			get_file.c			\
+			test.c				\
+			test_parsing.c		\
 
 
 OBJ			= $(SRC:.c=.o)
