@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 20:35:13 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/04 00:15:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/06 20:45:59 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ float   	vec3_norme(t_vec3 v)
 	return (sqrt(vec3_dot(v, v)));
 }
 
-t_vec3		vec3_scalar_prod(t_vec3 v, float factor)
+t_vec3		vec3_scalar(t_vec3 v, float factor)
 {
 	t_vec3	r;
 
@@ -64,6 +64,25 @@ t_vec3		vec3_scalar_prod(t_vec3 v, float factor)
 
 t_vec3		vec3_normalise(t_vec3 v)
 {
-	return (vec3_scalar_prod(v, 1 / vec3_norme(v)));
+	return (vec3_scalar(v, 1 / vec3_norme(v)));
 }
 
+t_vec3		vec3_cast(float vec[3])
+{
+	t_vec3	v;
+
+	v.x = vec[0];
+	v.y = vec[1];
+	v.z = vec[2];
+	return (v);
+}
+
+t_vec3		vec3_set(float x, float y, float z)
+{
+	t_vec3	v;
+
+	v.x = x;
+	v.y = y;
+	v.z = z;
+	return (v);
+}
