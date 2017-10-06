@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/10/05 16:45:42 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/06 18:55:09 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,19 +24,20 @@ SRC		= 						\
 			item.c				\
 			main.c				\
 			mlx_win.c			\
-			object.c			\
 			parseur.c			\
 			get_file.c			\
 			test.c				\
 			test_parsing.c		\
+								\
+			object.c			\
 
 
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../minilibx_macos
+LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../quaternion -L ../minilibx_macos
 
-LIB_NAME	= -lvec_math -lmlx -lft -lm #-lX11 -lXext
+LIB_NAME	= -lvec_math -lmlx -lft -lquaternion -lm #-lX11 -lXext
 
 FRAMEWORK	= -framework OpenGl -framework AppKit #-framework opencl
 

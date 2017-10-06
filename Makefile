@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:28:32 by fjanoty           #+#    #+#              #
-#    Updated: 2017/10/04 20:51:38 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/06 20:49:18 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,23 +30,27 @@ SRC_DIR			= ./src
 LIB_FT			= ./libft
 LIB_VM			= ./vec_math
 #LIB_MLX			= ./minilibx
+LIB_QUATER		= ./quaternion
 LIB_MLX			= ./minilibx_macos
 
 all:
 	make -C $(LIB_MLX)
 	make -C $(LIB_FT)
+	make -C $(LIB_QUATER)
 	make -C $(LIB_VM)
 	make -C $(SRC_DIR)
 	
 
 clean:
-	make -C $(LIB_FT)  clean
-	make -C $(LIB_VM)  clean
-	make -C $(SRC_DIR) clean
+	make -C $(LIB_FT)  		clean
+	make -C $(LIB_QUATER)	clean
+	make -C $(LIB_VM)  		clean
+	make -C $(SRC_DIR) 		clean
 
 fclean: clean
-	make -C $(LIB_FT)  fclean
-	make -C $(LIB_VM)  fclean
-	make -C $(SRC_DIR) fclean
+	make -C $(LIB_FT)		fclean
+	make -C $(LIB_QUATER)	fclean
+	make -C $(LIB_VM)		fclean
+	make -C $(SRC_DIR)		fclean
 
 re: fclean all

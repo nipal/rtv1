@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/04 17:45:51 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/06 18:51:50 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 void	set_plan_test(t_obj *obj)
 {
 	obj->type = 0;
-	vec_set(obj->col, 0, 206, 209); // bleu cian
-	vec_set(obj->ang, 0, 0, 0);		
-	vec_set(obj->pos, 0, -2, 0);		
-	vec_set(obj->dir, 0, -1, 0.1);	// may be obj_set_invrot_dir to adapt obj->dir
-	vec_normalise(obj->dir, obj->dir);
+	obj->col = vec3_set(0, 206, 209); // bleu cian
+	obj->ang = vec3_set(0, 0, 0);		
+	obj->pos = vec3_set(0, -2, 0);		
+	obj->dir = vec3_set(0, -1, 0.1);	// may be obj_set_invrot_dir to adapt obj->dir
+	obj->dir = vec3_normalise(obj->dir);
 	plan_init(obj); 					// dans value on met le coef 'd' de l'eq du plan
 }
 
@@ -28,18 +28,18 @@ void	set_sphere_test(t_obj *obj)
 {
 	obj->type = 1;
 	obj->value = 2;
-	vec_set(obj->col, 238, 44, 44); // rouge lillte darck
-	vec_set(obj->ang, 0, 0, 0);
-	vec_set(obj->pos, 2, 3, -3);
-	vec_set(obj->dir, 0, 0, 0);
+	obj->col = vec3_set(238, 44, 44); // rouge lillte darck
+	obj->ang = vec3_set(0, 0, 0);
+	obj->pos = vec3_set(2, 3, -3);
+	obj->dir = vec3_set(0, 0, 0);
 }
 
 void	set_cylindre_test(t_obj *obj)
 {
 	obj->type = 2;
 	obj->value = 1;
-	vec_set(obj->col, 239, 28, 98); // move
-	vec_set(obj->pos, -5, 2, 0);
+	obj->col = vec3_set(239, 28, 98); // move
+	obj->pos = vec3_set(-5, 2, 0);
 	obj_set_invrot(obj, 0,  10  * DEG, 0);
 }
 
@@ -47,8 +47,8 @@ void	set_cone_test(t_obj *obj)
 {
 	obj->type = 3;
 	obj->value = 1;
-	vec_set(obj->col, 108, 139, 61); // vert dark olive
-	vec_set(obj->pos, 0, -3, -5);
+	obj->col = vec3_set(108, 139, 61); // vert dark olive
+	obj->pos = vec3_set(0, -3, -5);
 	obj_set_invrot(obj, 80 * DEG, 20 * DEG, 0);
 }
 
@@ -78,8 +78,8 @@ void	test_init_light(t_light *light, int nb_light)
 		light[i++].power = -1; // condition d'arret de la boucle
 
 	// light 0
-	vec_set(light[0].pos, 0, 0, -7);
-	vec_set(light[0].col, 1, 1, 1); // hume
+	light[0].pos = vec3_set(0, 0, -7);
+	light[0].col = vec3_set(1, 1, 1); // hume
 	light[0].power = 1;
 }
 

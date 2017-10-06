@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/29 22:02:22 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/06 17:16:02 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 			|| !(w->z_buff = (t_zbuff*)malloc(sizeof(t_zbuff) * size_x * size_y)))
 		return (-1);
 	w->name = name;
-	vec3_init(w->mouse, 0, 0, 0);
-	vec3_init(w->prev_mouse, 0, 0, 0);
+	w->mouse = vec3_set(0, 0, 0);
+	w->prev_mouse = vec3_set(0, 0, 0);
 	w->size_x = size_x;
 	w->size_y = size_y;
 	return (0);

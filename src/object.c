@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/29 21:22:45 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/06 20:44:50 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@
 **	on va mettre dans le value la valur du 'd' de l'eq cartesienne du plan
 */
 
-void	ray_adapt(t_obj *obj, float ray_src[3], float ray_dst[3])
+/*
+	Probably useless
+t_vec3	ray_adapt(t_obj *obj, t_vec3 ray_src)
 {
-	mat_mult_vec(obj->rot_inv, ray_src, ray_dst);
+	return (mat3_mult_vec3(obj->rot_inv, ray_src));
 }
+*/
 
 void	plan_init(t_obj *plan)
 {
-	plan->value = -vec_dot(plan->dir, plan->pos);	
+	plan->value = -vec3_dot(plan->dir, plan->pos);	
 }
 
 
@@ -69,11 +72,17 @@ float	solve_eq_2nd(float a, float b, float c)
 //						   |  GET_DIST 	|	
 //	###################### V 			V ############################
 
+//TODO Refacto les rotation de la lib quaterion
 void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz)
 {
 	float	rot_dir[3][3];
 	float	ang[3];
+	(void) (rx + ry + rz);
+	(void)obj;
+	(void)ang;
+	(void)rot_dir;
 
+	/*
 	obj->ang[0] = -rx;
 	obj->ang[1] = -ry;
 	obj->ang[2] = -rz;
@@ -84,131 +93,150 @@ void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz)
 	mat_set_all_rot(rot_dir, ang);
 	vec_set(obj->dir, 0, 0, 1);
 	mat_mult_vec(rot_dir, obj->dir, obj->dir);
+	*/
 }
 
 //	la new pos de l'abjet est nul mais 
-void	adapt_cam_pos(t_obj *obj, float cam_pos[3], float new_pos[3])
+//TODO Refacto les rotation de la lib quaterion
+void	adapt_cam_pos(t_obj *obj, t_vec3 cam_pos, t_vec3 new_pos)
 {
-	vec_sub(cam_pos, obj->pos, new_pos);
-	mat_mult_vec(obj->rot_inv, new_pos, new_pos);
+	new_pos = vec3_sub(cam_pos, obj->pos);
+//	mat_mult_vec(obj->rot_inv, new_pos, new_pos);
 }
 
-void	adapt_ray_dir(t_obj *obj, float ray_dir[3], float ray_result[3])
+//TODO Refacto les rotation de la lib quaterion
+void	adapt_ray_dir(t_obj *obj, t_vec3 ray_dir, t_vec3 ray_result)
 {
-	mat_mult_vec(obj->rot_inv, ray_dir, ray_result);
+	(void)obj;
+	(void)ray_dir;
+	(void)ray_result;
+//	mat_mult_vec(obj->rot_inv, ray_dir, ray_result);
 }
 
-float	get_dist_plan(t_obj *plan, float ray_pos[3], float ray_dir[3])
+float	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	float	dist;
 
-	dist = -(vec_dot(plan->dir, ray_pos) + plan->value) / (vec_dot(plan->dir, ray_dir)) ;	
+	dist = -(vec3_dot(plan->dir, ray_pos) + plan->value) / (vec3_dot(plan->dir, ray_dir)) ;	
 	return (dist);
 }
 
-float	get_dist_sphere(t_obj *sphere, float ray_pos[3], float ray_dir[3])
+float	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	float	dist;
 	float	a;
 	float	b;
 	float	c;
 
-	a = vec_dot(ray_dir, ray_dir);
-	b = 2 * (vec_dot(ray_dir, ray_pos) - vec_dot(ray_dir, sphere->pos));
-	c = vec_dot(ray_pos, ray_pos) + vec_dot(sphere->pos, sphere->pos) - 2 * vec_dot(ray_pos, sphere->pos) - sphere->value * sphere->value;
+	a = vec3_dot(ray_dir, ray_dir);
+	b = 2 * (vec3_dot(ray_dir, ray_pos) - vec3_dot(ray_dir, sphere->pos));
+	c = vec3_dot(ray_pos, ray_pos) + vec3_dot(sphere->pos, sphere->pos) - 2 * vec3_dot(ray_pos, sphere->pos) - sphere->value * sphere->value;
 	dist = solve_eq_2nd(a, b, c);
 	return (dist);
 }
 
-float	get_dist_cylinder(t_obj *cylinder, float ray_pos[3], float ray_dir[3])
+float	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	float	a;
 	float	b;
 	float	c;
-	float	ray_pos2[3];
-	float	ray_dir2[3];
+	t_vec3	ray_pos2;
+	t_vec3	ray_dir2;
 
 	// must adapte position then orientation
 	// ray_pos2 = ray_pos - obj->pos;
-	vec_sub(ray_pos, cylinder->pos, ray_pos2);
-	mat_mult_vec(cylinder->rot_inv, ray_dir, ray_dir2);
-	a = ray_dir2[0] * ray_dir2[0] + ray_dir2[1] * ray_dir2[1];
-	b = 2 * (ray_dir2[0] * ray_pos2[0] + ray_dir2[1] * ray_pos2[1]);
-	c = ray_pos2[0] * ray_pos2[0] + ray_pos2[1] * ray_pos2[1] - cylinder->value * cylinder->value;
+	ray_pos2 = vec3_sub(ray_pos, cylinder->pos);
+	ray_dir2 = mat3_mult_vec3(cylinder->rot_inv, ray_dir);
+	a = ray_dir2.x * ray_dir2.x + ray_dir2.y * ray_dir2.y;
+	b = 2 * (ray_dir2.x * ray_pos2.x + ray_dir2.y * ray_pos2.y);
+	c = ray_pos2.x * ray_pos2.x + ray_pos2.y * ray_pos2.y - cylinder->value * cylinder->value;
 	return (solve_eq_2nd(a, b, c));
 }
 
-float	get_dist_cone(t_obj *cone, float ray_pos[3], float ray_dir[3])
+float	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	float	a;
 	float	b;
 	float	c;
-	float	ray_pos2[3]; // on pourrai laisser le r2 (cone->radisu)
-	float	ray_dir2[3];
+	t_vec3	ray_pos2; // on pourrai laisser le r2 (cone->radisu)
+	t_vec3	ray_dir2;
 
 	// must adapte position then orientation
-	vec_sub(ray_pos, cone->pos, ray_pos2);
-	mat_mult_vec(cone->rot_inv, ray_dir, ray_dir2);
+	ray_pos2 = vec3_sub(ray_pos, cone->pos);
+	ray_dir2 = mat3_mult_vec3(cone->rot_inv, ray_dir);
 	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
 	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * cone->value);
 	c = RP0 * RP0 + RP1 * RP1 - RP2 * RP2 * cone->value;
 	return (solve_eq_2nd(a, b, c));
 }
 
-//						   |     SET_POS	|	
+//						   |     GET_POS	|	
 //	###################### V 				V ############################
 
 //	bug si deux fois le meme objet
-void	obj_set_pos(float ray_pos[3], float ray_dir[3], float dist, float result[3])
+// TODO need refacto return
+t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, float dist)
 {
-	// rayon normalise ? ... c'est aussi celui qui a servie
-	vec_scalar_prod(ray_dir, dist, result);
-	vec_add(result, ray_pos, result);
+	t_vec3	result;
+
+	result = vec3_scalar(ray_dir, dist);
+	result = vec3_add(result, ray_pos);
+	return (result);
 }
 
 //						   |   GET_NORMAL 	|	
 //	###################### V 				V ############################
-void	set_normal_plan(t_obj *plan, float pos_impact[3], float result[3])
+t_vec3	get_normal_plan(t_obj *plan, t_vec3 pos_impact)
 {
+	t_vec3	result;
+
 	//	c'est directement la normale du plan
 	(void)pos_impact;
-	vec_scalar_prod(plan->dir, 1, result);
-//	ft_memmove(result, plan->dir, sizeof(float) * 3);
+	result = vec3_scalar(plan->dir, 1);
+//	ft_memmove(result, plan->dir, sizeof(t_vec3) * 3);
+	return (result);
 }
 
-void	set_normal_sphere(t_obj *sphere, float pos_impact[3], float result[3])
+t_vec3	get_normal_sphere(t_obj *sphere, t_vec3 pos_impact)
 {
+	t_vec3	result;
+
 	//	du centre de la sphere auy point d'impact
-	vec_sub(pos_impact, sphere->pos, result);
-	vec_normalise(result, result);
-	vec_scalar_prod(result, -1, result);
+	result = vec3_sub(pos_impact, sphere->pos);
+	result = vec3_normalise(result);
+	result = vec3_scalar(result, -1);
+	return (result);
 }
 
-void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3])
+t_vec3	get_normal_cylinder(t_obj *cylinder, t_vec3 pos_impact)
 {
+	t_vec3	result;
 	float	coef;
-	float	u[3];
+	t_vec3	u;
 
-	vec_sub(pos_impact, cylinder->pos, u);
-	coef = vec_dot(cylinder->dir, u);
-	vec_scalar_prod(cylinder->dir, coef, result);
-	vec_add(result, cylinder->pos, result);
-	vec_sub(pos_impact, result, result);
-	vec_normalise(result, result);
-	vec_scalar_prod(result, -1, result);
+	u = vec3_sub(pos_impact, cylinder->pos);
+	coef = vec3_dot(cylinder->dir, u);
+	result = vec3_scalar(cylinder->dir, coef);
+	result = vec3_add(result, cylinder->pos);
+	result = vec3_sub(pos_impact, result);
+	result = vec3_normalise(result);
+	result = vec3_scalar(result, -1);
+	return (result);
 }
 
-void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3])
+t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact)
 {
+	t_vec3	result;
 	float	coef;
-	float	u[3];	// impacte - origin
+	t_vec3	u;	// impacte - origin
 	
-	vec_sub(pos_impact, cone->pos, u);
-	coef = -(vec_dot(u, u)) / vec_dot(cone->dir, u);
-	vec_scalar_prod(cone->dir, coef, result);
-	vec_add(result, u, result);
-	vec_normalise(result, result);
-	vec_scalar_prod(result, -1, result);
+	u = vec3_sub(pos_impact, cone->pos);
+	coef = -(vec3_dot(u, u)) / vec3_dot(cone->dir, u);
+	result = vec3_scalar(cone->dir, coef);
+	result = vec3_add(result, u);
+	result = vec3_normalise(result);
+	result = vec3_scalar(result, -1);
+	return (result);
 }
 /*
  

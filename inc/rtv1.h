@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/05 16:41:53 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/06 20:40:36 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #include <time.h>
 #include <mlx.h>
 #include <stdlib.h>
-#include <quaternion.h>
+#include "quaternion.h"
 #include "mlx_key.h"
 #include "vec_math.h"
 #include "libft.h"
@@ -41,12 +41,12 @@
 **	|
 **	v to be more readeble in get_dist_cone (object.c)
 */
-# define RD0 ray_dir2[0]
-# define RD1 ray_dir2[1]
-# define RD2 ray_dir2[2]
-# define RP0 ray_pos[0]
-# define RP1 ray_pos[1]
-# define RP2 ray_pos[2]
+# define RD0 ray_dir2.x
+# define RD1 ray_dir2.y
+# define RD2 ray_dir2.z
+# define RP0 ray_pos.x
+# define RP1 ray_pos.y
+# define RP2 ray_pos.z
 
 # define DEG  (M_PI / 180)
 
@@ -77,15 +77,15 @@ typedef	struct	s_zbuff
 {
 	int			id;			// id de l'object
 	float		dist;
-	float		nrm[3];
-	float		pos[3];
+	t_vec3		nrm;
+	t_vec3		pos;
 	//	dir lumiere		// est-ce qu'on la calcule deja une fois ??
 }				t_zbuff;
 
 typedef	struct	s_light
 {
-	float		pos[3];
-	float		col[3];					// pour l'instant osef
+	t_vec3		pos;
+	t_vec3		col;					// pour l'instant osef
 	float		power;					// poura etre une condition d'arret si negatif
 }				t_light;
 
@@ -102,19 +102,19 @@ typedef	struct	s_mlx_win
 	char		*name;
 	int			size_x;
 	int			size_y;
-	float		mouse[3];				//	position
-	float		prev_mouse[3];			// prev pposition
+	t_vec3		mouse;				//	position
+	t_vec3		prev_mouse;			// prev pposition
 	int			refresh;
 }				t_mlx_win;
 
 typedef	struct	s_obj
 {
 	int			type;
-	float		col[3];					// pour l'instant comme on connais [0, 255] juste ca changera plus tard
-	float		rot_inv[3][3];
-	float		ang[3];	// on peut reconstruire ses transformation
-	float		pos[3];
-	float		dir[3];
+	t_vec3		col;					// pour l'instant comme on connais [0, 255] juste ca changera plus tard
+	t_mat3		rot_inv;
+	t_vec3		ang;	// on peut reconstruire ses transformation
+	t_vec3		pos;
+	t_vec3		dir;
 	float		value;
 }				t_obj;
 
@@ -128,8 +128,8 @@ typedef	struct	s_item
 	int			nb_light;
 	int			nb_obj;
 	int			nb_cam;
-	float		(*obj_dist[4])(t_obj *obj, float ray_pos[3], float ray_dir[3]);
-	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
+	float		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
+	t_vec3		(*obj_nrm[4])(t_obj *obj, t_vec3 pos_impact);
 }				t_item;
 
 typedef	struct	s_env
@@ -137,8 +137,8 @@ typedef	struct	s_env
 	void		*mlx;
 
 	t_mlx_win	scene;
-	float		(*obj_dist[4])(t_obj *obj, float ray_pos[3], float ray_dir[3]);
-	void		(*obj_nrm[4])(t_obj *obj, float pos_impact[3], float result[3]);
+	float		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
+	t_vec3		(*obj_nrm[4])(t_obj *obj, t_vec3 pos_impact);
 	t_item		item;
 	long		frame;
 	long		last_frame;
@@ -156,7 +156,7 @@ void	cam_init_draw_func(t_env *e);
 void	cam_rot(t_basis *cam, int x, int y);
 void	launch_ray(t_mlx_win *w, t_item *item);
 void	reset_zbuff(t_mlx_win *w);
-void	find_collision(t_zbuff *zbuff, t_item *item, float ray_dir[3]);
+void	find_collision(t_zbuff *zbuff, t_item *item, t_vec3 ray_dir);
 void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
 
 /*
@@ -164,16 +164,16 @@ void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
 */
 
 void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz);
-void	obj_set_pos(float ray_pos[3], float ray_dir[3], float dist, float result[3]);
+t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, float dist);
 void	plan_init(t_obj *plan);
-float	get_dist_cone(t_obj *cone, float ray_pos[3], float ray_dir[3]);
-float	get_dist_cylinder(t_obj *cylinder, float ray_pos[3], float ray_dir[3]);
-float	get_dist_plan(t_obj *plan, float ray_pos[3], float ray_dir[3]);
-float	get_dist_sphere(t_obj *sphere, float ray_pos[3], float ray_dir[3]);
-void	set_normal_cone(t_obj *cone, float pos_impact[3], float result[3]);
-void	set_normal_cylinder(t_obj *cylinder, float pos_impact[3], float result[3]);
-void	set_normal_plan(t_obj *plan, float pos_impact[3], float result[3]);
-void	set_normal_sphere(t_obj *sphere, float pos_impact[3], float result[3]);
+float	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir);
+float	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir);
+float	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir);
+float	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir);
+t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact);
+t_vec3	get_normal_cylinder(t_obj *cylinder, t_vec3 pos_impact);
+t_vec3	get_normal_plan(t_obj *plan, t_vec3 pos_impact);
+t_vec3	get_normal_sphere(t_obj *sphere, t_vec3 pos_impact);
 
 /*
 **	mlx_win.c

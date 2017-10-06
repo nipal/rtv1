@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/05 16:42:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/06 20:50:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	old_item_init(t_item *item, t_mlx_win *w)
 	item->obj_dist[1] = get_dist_sphere;
 	item->obj_dist[2] = get_dist_cylinder;
 	item->obj_dist[3] = get_dist_cone;
-	item->obj_nrm[0] = set_normal_plan;
-	item->obj_nrm[1] = set_normal_sphere;
-	item->obj_nrm[2] = set_normal_cylinder;
-	item->obj_nrm[3] = set_normal_cone;
+	item->obj_nrm[0] = get_normal_plan;
+	item->obj_nrm[1] = get_normal_sphere;
+	item->obj_nrm[2] = get_normal_cylinder;
+	item->obj_nrm[3] = get_normal_cone;
 	test_init_obj(item->obj);
 	test_init_light(item->light, item->nb_light);
 	item->size_x = w->size_x;
@@ -70,8 +70,8 @@ void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
 
 	if (!(str = file_str(file_path, &file_size)))
 		rtv1_exit(get_env(NULL));
-	rtv1_parse_file(str, file_size, item);
-//	old_item_init(item, w);
+//	rtv1_parse_file(str, file_size, item);
+	old_item_init(item, w);
 }
 
 void	item_destroy(t_item *it)
