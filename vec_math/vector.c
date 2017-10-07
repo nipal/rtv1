@@ -6,13 +6,13 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/27 23:07:40 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_math.h"
 
-void			vec_copy(float src[VDIM], float dst[VDIM])
+void			vec_copy(double src[VDIM], double dst[VDIM])
 {
 	int		i;
 	
@@ -24,7 +24,7 @@ void			vec_copy(float src[VDIM], float dst[VDIM])
 	}
 }
 
-void	vec_add(float src_a[VDIM], float src_b[VDIM], float dst[VDIM])
+void	vec_add(double src_a[VDIM], double src_b[VDIM], double dst[VDIM])
 {
 	int		i;
 	
@@ -36,7 +36,7 @@ void	vec_add(float src_a[VDIM], float src_b[VDIM], float dst[VDIM])
 	}
 }
 
-void	vec_sub(float src_a[VDIM], float src_b[VDIM], float dst[VDIM])
+void	vec_sub(double src_a[VDIM], double src_b[VDIM], double dst[VDIM])
 {
 	int		i;
 	
@@ -48,9 +48,9 @@ void	vec_sub(float src_a[VDIM], float src_b[VDIM], float dst[VDIM])
 	}
 }
 
-void	vec_cross(float src_a[VDIM], float src_b[VDIM], float dst[VDIM])
+void	vec_cross(double src_a[VDIM], double src_b[VDIM], double dst[VDIM])
 {
-	float	tmp[VDIM];
+	double	tmp[VDIM];
 	int		i, id_1, id_2;
 
 	i = 0;
@@ -64,7 +64,7 @@ void	vec_cross(float src_a[VDIM], float src_b[VDIM], float dst[VDIM])
 	memmove(dst, tmp, sizeof(tmp));
 }
 
-void	vec_scalar_prod(float src[VDIM], float fact, float dst[VDIM])
+void	vec_scalar_prod(double src[VDIM], double fact, double dst[VDIM])
 {
 	int		i;
 
@@ -76,16 +76,16 @@ void	vec_scalar_prod(float src[VDIM], float fact, float dst[VDIM])
 	}
 }
 
-void	vec_set(float vec[VDIM], float a, float b, float c)
+void	vec_set(double vec[VDIM], double a, double b, double c)
 {
 	vec[0] = a;
 	vec[1] = b;
 	vec[2] = c;
 }
 
-float	vec_dot(float src_a[VDIM], float src_b[VDIM])
+double	vec_dot(double src_a[VDIM], double src_b[VDIM])
 {
-	float	res;
+	double	res;
 	int		i;
 
 	i = 0;
@@ -98,9 +98,9 @@ float	vec_dot(float src_a[VDIM], float src_b[VDIM])
 	return (res);
 }
 
-void	vec_normalise(float src[VDIM], float dst[VDIM])
+void	vec_normalise(double src[VDIM], double dst[VDIM])
 {
-	float	dist;
+	double	dist;
 	(void)dst;
 
 	if ((dist = sqrt(vec_dot(src, src))) == 0)
@@ -109,29 +109,29 @@ void	vec_normalise(float src[VDIM], float dst[VDIM])
 		vec_scalar_prod(src, 1 / dist, dst);
 }
 
-float	vec_get_norme(float vec[VDIM])
+double	vec_get_norme(double vec[VDIM])
 {
 	return (sqrt(vec_dot(vec, vec)));
 }
 
-void	vec3_init(float *vec, float v0, float v1, float v2)
+void	vec3_init(double *vec, double v0, double v1, double v2)
 {
 	vec[0] = v0;
 	vec[1] = v1;
 	vec[2] = v2;
 }
 
-void	vec3_print(float vec[3])
+void	vec3_print(double vec[3])
 {
-	float	norme;
+	double	norme;
 
 	norme = vec_get_norme(vec);
 	printf("vec:|{%f, %f, %f}| = %f\n", vec[0], vec[1], vec[2], norme);
 }
 
-void	vec3_print_str(float vec[3], char *str)
+void	vec3_print_str(double vec[3], char *str)
 {
-	float	norme;
+	double	norme;
 
 	norme = vec_get_norme(vec);
 	printf("%s :|{%f, %f, %f}| = %f\n", str, vec[0], vec[1], vec[2], norme);

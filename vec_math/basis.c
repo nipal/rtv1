@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:22 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 18:42:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	basis_reset(t_basis *b)
 	basis_init(b);
 }
 
-void	basis_set(t_basis *b, float ux[VDIM], float uy[VDIM], float uz[VDIM])
+void	basis_set(t_basis *b, double ux[VDIM], double uy[VDIM], double uz[VDIM])
 {
-	memmove(b->ux, ux, sizeof(float) * 3);
-	memmove(b->uy, uy, sizeof(float) * 3);
-	memmove(b->uz, uz, sizeof(float) * 3);
+	memmove(b->ux, ux, sizeof(double) * 3);
+	memmove(b->uy, uy, sizeof(double) * 3);
+	memmove(b->uz, uz, sizeof(double) * 3);
 }
 
 void	basis_normalise(t_basis *b)
@@ -71,10 +71,10 @@ void	basis_orthonormalise(t_basis *b)
 }
 
 // vec: World -> Basis
-void	basis_vec_w2b(t_basis *b, float src[VDIM], float dst[VDIM])
+void	basis_vec_w2b(t_basis *b, double src[VDIM], double dst[VDIM])
 {
-	float	diff[VDIM];
-	float	tmp[VDIM];
+	double	diff[VDIM];
+	double	tmp[VDIM];
 	int		i;
 
 	vec_sub(src, b->pos, diff);
@@ -88,10 +88,10 @@ void	basis_vec_w2b(t_basis *b, float src[VDIM], float dst[VDIM])
 }
 
 // vec: Basis -> World
-void	basis_vec_b2w(t_basis *b, float src[VDIM], float dst[VDIM])
+void	basis_vec_b2w(t_basis *b, double src[VDIM], double dst[VDIM])
 {
-	float	tmp[VDIM];
-	float	result[VDIM];
+	double	tmp[VDIM];
+	double	result[VDIM];
 	int		i;
 
 	memmove(result, b->pos, sizeof(result));
@@ -106,9 +106,9 @@ void	basis_vec_b2w(t_basis *b, float src[VDIM], float dst[VDIM])
 }
 
 
-void	basis_rot_x(t_basis *b, float ang)
+void	basis_rot_x(t_basis *b, double ang)
 {
-	float	rot[VDIM][VDIM];
+	double	rot[VDIM][VDIM];
 	int		i;
 
 	mat_set_one_rot(rot, 1, 2, ang); // autoure de X
@@ -120,9 +120,9 @@ void	basis_rot_x(t_basis *b, float ang)
 	}
 }
 
-void	basis_rot_y(t_basis *b, float ang)
+void	basis_rot_y(t_basis *b, double ang)
 {
-	float	rot[VDIM][VDIM];
+	double	rot[VDIM][VDIM];
 	int		i;
 
 	mat_set_one_rot(rot, 2, 0, ang); // autoure de Y
@@ -134,9 +134,9 @@ void	basis_rot_y(t_basis *b, float ang)
 	}
 }
 
-void	basis_rot_z(t_basis *b, float ang)
+void	basis_rot_z(t_basis *b, double ang)
 {
-	float	rot[VDIM][VDIM];
+	double	rot[VDIM][VDIM];
 	int		i;
 
 	mat_set_one_rot(rot, 0, 1, ang); // autoure de Z

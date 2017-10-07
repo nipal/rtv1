@@ -6,14 +6,14 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/21 14:27:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_math.h"
 
 
-void	mat_set_id(float mat[VDIM][VDIM])
+void	mat_set_id(double mat[VDIM][VDIM])
 {
 	int	i;
 	int	j;
@@ -35,7 +35,7 @@ void	mat_set_id(float mat[VDIM][VDIM])
 // y: z, x
 // z: x, y
 
-void	mat_set_one_rot(float mat[VDIM][VDIM], int id1, int id2, float ang)
+void	mat_set_one_rot(double mat[VDIM][VDIM], int id1, int id2, double ang)
 {
 	mat_set_id(mat);
 	mat[id1][id1] = cos(ang);
@@ -44,9 +44,9 @@ void	mat_set_one_rot(float mat[VDIM][VDIM], int id1, int id2, float ang)
 	mat[id2][id1] = sin(ang);
 }
 
-void	mat_set_all_rot(float mat[VDIM][VDIM], float ang[VDIM])
+void	mat_set_all_rot(double mat[VDIM][VDIM], double ang[VDIM])
 {
-	float	rot_tmp[VDIM][VDIM];
+	double	rot_tmp[VDIM][VDIM];
 	int		i;
 
 	mat_set_id(mat);
@@ -59,9 +59,9 @@ void	mat_set_all_rot(float mat[VDIM][VDIM], float ang[VDIM])
 	}
 }
 
-void	mat_mult_mat(float src_l[VDIM][VDIM], float src_r[VDIM][VDIM], float dst[VDIM][VDIM])
+void	mat_mult_mat(double src_l[VDIM][VDIM], double src_r[VDIM][VDIM], double dst[VDIM][VDIM])
 {
-	float	tmp[VDIM][VDIM];
+	double	tmp[VDIM][VDIM];
 	int		i;
 	int		j;
 	int		k;
@@ -86,9 +86,9 @@ void	mat_mult_mat(float src_l[VDIM][VDIM], float src_r[VDIM][VDIM], float dst[VD
 	memmove(dst, tmp, sizeof(tmp));
 }
 
-void	mat_mult_vec(float mat[VDIM][VDIM], float vec_src[VDIM], float vec_dst[VDIM])
+void	mat_mult_vec(double mat[VDIM][VDIM], double vec_src[VDIM], double vec_dst[VDIM])
 {
-	float	tmp[VDIM];
+	double	tmp[VDIM];
 	int	i;
 	int	j;
 
