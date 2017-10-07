@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 20:44:50 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	plan_init(t_obj *plan)
 
 
 
-float	get_min2(float a, float b)
+double	get_min2(double a, double b)
 {
 	return ((a < b) ? a : b);
 }
 
-float	get_min3(float a, float b, float c)
+double	get_min3(double a, double b, double c)
 {
-	float	min;
+	double	min;
 
 	min = (a < b) ? a : b;
 	min = (c < min) ? c : min;
@@ -47,11 +47,11 @@ float	get_min3(float a, float b, float c)
 }
 
 // il faut renvoyer le plus petit resulta positif
-float	solve_eq_2nd(float a, float b, float c)
+double	solve_eq_2nd(double a, double b, double c)
 {
-	float	delta;
-	float	r1;
-	float	r2;
+	double	delta;
+	double	r1;
+	double	r2;
 
 	delta = b * b - 4 * a * c;
 	if (delta < 0)
@@ -73,10 +73,10 @@ float	solve_eq_2nd(float a, float b, float c)
 //	###################### V 			V ############################
 
 //TODO Refacto les rotation de la lib quaterion
-void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz)
+void	obj_set_invrot(t_obj *obj, double rx, double ry, double rz)
 {
-	float	rot_dir[3][3];
-	float	ang[3];
+	double	rot_dir[3][3];
+	double	ang[3];
 	(void) (rx + ry + rz);
 	(void)obj;
 	(void)ang;
@@ -98,35 +98,31 @@ void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz)
 
 //	la new pos de l'abjet est nul mais 
 //TODO Refacto les rotation de la lib quaterion
-void	adapt_cam_pos(t_obj *obj, t_vec3 cam_pos, t_vec3 new_pos)
+t_vec3	adapt_cam_pos(t_obj *obj, t_vec3 cam_pos)
 {
-	new_pos = vec3_sub(cam_pos, obj->pos);
-//	mat_mult_vec(obj->rot_inv, new_pos, new_pos);
+	return (mat3_mult_vec3(obj->rot_inv, vec3_sub(cam_pos, obj->pos)));
 }
 
 //TODO Refacto les rotation de la lib quaterion
-void	adapt_ray_dir(t_obj *obj, t_vec3 ray_dir, t_vec3 ray_result)
+t_vec3	adapt_ray_dir(t_obj *obj, t_vec3 ray_dir)
 {
-	(void)obj;
-	(void)ray_dir;
-	(void)ray_result;
-//	mat_mult_vec(obj->rot_inv, ray_dir, ray_result);
+	return (mat3_mult_vec3(obj->rot_inv, ray_dir));
 }
 
-float	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir)
+double	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir)
 {
-	float	dist;
+	double	dist;
 
 	dist = -(vec3_dot(plan->dir, ray_pos) + plan->value) / (vec3_dot(plan->dir, ray_dir)) ;	
 	return (dist);
 }
 
-float	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
+double	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 {
-	float	dist;
-	float	a;
-	float	b;
-	float	c;
+	double	dist;
+	double	a;
+	double	b;
+	double	c;
 
 	a = vec3_dot(ray_dir, ray_dir);
 	b = 2 * (vec3_dot(ray_dir, ray_pos) - vec3_dot(ray_dir, sphere->pos));
@@ -135,11 +131,11 @@ float	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 	return (dist);
 }
 
-float	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
+double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 {
-	float	a;
-	float	b;
-	float	c;
+	double	a;
+	double	b;
+	double	c;
 	t_vec3	ray_pos2;
 	t_vec3	ray_dir2;
 
@@ -153,11 +149,11 @@ float	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 	return (solve_eq_2nd(a, b, c));
 }
 
-float	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
+double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 {
-	float	a;
-	float	b;
-	float	c;
+	double	a;
+	double	b;
+	double	c;
 	t_vec3	ray_pos2; // on pourrai laisser le r2 (cone->radisu)
 	t_vec3	ray_dir2;
 
@@ -175,7 +171,7 @@ float	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 
 //	bug si deux fois le meme objet
 // TODO need refacto return
-t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, float dist)
+t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, double dist)
 {
 	t_vec3	result;
 
@@ -211,7 +207,7 @@ t_vec3	get_normal_sphere(t_obj *sphere, t_vec3 pos_impact)
 t_vec3	get_normal_cylinder(t_obj *cylinder, t_vec3 pos_impact)
 {
 	t_vec3	result;
-	float	coef;
+	double	coef;
 	t_vec3	u;
 
 	u = vec3_sub(pos_impact, cylinder->pos);
@@ -227,7 +223,7 @@ t_vec3	get_normal_cylinder(t_obj *cylinder, t_vec3 pos_impact)
 t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact)
 {
 	t_vec3	result;
-	float	coef;
+	double	coef;
 	t_vec3	u;	// impacte - origin
 	
 	u = vec3_sub(pos_impact, cone->pos);

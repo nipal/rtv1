@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 20:20:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 14:48:43 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ long	atol_size(char *str, int *id)
 	return (0);
 }
 
-float	str_get_float(char *str, int *curs)
+double	str_get_double(char *str, int *curs)
 {
 	double 	nb;
 	long	tmp;
@@ -93,7 +93,7 @@ float	str_get_float(char *str, int *curs)
 		nb += (double)tmp / pow(10, i);
 		*curs += i;
 	}
-	return ((float)(sign * nb));
+	return ((double)(sign * nb));
 }
 
 t_vec3	str_get_vec(char *str)

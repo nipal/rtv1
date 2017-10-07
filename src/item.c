@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 20:50:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 12:15:19 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@
 **	On va peuetre aussi metre une camera dedans
 **	en gros c'est la structure qui serra initialiser avec le parsing
 */
-
-void	init_cam(t_basis *cam)
-{
-	cam_init_draw_func(get_env(NULL)); // need to init the pontiner on function
-	basis_reset(cam);
-	vec_set(cam->pos, 0, 0, -21);
-}
 
 void	TEMP_set_obj_nb(t_item *item)
 {

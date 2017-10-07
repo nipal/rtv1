@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/10/06 18:55:09 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/07 11:21:21 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ SRC		= 						\
 			cam.c				\
 			event.c				\
 			exit.c				\
-			init.c				\
 			item.c				\
 			main.c				\
 			mlx_win.c			\

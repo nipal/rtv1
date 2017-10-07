@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 16:45:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 15:39:49 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,31 @@
 
 typedef	struct	s_light
 {
-	float		pos[3];
-	float		col[3];					// pour l'instant osef
-	float		power;					// poura etre une condition d'arret si negatif
+	double		pos[3];
+	double		col[3];					// pour l'instant osef
+	double		power;					// poura etre une condition d'arret si negatif
 }				t_light;
 
 
 typedef	struct	s_obj
 {
 	int			type;
-	float		col[3];					// pour l'instant comme on connais [0, 255] juste ca changera plus tard
-	float		rot_inv[3][3];
-	float		ang[3];	// on peut reconstruire ses transformation
-	float		pos[3];
-	float		dir[3];
-	float		value;
+	double		col[3];					// pour l'instant comme on connais [0, 255] juste ca changera plus tard
+	double		rot_inv[3][3];
+	double		ang[3];	// on peut reconstruire ses transformation
+	double		pos[3];
+	double		dir[3];
+	double		value;
 }				t_obj;
 
 
 typedef	struct	s_basis
 {
-	float	pos[3];
-	float*	axes[VDIM];
-	float	ux[VDIM];
-	float	uy[VDIM];
-	float	uz[VDIM];
+	double	pos[3];
+	double*	axes[VDIM];
+	double	ux[VDIM];
+	double	uy[VDIM];
+	double	uz[VDIM];
 }				t_basis;
 
 

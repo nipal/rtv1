@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 18:51:50 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ void	test_basique(t_env *e)
 //	mlx_do_sync(e->mlx);
 }
 
-void	print_vec(float vec[3])
+void	print_vec(double vec[3])
 {
-	float	norme;
+	double	norme;
 
 	norme = vec_get_norme(vec);
 	printf("vec:|{%f, %f, %f}| = %f\n", vec[0], vec[1], vec[2], norme);
@@ -113,8 +113,8 @@ void	print_vec(float vec[3])
 void	rotation_test()
 {
 	int		i;
-	float	rot[3][3];
-	float	vec[3] = {0, 0, 1};
+	double	rot[3][3];
+	double	vec[3] = {0, 0, 1};
 //	basis	cam;
 
 //	basis_reset(&cam);
@@ -126,5 +126,4 @@ void	rotation_test()
 		print_vec(vec);
 		i++;
 	}
-
 }

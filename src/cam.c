@@ -6,36 +6,80 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 20:11:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 14:23:17 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void	cam_turn_left(t_basis *cam, float ang)
+
+// left/right: axe = uy
+void	cam_turn_left(t_cam *cam, double ang)
 {
-	basis_rot_y(cam, ang);
-//	printf("left\n");
+	cam->ux = quaternion_rot(cam->ux, vec3_set(0, 1, 0), ang);
+	cam->uy = quaternion_rot(cam->uy, vec3_set(0, 1, 0), ang);
+	cam->uz = quaternion_rot(cam->uz, vec3_set(0, 1, 0), ang);
+	cam_describe(cam);
 }
 
-void	cam_turn_right(t_basis *cam, float ang)
+void	cam_turn_right(t_cam *cam, double ang)
 {
-	basis_rot_y(cam, -ang);
-//	printf("right\n");
+	cam->ux = quaternion_rot(cam->ux, vec3_set(0, 1, 0), -ang);
+	cam->uy = quaternion_rot(cam->uy, vec3_set(0, 1, 0), -ang);
+	cam->uz = quaternion_rot(cam->uz, vec3_set(0, 1, 0), -ang);
+	cam_describe(cam);
 }
 
-void	cam_turn_down(t_basis *cam, float ang)
+void	cam_turn_down(t_cam *cam, double ang)
 {
-	basis_rot_x(cam, ang);
-//	printf("down\n");
+	cam->ux = quaternion_rot(cam->ux, cam->ux, ang);
+	cam->uy = quaternion_rot(cam->uy, cam->ux, ang);
+	cam->uz = quaternion_rot(cam->uz, cam->ux, ang);
+	cam_describe(cam);
 }
 
-void	cam_turn_up(t_basis *cam, float ang)
+void	cam_turn_up(t_cam *cam, double ang)
 {
-	basis_rot_x(cam, -ang);
-//	printf("up\n");
-
+	cam->ux = quaternion_rot(cam->ux, cam->ux, -ang);
+	cam->uy = quaternion_rot(cam->uy, cam->ux, -ang);
+	cam->uz = quaternion_rot(cam->uz, cam->ux, -ang);
+	cam_describe(cam);
 }
+
+void	cam_describe(t_cam *c)
+{
+	t_vec3	n;
+
+	n.x = vec3_norme(c->ux);
+	n.y = vec3_norme(c->uy);
+	n.z = vec3_norme(c->uz);
+//	return ;
+	printf("pos:	{%f, %f, %f}\n\
+			ux :	|{%f, %f, %f}| = %f\n\
+			uy :	|{%f, %f, %f}| = %f\n\
+			uz :	|{%f, %f, %f}| = %f\n", c->pos.x, c->pos.y, c->pos.z,
+									c->ux.x, c->ux.y, c->ux.z, n.x,
+									c->uy.x, c->uy.y, c->uy.z, n.y,
+									c->uz.x, c->uz.y, c->uz.z, n.z);
+}
+
+void	cam_reset(t_cam *cam)
+{
+	cam->pos = vec3_set(0, 0, 0);
+	cam->ux = vec3_set(1, 0, 0);
+	cam->uy = vec3_set(0, 1, 0);
+	cam->uz = vec3_set(0, 0, 1);
+}
+
+void	cam_init(t_cam *cam)
+{
+	cam_init_draw_func(get_env(NULL)); // need to init the pontiner on function
+	cam_reset(cam);
+	cam->pos = vec3_set(0, 0, -21); // youpi
+	// on pourrai aussi faire un trouc ou on ne donne que 2 valeur dir, up
+}
+
+
 
 //	MAIS du coup on refactorera plus tard
 //	ou si non on a juste une copie dans la cam
@@ -51,16 +95,6 @@ void	cam_init_draw_func(t_env *e)
 	e->obj_nrm[1] = get_normal_sphere;
 	e->obj_nrm[2] = get_normal_cylinder;
 	e->obj_nrm[3] = get_normal_cone;
-}
-
-void	cam_rot(t_basis *cam, int x, int y)
-{
-	(void)x;
-	(void)y;
-	(void)cam;
-	// on decoupe l'ecran en 3.
-	// en fonction de la hauteur
-	// on regarde
 }
 
 void	reset_zbuff(t_mlx_win *w)
@@ -93,10 +127,10 @@ void	find_collision(t_zbuff *zbuff, t_item *item, t_vec3 ray_dir)
 {
 //	/*
 	int		i;
-	float	dist;
-	float	best_dist;
+	double	dist;
+	double	best_dist;
 	int		best_id;
-	float		(**obj_dist)(t_obj *o, t_vec3 ray_pos, t_vec3 ray_dir);
+	double		(**obj_dist)(t_obj *o, t_vec3 ray_pos, t_vec3 ray_dir);
 //	(void)i;(void)dist;(void)best_dist;(void)best_id;(void)obj_dist;
 
 	dist = -1;
@@ -107,7 +141,7 @@ void	find_collision(t_zbuff *zbuff, t_item *item, t_vec3 ray_dir)
 //	printf("---------OBJ:%d\n", item->nb_obj);
 	while (i < item->nb_obj)
 	{
-		dist = obj_dist[item->obj[i].type](item->obj + i, vec3_cast(item->cam->pos), ray_dir);
+		dist = obj_dist[item->obj[i].type](item->obj + i, item->cam->pos, ray_dir);
 		if (dist > 0 && ((dist < best_dist && best_dist >= 0) || best_dist < 0))
 		{
 			best_dist = dist;
@@ -119,7 +153,7 @@ void	find_collision(t_zbuff *zbuff, t_item *item, t_vec3 ray_dir)
 	zbuff->dist = best_dist;
 	if (best_id < 0)
 		return ;
-	zbuff->pos = obj_get_pos(vec3_cast(item->cam->pos), ray_dir, best_dist);
+	zbuff->pos = obj_get_pos(item->cam->pos, ray_dir, best_dist);
 	zbuff->nrm = item->obj_nrm[item->obj[best_id].type](item->obj + best_id, zbuff->pos);
 //	vec3_print_str(zbuff->nrm, "plan_nrm");
 //	*/
@@ -139,14 +173,14 @@ void	find_normale(t_env *e)
 
 static	inline	void	init_ray(t_item *item, t_vec3 *dir, t_vec3 *dx, t_vec3 *dy)
 {
-	t_basis	*cam;
+	t_cam	*cam;
 
 	cam = item->cam;	
-	*dir = vec3_add(vec3_cast(cam->ux), vec3_cast(cam->uy));
+	*dir = vec3_add(cam->ux, cam->uy);
 	*dir = vec3_scalar(*dir, -0.5);
-	*dir = vec3_add(vec3_cast(cam->uz), *dir);
-	*dx = vec3_scalar(vec3_cast(cam->ux), item->size_x / item->size_y / item->size_x);
-	*dy = vec3_scalar(vec3_cast(cam->uy), 1.0 / item->size_y);
+	*dir = vec3_add(cam->uz, *dir);
+	*dx = vec3_scalar(cam->ux, item->size_x / item->size_y / item->size_x);
+	*dy = vec3_scalar(cam->uy, 1.0 / item->size_y);
 }
 
 // si on a pas calculer la distance (au carre), on met -1
@@ -154,7 +188,7 @@ int		is_free_path(t_item *item, t_vec3 from, t_vec3 to, int self)
 {
 	t_obj	*obj;
 	int		i;
-	float		(**obj_dist)(t_obj *o, t_vec3 ray_pos, t_vec3 ray_dir);
+	double		(**obj_dist)(t_obj *o, t_vec3 ray_pos, t_vec3 ray_dir);
 	t_vec3	dir;
 	t_val	dist;
 
@@ -181,10 +215,10 @@ int		is_free_path(t_item *item, t_vec3 from, t_vec3 to, int self)
 // is_free_path -> difuse, speculaire
 
 
-float	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
+double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
 {
 	t_vec3	ray_opp;
-	float	coef;
+	double	coef;
 	
 	// on construit le rayon reflechi
 	coef = vec3_dot(nrm, ray_dir);
@@ -197,9 +231,9 @@ float	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
 	return ((coef > -0.999) ? 0 : -coef);
 }
 
-float	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, float dist2)
+double	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, double dist2)
 {
-	float	coef;
+	double	coef;
 	(void)ray_dir;
 		
 // TODO: find solution for light power
@@ -214,12 +248,12 @@ float	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, float dist
 // TODO: put into obj_strture to each object have its properties
 typedef	struct	s_phong_coef
 {
-	float		ambient;
-	float		diffuse;
-	float		specular;
+	double		ambient;
+	double		diffuse;
+	double		specular;
 }				t_coef_fong;
 
-int		set_color(t_vec3 col, float coef, float spec)
+int		set_color(t_vec3 col, double coef, double spec)
 {
 	int		color;
 	t_vec3	c;
@@ -234,7 +268,7 @@ int		set_color(t_vec3 col, float coef, float spec)
 int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 {
 	t_vec3		light_dir;
-	float		dist2;
+	double		dist2;
 	t_coef_fong	coef = {0.05, 0.95, 1};  // may be change
 	int			id;
 
@@ -276,7 +310,7 @@ void	launch_ray(t_mlx_win *w, t_item *item)
 
 			i++;
 		}
-		dir = vec3_sub(dir, vec3_cast(item->cam->ux));
+		dir = vec3_sub(dir, item->cam->ux);
 		dir = vec3_add(dir, dy);
 		j++;
 	}

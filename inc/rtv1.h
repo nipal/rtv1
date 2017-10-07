@@ -6,15 +6,15 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 20:40:36 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 14:24:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		400
-# define SCENE_Y 		400
+# define SCENE_X		1000
+# define SCENE_Y 		1000
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -61,8 +61,8 @@ typedef	struct	s_index
 
 typedef	struct	s_val
 {
-	float	v1;
-	float	v2;
+	double	v1;
+	double	v2;
 }				t_val;
 
 typedef	struct	s_env	t_env;
@@ -76,7 +76,7 @@ typedef	union	u_pix
 typedef	struct	s_zbuff
 {
 	int			id;			// id de l'object
-	float		dist;
+	double		dist;
 	t_vec3		nrm;
 	t_vec3		pos;
 	//	dir lumiere		// est-ce qu'on la calcule deja une fois ??
@@ -86,15 +86,24 @@ typedef	struct	s_light
 {
 	t_vec3		pos;
 	t_vec3		col;					// pour l'instant osef
-	float		power;					// poura etre une condition d'arret si negatif
+	double		power;					// poura etre une condition d'arret si negatif
 }				t_light;
+
+typedef	struct	s_cam
+{
+	//	on pourrai aussi metre d'autre valeur comme la lageure de l'ecran. ou un pointeur vers elle...
+	t_vec3		pos;
+	t_vec3		ux;
+	t_vec3		uy;
+	t_vec3		uz;
+}				t_cam;
 
 typedef	struct	s_mlx_win
 {
 	t_env		*env;
 	void		*img;
 	void		*win;
-	t_basis		cam;
+	t_cam		cam;		// elle est cree ici. #CAM#
 	int			depth;
 	int			endian;
 	t_pix		*data;
@@ -115,20 +124,20 @@ typedef	struct	s_obj
 	t_vec3		ang;	// on peut reconstruire ses transformation
 	t_vec3		pos;
 	t_vec3		dir;
-	float		value;
+	double		value;
 }				t_obj;
 
 typedef	struct	s_item
 {
-	float		size_x;
-	float		size_y;
-	t_basis		*cam;
+	double		size_x;
+	double		size_y;
+	t_cam		*cam;					//		#CAM# on a une copie du pointeur ici qui est declarer dans t_mlx_win
 	t_light		*light;
 	t_obj		*obj;
 	int			nb_light;
 	int			nb_obj;
 	int			nb_cam;
-	float		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
+	double		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
 	t_vec3		(*obj_nrm[4])(t_obj *obj, t_vec3 pos_impact);
 }				t_item;
 
@@ -137,7 +146,7 @@ typedef	struct	s_env
 	void		*mlx;
 
 	t_mlx_win	scene;
-	float		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
+	double		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
 	t_vec3		(*obj_nrm[4])(t_obj *obj, t_vec3 pos_impact);
 	t_item		item;
 	long		frame;
@@ -148,12 +157,14 @@ typedef	struct	s_env
 **	cam.c
 */
 
-void	cam_turn_up(t_basis *cam, float ang);
-void	cam_turn_down(t_basis *cam, float ang);
-void	cam_turn_right(t_basis *cam, float ang);
-void	cam_turn_left(t_basis *cam, float ang);
+void	cam_describe(t_cam *c);
+void	cam_init(t_cam *cam);
 void	cam_init_draw_func(t_env *e);
-void	cam_rot(t_basis *cam, int x, int y);
+void	cam_reset(t_cam *cam);
+void	cam_turn_up(t_cam *cam, double ang);
+void	cam_turn_down(t_cam *cam, double ang);
+void	cam_turn_right(t_cam *cam, double ang);
+void	cam_turn_left(t_cam *cam, double ang);
 void	launch_ray(t_mlx_win *w, t_item *item);
 void	reset_zbuff(t_mlx_win *w);
 void	find_collision(t_zbuff *zbuff, t_item *item, t_vec3 ray_dir);
@@ -163,13 +174,13 @@ void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
 **	object.c
 */
 
-void	obj_set_invrot(t_obj *obj, float rx, float ry, float rz);
-t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, float dist);
+void	obj_set_invrot(t_obj *obj, double rx, double ry, double rz);
+t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, double dist);
 void	plan_init(t_obj *plan);
-float	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir);
-float	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir);
-float	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir);
-float	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir);
+double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir);
+double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir);
+double	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir);
+double	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir);
 t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact);
 t_vec3	get_normal_cylinder(t_obj *cylinder, t_vec3 pos_impact);
 t_vec3	get_normal_plan(t_obj *plan, t_vec3 pos_impact);
@@ -226,7 +237,6 @@ void	test_init_light(t_light *light, int nb_light);
 **	item.c
 */
 
-void	init_cam(t_basis *cam);
 void	item_destroy(t_item *it);
 void	item_init(t_item *item, t_mlx_win *w, const char *str);
 
