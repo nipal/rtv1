@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 14:25:25 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 17:10:23 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,24 @@
 **	
 */
 
+// TODO pointeur sur fonction pour les touche, il fuadra juste faire un truc pour les
+// 		touche linux (max = 2^16 -1)
 int		key_press(int key_code, t_mlx_win *w)
 {
 	(void)key_code;
 	double	ang = 5;
+	double	dist = 1;
 	
 //	printf("key_press:%d\n", key_code);	
 	(key_code == KEY_ESC) ? rtv1_exit(w->env), w->refresh = 1: (void)w;
-	(key_code == KEY_LEFT) ? cam_turn_left(&w->cam, ang * (2.0 * M_PI / 360.0)), w->refresh = 1: (void)w;
-	(key_code == KEY_RIGHT) ? cam_turn_right(&w->cam, ang * (2.0 * M_PI / 360.0)), w->refresh = 1: (void)w;
-	(key_code == KEY_DOWN) ? cam_turn_down(&w->cam, ang * (2.0 * M_PI / 360.0)), w->refresh = 1: (void)w;
-	(key_code == KEY_UP) ? cam_turn_up(&w->cam, ang * (2.0 * M_PI / 360.0)), w->refresh = 1: (void)w;
+	(key_code == KEY_A) ? cam_turn_left(&w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_D) ? cam_turn_right(&w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_S) ? cam_turn_down(&w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_W) ? cam_turn_up(&w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_H) ? cam_go_left(&w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_L) ? cam_go_right(&w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_J) ? cam_go_back(&w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_K) ? cam_go_front(&w->cam, dist) , w->refresh = 1: (void)w;
 //	mlx_put_image_to_window(w->env->mlx, w->env->scene.win, w->env->scene.img, 0, 0);
 	return (0);
 }

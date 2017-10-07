@@ -6,44 +6,64 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 14:23:17 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 15:56:53 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
 
-// left/right: axe = uy
-void	cam_turn_left(t_cam *cam, double ang)
+void	cam_go_front(t_cam *cam, double dist)
 {
-	cam->ux = quaternion_rot(cam->ux, vec3_set(0, 1, 0), ang);
-	cam->uy = quaternion_rot(cam->uy, vec3_set(0, 1, 0), ang);
-	cam->uz = quaternion_rot(cam->uz, vec3_set(0, 1, 0), ang);
-	cam_describe(cam);
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, dist));
 }
 
-void	cam_turn_right(t_cam *cam, double ang)
+void	cam_go_back(t_cam *cam, double dist)
+{
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, -dist));
+}
+
+void	cam_go_left(t_cam *cam, double dist)
+{
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, -dist));
+}
+
+void	cam_go_right(t_cam *cam, double dist)
+{
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, dist));
+}
+
+// left/right: axe = uy
+void	cam_turn_left(t_cam *cam, double ang)
 {
 	cam->ux = quaternion_rot(cam->ux, vec3_set(0, 1, 0), -ang);
 	cam->uy = quaternion_rot(cam->uy, vec3_set(0, 1, 0), -ang);
 	cam->uz = quaternion_rot(cam->uz, vec3_set(0, 1, 0), -ang);
-	cam_describe(cam);
+//	cam_describe(cam);
+}
+
+void	cam_turn_right(t_cam *cam, double ang)
+{
+	cam->ux = quaternion_rot(cam->ux, vec3_set(0, 1, 0), ang);
+	cam->uy = quaternion_rot(cam->uy, vec3_set(0, 1, 0), ang);
+	cam->uz = quaternion_rot(cam->uz, vec3_set(0, 1, 0), ang);
+//	cam_describe(cam);
 }
 
 void	cam_turn_down(t_cam *cam, double ang)
 {
-	cam->ux = quaternion_rot(cam->ux, cam->ux, ang);
-	cam->uy = quaternion_rot(cam->uy, cam->ux, ang);
-	cam->uz = quaternion_rot(cam->uz, cam->ux, ang);
-	cam_describe(cam);
+	cam->ux = quaternion_rot(cam->ux, cam->ux, -ang);
+	cam->uy = quaternion_rot(cam->uy, cam->ux, -ang);
+	cam->uz = quaternion_rot(cam->uz, cam->ux, -ang);
+//	cam_describe(cam);
 }
 
 void	cam_turn_up(t_cam *cam, double ang)
 {
-	cam->ux = quaternion_rot(cam->ux, cam->ux, -ang);
-	cam->uy = quaternion_rot(cam->uy, cam->ux, -ang);
-	cam->uz = quaternion_rot(cam->uz, cam->ux, -ang);
-	cam_describe(cam);
+	cam->ux = quaternion_rot(cam->ux, cam->ux, ang);
+	cam->uy = quaternion_rot(cam->uy, cam->ux, ang);
+	cam->uz = quaternion_rot(cam->uz, cam->ux, ang);
+//	cam_describe(cam);
 }
 
 void	cam_describe(t_cam *c)
