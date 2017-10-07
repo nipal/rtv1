@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/06 19:03:55 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 19:57:36 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_mat3	mat3_mult_mat3(t_mat3 m1, t_mat3 m2)
 	return (m);	
 }
 
-t_mat3	mat3_rot_z(float ang)
+t_mat3	mat3_rot_z(double ang)
 {
 	t_mat3	rot;
 
@@ -66,7 +66,7 @@ t_mat3	mat3_rot_z(float ang)
 	return (rot);
 }
 
-t_mat3	mat3_rot_y(float ang)
+t_mat3	mat3_rot_y(double ang)
 {
 	t_mat3	rot;
 
@@ -78,7 +78,7 @@ t_mat3	mat3_rot_y(float ang)
 	return (rot);
 }
 
-t_mat3	mat3_rot_x(float ang)
+t_mat3	mat3_rot_x(double ang)
 {
 	t_mat3	rot;
 
@@ -90,7 +90,7 @@ t_mat3	mat3_rot_x(float ang)
 	return (rot);
 }
 
-t_mat3	mat3_rot_all(float ang_x, float ang_y, float ang_z)
+t_mat3	mat3_rot_all(double ang_x, double ang_y, double ang_z)
 {
 	t_mat3	rot_sum;
 

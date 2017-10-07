@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 20:35:13 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 20:45:59 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ t_vec3		vec3_add(t_vec3 v1, t_vec3 v2)
 	return (v3);
 }
 
+t_vec3		vec3_add3(t_vec3 v1, t_vec3 v2, t_vec3 v3)
+{
+	t_vec3	v;
+
+	v.x = v1.x + v2.x + v3.x;
+	v.y = v1.y + v2.y + v3.y;
+	v.z = v1.z + v2.z + v3.z;
+	return (v);
+}
+
 t_vec3		vec3_sub(t_vec3 v1, t_vec3 v2)
 {
 	t_vec3	v3;
@@ -32,7 +42,7 @@ t_vec3		vec3_sub(t_vec3 v1, t_vec3 v2)
 	return (v3);
 }
 
-float   	vec3_dot(t_vec3 v1, t_vec3 v2)
+double   	vec3_dot(t_vec3 v1, t_vec3 v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
@@ -47,12 +57,12 @@ t_vec3		vec3_cross(t_vec3 v1, t_vec3 v2)
 	return (v3);
 }
 
-float   	vec3_norme(t_vec3 v)
+double   	vec3_norme(t_vec3 v)
 {
 	return (sqrt(vec3_dot(v, v)));
 }
 
-t_vec3		vec3_scalar(t_vec3 v, float factor)
+t_vec3		vec3_scalar(t_vec3 v, double factor)
 {
 	t_vec3	r;
 
@@ -67,7 +77,7 @@ t_vec3		vec3_normalise(t_vec3 v)
 	return (vec3_scalar(v, 1 / vec3_norme(v)));
 }
 
-t_vec3		vec3_cast(float vec[3])
+t_vec3		vec3_cast(double vec[3])
 {
 	t_vec3	v;
 
@@ -77,7 +87,7 @@ t_vec3		vec3_cast(float vec[3])
 	return (v);
 }
 
-t_vec3		vec3_set(float x, float y, float z)
+t_vec3		vec3_set(double x, double y, double z)
 {
 	t_vec3	v;
 
