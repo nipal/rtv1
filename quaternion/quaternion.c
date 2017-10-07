@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 14:03:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 14:15:16 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 14:37:39 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ t_vec3	quaternion_rot(t_vec3 pt, t_vec3 axe, double angle)
 	r.v = pt;
 	q.s = cos(angle);
 	q.v = vec3_scalar(axe, sin(angle));
-	printf("nrm_q:%f\n", quaternion_norme(q));
 	r = quaternion_product(quaternion_product(q, r), quaternion_conjugate(q));
 	return (r.v);
 }
