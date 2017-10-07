@@ -6,15 +6,15 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 14:24:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/07 15:51:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		1000
-# define SCENE_Y 		1000
+# define SCENE_X		200
+# define SCENE_Y 		200
 
 # define KEY_PRESS                2
 # define KEY_RELEASE              3
@@ -39,7 +39,7 @@
 
 /*
 **	|
-**	v to be more readeble in get_dist_cone (object.c)
+**	v   to be more readeble in get_dist_cone (object.c)
 */
 # define RD0 ray_dir2.x
 # define RD1 ray_dir2.y
@@ -161,6 +161,10 @@ void	cam_describe(t_cam *c);
 void	cam_init(t_cam *cam);
 void	cam_init_draw_func(t_env *e);
 void	cam_reset(t_cam *cam);
+void	cam_go_back(t_cam *cam, double dist);
+void	cam_go_front(t_cam *cam, double dist);
+void	cam_go_left(t_cam *cam, double dist);
+void	cam_go_right(t_cam *cam, double dist);
 void	cam_turn_up(t_cam *cam, double ang);
 void	cam_turn_down(t_cam *cam, double ang);
 void	cam_turn_right(t_cam *cam, double ang);
