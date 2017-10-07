@@ -21,11 +21,11 @@ plan
 sphere
 {
 	pos:	2, 3, -3
-	col:	255, 255, 255
+	col:	255,  255, 255
 	coef:	3
 }
 
-cylindre
+cylinder
 {
 	pos:	2, 3, -3
 	col:	239, 28, 98
