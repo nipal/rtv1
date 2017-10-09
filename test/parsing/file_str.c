@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 17:32:30 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 20:02:20 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/09 22:29:29 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,45 +25,47 @@ char	*get_file_str()
 \n\
 light\n\
 {\n\
-	pos:	0, 0, 0\n\
-	col:	255, 255, 255, 1; # couleur + puissance...\n\
+	pos		0, 0, 0\n\
+	col		255, 255, 255 # couleur + puissance...\n\
 }\n\
 \n\
 camera\n\
 {\n\
-	pos:	0, 0, 0\n\
-	up:		0, 1, 0\n\
-	dir:	0, 0, 1\n\
+	pos		0, 0, 0\n\
+	up		0, 1, 0\n\
+	dir		0, 0, 1\n\
 }\n\
 \n\
 plan\n\
 {\n\
-	pos:	0, -2, 0\n\
-	col:	0,    206, 209\n\
-	dir:	0, -1, 0.1\n\
+	pos		0, -2, 0\n\
+	col		0,    206, 209\n\
+	dir		0, -1, 0.1\n\
 }\n\
 \n\
 sphere\n\
 {\n\
-	pos:	2, 3, -3\n\
-	col:	255, 255, 255\n\
-	coef:	3\n\
+	pos		2, 3, -3\n\
+	col		255, 255, 255\n\
+	coef	3\n\
 }\n\
 \n\
 cylinder\n\
 {\n\
-	pos:	2, 3, -3\n\
-	col:	239, 28, 98\n\
-	dir:	.2, 0.1, 1.0\n\
-	coef:	1\n\
+	pos		2, 3, -3\n\
+	col		239, 28, 98\n\
+	dir		.2, 0.1, 1.0\n\
+	coef	1\n\
 }\n\
+\n\
+\n\
 \n\
 cone\n\
 {\n\
-	pos:	0, -3, 5\n\
-	col:	108, 139, 61\n\
-	dir:	0, 1, 0\n\
-	coef:	1\n\
+	pos		0, -3, 5\n\
+	col		108, 139, 61\n\
+	dir		0, 1, 0\n\
+	coef	1\n\
 }\n\
 \n\
 \n\

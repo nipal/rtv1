@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 20:42:27 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 00:02:15 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,28 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include "../../inc/quaternion.h"
 
 /////////////////////////////
 #include "file_str.c"
 /////////////////////////////
 
-# define VDIM 3
-
+/*
 typedef	struct	s_vec3
 {
 	double	x;
 	double	y;
 	double	z;
 }				t_vec3;
+
+typedef	struct	s_mat3
+{
+	t_vec3		ux;
+	t_vec3		uy;
+	t_vec3		uz;
+}				t_mat3;
+*/
+
 
 typedef	struct	s_cam
 {
@@ -43,13 +52,6 @@ typedef	struct	s_light
 	t_vec3		col;					// pour l'instant osef
 	double		power;					// poura etre une condition d'arret si negatif
 }				t_light;
-
-typedef	struct	s_mat3
-{
-	t_vec3		ux;
-	t_vec3		uy;
-	t_vec3		uz;
-}				t_mat3;
 
 typedef	struct	s_obj
 {
@@ -76,7 +78,14 @@ typedef	struct	s_item
 	double		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
 	t_vec3		(*obj_nrm[4])(t_obj *obj, t_vec3 pos_impact);
 }				t_item;
+//////////////////////////////////////////////////////////////
 
+# define KEY_WORD_SIZE 16
+
+//////////////////////////////////////////////////////////////
+
+
+//	parsing file structure
 
 int		is_space(char c)
 {
@@ -85,14 +94,14 @@ int		is_space(char c)
 	return (0);
 }
 
-/*
-char	*skip_withe_space(char *str)
+int		is_alphanum(char c)
 {
-	while (is_space(*str++))
-		;
-	return (str);
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+			|| (c >= '0' && c <= '9') || (c == '_')) 
+		return (1);
+	return (0);
 }
-*/
+
 
 int		skip_withe_space(char *str)
 {
@@ -113,6 +122,56 @@ int		skip_non_space(char *str)
 		i++;
 	return (i);
 }
+
+/*
+**	on cherche un caracter precis apres des with space
+*/
+int 	find_char(const char *str, char target)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != target && is_space(str[i]))
+		i++;
+	return (((str[i] == target) ? i + 1: -1));
+}
+
+int		find_char_force(const char *str, char target)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != target)
+		i++;
+	return (((str[i] == target) ? i + 1: -1));
+}
+
+int		is_parsing_finnished(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && is_space(str[i]))
+		i++;
+	if (!str[i])
+		return (1);
+	return (0);
+}
+
+/*
+**	On cherche la taille d'un mots
+*/
+int	get_word_size(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && is_alphanum(str[i]))
+		i++;
+	return (i);
+}
+
+// convert txt into value
 
 double	atol_size(const char *str, int *id)
 {
@@ -141,13 +200,6 @@ double	atol_size(const char *str, int *id)
 	}
 	return (0);
 }
-
-//	int	double_is_neg(double nb)
-//	{
-//		if (*(unsigned int*)(&nb) & 1 << 31)
-//			return (1);
-//		return (0);
-//	}
 
 int	double_is_neg(double nb)
 {
@@ -196,7 +248,7 @@ void	test_get_double(const char *str)
 	printf("%s -> %.20f\n", str, atof(str));
 }
 
-
+// debug
 
 typedef	unsigned long ul;
 
@@ -243,15 +295,7 @@ void	test_double()
 
 }
 
-int 	find_char(const char *str, char target)
-{
-	int	i;
 
-	i = 0;
-	while (str[i] && str[i] != target && is_space(str[i]))
-		i++;
-	return (((str[i] == target) ? i + 1: -1));
-}
 
 t_vec3	vec3_null(int i)
 {
@@ -349,77 +393,378 @@ void	obj_add_value(t_obj *obj, char *str, int *curs)
 # define LIGHT_COMP		3
 
 
+long		get_asset_offset(int id_assets)
+{
+	t_obj o;
+
+	if (id_assets == 0)
+		return ((long)(&o.value) - (long)(&o));
+	if (id_assets == 1)
+		return ((long)(&o.pos) - (long)(&o));
+	if (id_assets == 2)
+		return ((long)(&o.dir) - (long)(&o));
+	if (id_assets == 3)
+		return ((long)(&o.col) - (long)(&o));
+	if (id_assets == 4)
+		return ((long)(&o.ang) - (long)(&o));
+	return (-1);
+}
+
+long		get_cam_offset(int id_cam)
+{
+	t_cam c;
+
+	if (id_cam == 0)
+		return ((long)(&c.pos) - (long)(&c));
+	if (id_cam == 1)
+		return ((long)(&c.uz) - (long)(&c));
+	return (-1);
+}
+
+long		get_light_offset(int id_light)
+{
+	t_light l;
+
+	if (id_light == 0)
+		return ((long)(&l.pos) - (long)(&l));
+	if (id_light == 1)
+		return ((long)(&l.col) - (long)(&l));
+	return (-1);
+}
+
+
 char	*get_tab(int tab_nb, int *size)
 {
-	static	char	object_type[6][16] = {"light", "camera", "plan", "sphere", "cylinder", "cone"};
-	static	char	assets_comp[][16] = {"pos", "dir", "col", "ang"};
-	static	char	cam_comp[][16] = {"pos", "dir", "up" };
-	static	char	light_comp[][16] = {"pos", "col"};
+	static	char	object_type[][KEY_WORD_SIZE] = {"plan", "sphere", "cylinder", "cone", "light", "camera"};
+	static	char	assets_comp[][KEY_WORD_SIZE] = {"coef", "pos", "dir", "col", "ang"};
+	static	char	cam_comp[][KEY_WORD_SIZE] = {"pos", "dir"};
+	static	char	light_comp[][KEY_WORD_SIZE] = {"pos", "col"};
 
 	if (!size)
 		return (NULL);
-	if (tab_nb == OBJ_TYPE && (*size = 6))
+	if (tab_nb == OBJ_TYPE && (*size = (sizeof(object_type) / KEY_WORD_SIZE)))
 		return ((char*) object_type);
-	if (tab_nb == ASSETS_COMP && (*size = 4))
+	if (tab_nb == ASSETS_COMP && (*size = (sizeof(assets_comp) / KEY_WORD_SIZE)))
 		return ((char*) assets_comp);
-	if (tab_nb == CAM_COMP && (*size = 3))
+	if (tab_nb == CAM_COMP && (*size = (sizeof(cam_comp) / KEY_WORD_SIZE)))
 		return ((char*) cam_comp);
-	if (tab_nb == LIGHT_COMP && (*size = 3))
+	if (tab_nb == LIGHT_COMP && (*size = (sizeof(light_comp) / KEY_WORD_SIZE)))
 		return ((char*) light_comp);
 	return (NULL);
 }
 
-int		find_id_from_name(char *str, int tab_nb)
+int		find_id_from_name(char *word, int *add_curs, int tab_id)
 {
 	int		i;
-	char	*toto;
-	int		size;
+	int		offset;
+	char	*tab_key_word;
+	int		size_tab;
+	int		size_word;
 
-	toto = get_tab(tab_nb, &size);
+	if (!add_curs)
+		return (-1);
+	offset = skip_withe_space(word);
+	size_word = get_word_size(word + offset);
+	tab_key_word = get_tab(tab_id, &size_tab);
+//	printf("tab_id:%d	offset:%d	size_word:%d	======>%.10s<=====\n", tab_id, offset, size_word, (word + offset));
+	*add_curs += offset + size_word;
 	i = 0;
-	while (i < size)
+	while (i < size_tab)
 	{
-		if (!strcmp(toto + 16 * i, str))
+		if (!strncmp(tab_key_word + KEY_WORD_SIZE * i, word + offset, size_word))
 			return (i);
 		i++;
 	}
 	return (-1);
 }
-/*
- 
 
+void	parse_error(int id, char *str)
+{
+	printf("parse error	%d:	txt==>%s<==\n", id, str);
+	exit(0);
+}
+
+/*
 # define OBJ_TYPE 		0
 # define ASSETS_COMP	1
 # define CAM_COMP		2
 # define LIGHT_COMP		3
+*/
 
- * */
+typedef	struct	s_entities
+{
+	int					type;				// assets:0, light:1, cam:2
+	int					sub_type;			// if assets:[0-4] else:0
+	void				*entities;			//
+	struct	s_entities	*next;
+}				t_entities;
+
+void	entities_push(t_entities **beg, t_entities *new_elem)
+{
+	if (!beg || !new_elem)
+		return ;
+	new_elem->next = *beg;
+	*beg = new_elem;
+}
+
+t_entities	*entities_create(void *data, int id)
+{
+	t_entities	*new_elem;
+
+	if (!data || !(new_elem = (t_entities*)malloc(sizeof(t_entities))))
+		return (NULL);
+	if (id >= 0 && id <= 3)	
+	{
+		new_elem->type = 0;
+		new_elem->sub_type = id;
+	}
+	else
+	{
+		new_elem->type = (id == 4) ? 1: 2;
+		new_elem->sub_type = 0;
+	}
+	new_elem->entities = data;
+	new_elem->next = NULL;
+	return (new_elem);
+}
+
+void	entities_destroy(t_entities *elem)
+{
+	t_entities *tmp;
+
+	while (elem)
+	{
+		tmp = elem->next;
+		free(elem);
+		elem = tmp;
+	}
+}
+
+void	asset_comp_fill(char *str, int *add_curs, t_obj *obj, int id_comp)
+{
+	int		i;
+	int		err;
+
+	if (id_comp == 0)
+		(*(double*)(obj + get_asset_offset(id_comp))) = str_get_double(str, &i);
+	else
+		(*(t_vec3*)(obj + get_asset_offset(id_comp))) = str_get_vec3(str, &i, &err);
+	*add_curs += i;
+}
+
+void	asset_finish(t_obj *obj, int comp)
+{
+	if (!obj)
+		return ;
+	if (!(comp & 1))
+		obj->value = 1;
+	if (!(comp & 2))
+		obj->pos = vec3_set(0, 0, 0);
+	if (!(comp & 4))
+		obj->dir = vec3_set(0, 1, 0);
+	if (!(comp & 8))
+		obj->col = vec3_set(200, 200, 200);
+}
+
+// str point sur le premier character apres la curly braket ouvrante
+t_obj	*get_assets(char *str, int id, int *add_curs)
+{
+	t_obj	*obj;
+	int		size;
+	int		id_comp;
+	int		i;
+	int		comp;
+	
+	if (!add_curs || !(obj = (t_obj*)malloc(sizeof(t_obj))))
+		return (NULL);
+	size = find_char_force(str, '}');
+	i = 0;
+	comp = 0;
+	obj->type = id;
+	while (i < size - 1)
+	{
+		if ((id_comp = find_id_from_name(str + i, &i, ASSETS_COMP)) >= 0)
+		{
+			comp |= 1 << id_comp;
+			asset_comp_fill(str + i, &i, obj, id_comp);
+		}
+	}
+	*add_curs += size;
+	asset_finish(obj, comp);
+	return (obj);
+}
+
+
+void	light_finish(t_light *light, int comp)
+{
+	if (!light)
+		return ;
+	if (!(comp & 1))
+		light->pos = vec3_set(0, 0, 0);
+	if (!(comp & 2))
+		light->col = vec3_set(255, 255, 255);
+}
+
+void	light_comp_fill(char *str, int *add_curs, t_light *light, int id_comp)
+{
+	int		i;
+	int		err;
+
+	(*(t_vec3*)(light + get_light_offset(id_comp))) = str_get_vec3(str, &i, &err);
+	*add_curs += i;
+}
+
+
+t_light	*get_light(char *str, int id, int *add_curs)
+{
+	t_light	*light;
+	int		size;
+	int		id_comp;
+	int		i;
+	int		comp;
+	
+	if (!add_curs || !(light = (t_light*)malloc(sizeof(t_light))))
+		return (NULL);
+	size = find_char_force(str, '}');
+	i = 0;
+	comp = 0;
+	while (i < size - 1)
+	{
+		if ((id_comp = find_id_from_name(str + i, &i, LIGHT_COMP)) >= 0)
+		{
+			comp |= 1 << id_comp;
+			light_comp_fill(str + i, &i, light, id_comp);
+		}
+//		printf("			i:%d	size:%d\n", i, size);
+	}
+	*add_curs += size;
+	light_finish(light, comp);
+	return (light);
+}
+
+
+void	cam_finish(t_cam *cam, int comp)
+{
+	if (!cam)
+		return ;
+	if (!(comp & 1))
+		cam->pos = vec3_set(0, 0, -15);
+	if (!(comp & 2))
+		cam->uz = vec3_set(0, 0, 1);
+	if (!(comp & 4))
+		cam->uy = vec3_set(0, 1, 0);
+}
+
+void	cam_comp_fill(char *str, int *add_curs, t_cam *cam, int id_comp)
+{
+	int		i;
+	int		err;
+
+	(*(t_vec3*)(cam + get_cam_offset(id_comp))) = str_get_vec3(str, &i, &err);
+	*add_curs += i;
+}
+
+
+t_cam	*get_cam(char *str, int id, int *add_curs)
+{
+	t_cam	*cam;
+	int		size;
+	int		id_comp;
+	int		i;
+	int		comp;
+	
+	if (!add_curs || !(cam = (t_cam*)malloc(sizeof(t_cam))))
+		return (NULL);
+	size = find_char_force(str, '}');
+	i = 0;
+	comp = 0;
+	while (i < size - 1)
+	{
+		if ((id_comp = find_id_from_name(str + i, &i, CAM_COMP)) >= 0)
+		{
+			comp |= 1 << id_comp;
+			cam_comp_fill(str + i, &i, cam, id_comp);
+		}
+	}
+	*add_curs += size;
+	cam_finish(cam, comp);
+	return (cam);
+}
+
+t_entities	*get_entities(char *file_str)
+{
+	int	i;
+	int	id_obj;
+	t_entities	*beg;
+	t_entities	*node;
+
+	beg = NULL;
+	remove_coment(file_str);
+	i = 0;
+	while (!is_parsing_finnished(file_str + i))
+	{
+		if ((id_obj = find_id_from_name(file_str + i, &i, OBJ_TYPE)) < 0)
+			parse_error(-1, file_str + i);
+		if ((i += find_char(file_str + i, '{')) < 0) 
+			parse_error(-2, file_str + i);
+		if (id_obj <= 3)
+			node = entities_create(get_assets(file_str + i, id_obj, &i), id_obj);
+		else if (id_obj == 4)
+			node = entities_create(get_light(file_str + i, id_obj, &i), id_obj);
+		else if (id_obj == 5)
+			node = entities_create(get_cam(file_str + i, id_obj, &i), id_obj);
+		entities_push(&beg, node);
+	}
+	return(beg);
+}
+
+int		item_obj_alloc(t_entities *beg, t_item *item)
+{
+	t_entities *node;
+
+	if (!beg || !item)
+		return (0);
+	item->nb_light = 0;
+	item->nb_obj = 0;
+	item->nb_cam = 0;
+	node = beg;
+	while (node)
+	{
+		if (node->type == 0)
+			item->nb_obj++;
+		else if (node->type == 1)
+			item->nb_light++;
+		else if (node->type == 2)
+			item->nb_cam++;
+		node = node->next;
+	}
+	if (!(item->obj = (t_obj*)malloc(sizeof(t_obj) * item->nb_obj))
+		|| !(item->light = (t_light*)malloc(sizeof(t_light) * item->nb_light))
+		|| !(item->cam = (t_cam*)malloc(sizeof(t_cam) * item->nb_cam)))
+		return (0);
+	return (1);
+}
+
+int		item_fill(t_entities *beg, t_item *item)
+{
+	t_entities *node;
+
+	if (!(item_obj_alloc(beg, item)))
+		return (0);
+
+	return (1);
+}
 
 int	main()
 {
 //	test_double();
 //	test_vec3();
-
-
 	char	*file_str = get_file_str();
+	t_entities	*beg;
+	t_item	item;
 
-	remove_coment(file_str);
-//	printf("%s\n", file_str);
-
-	int	i;
-	int	j;
-	int	id_;
-
-	char truc[] = "plan";
-	printf("%s: %d\n", truc, find_id_from_name(truc, 0));
-	return (0);
-	i = 0;
-	while (file_str[i])
-	{
-		i += skip_withe_space(file_str + i);
-		j = skip_non_space(file_str + i);
-		i += j;
-	}
+	beg = get_entities(file_str);
+	entities_destroy(beg);
 	free (file_str);
 	return (0);
 }
