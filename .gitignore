@@ -5,6 +5,7 @@
 *.out
 **/**.swp
 *.vimsession
+*dYSM
 idee
 rtv1
 push_vogsphere.sh
