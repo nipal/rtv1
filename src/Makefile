@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/10/07 11:21:21 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/10 23:30:51 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC		= 						\
 			main.c				\
 			mlx_win.c			\
 			parseur.c			\
+			parse_rtv1.c		\
 			get_file.c			\
 			test.c				\
 			test_parsing.c		\

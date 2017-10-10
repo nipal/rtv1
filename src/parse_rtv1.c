@@ -6,19 +6,21 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/10 23:29:46 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 23:41:41 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include "../../inc/quaternion.h"
+#include "rtv1.h"
+
+//#include <unistd.h>
+//#include <string.h>
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <math.h>
+//#include "../../inc/quaternion.h"
 
 /////////////////////////////
-#include "file_str.c"
+//#include "file_str.c"
 /////////////////////////////
 
 /*
@@ -35,8 +37,6 @@ typedef	struct	s_mat3
 	t_vec3		uy;
 	t_vec3		uz;
 }				t_mat3;
-*/
-
 
 typedef	struct	s_cam
 {
@@ -95,12 +95,13 @@ typedef	struct	s_item
 # define CYLINDER	2
 # define CONE		3
 
+*/
 //////////////////////////////////////////////////////////////
 
 
 //	parsing file structure
 
-int		is_space(char c)
+static	int		is_space(char c)
 {
 	if (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ')
 		return (1);
@@ -186,7 +187,7 @@ int	get_word_size(char *str)
 
 // convert txt into value
 
-double	atol_size(const char *str, int *id)
+static	double	atol_size(const char *str, int *id)
 {
 	int		i;
 	int		j;
@@ -221,7 +222,7 @@ int	double_is_neg(double nb)
 	return (0);
 }
 
-double	str_get_double(const char *str, int *curs)
+static	double	str_get_double(const char *str, int *curs)
 {
 	double 	nb;
 	double	coef;
@@ -244,7 +245,8 @@ double	str_get_double(const char *str, int *curs)
 	return (nb);
 }
 
-t_vec3	str_get_vec(char *str)
+/*
+static	t_vec3	str_get_vec(char *str)
 {
 	(void)str;
 	t_vec3	v;
@@ -252,6 +254,7 @@ t_vec3	str_get_vec(char *str)
 	v.x = 0;
 	return (v);
 }
+*/
 
 void	test_get_double(const char *str)
 {
@@ -267,7 +270,6 @@ typedef	unsigned long ul;
 
 void	print_bit(ul toto, int val)
 {
-	int	i;
 	char c;
 
 	c = (toto & 1) ? '1': '0';
@@ -397,7 +399,9 @@ void	remove_coment(char *str)
 
 void	obj_add_value(t_obj *obj, char *str, int *curs)
 {
-
+	(void)obj;
+	(void)str;
+	(void)curs;
 }
 
 
@@ -625,6 +629,7 @@ void	light_comp_fill(char *str, int *add_curs, t_light *light, int id_comp)
 
 t_light	*get_light(char *str, int id, int *add_curs)
 {
+	(void)id;
 	t_light	*light;
 	int		size;
 	int		id_comp;
@@ -675,6 +680,7 @@ void	cam_comp_fill(char *str, int *add_curs, t_cam *cam, int id_comp)
 
 t_cam	*get_cam(char *str, int id, int *add_curs)
 {
+	(void)id;
 	t_cam	*cam;
 	int		size;
 	int		id_comp;
@@ -760,6 +766,7 @@ void		item_finish_plan(t_obj *plan)
 
 void		item_finish_cylinder(t_obj *cylinder)
 {
+	(void)cylinder;
 }
 
 //	initialisaiton particulier a un element
@@ -775,7 +782,7 @@ void		obj_manage_rot(t_obj *obj)
 	t_vec3	ang;
 
 	ang = vec3_cartesien_spherique(obj->dir);
-//	obj_set_mat_invrot(obj, ang.x, ang.y, 0);
+	obj_set_mat_invrot(obj, ang.x, ang.y, 0);
 }
 
 void		item_fill_assets(t_entities *node, t_item *item)
@@ -849,24 +856,25 @@ void	item_fill(t_entities *beg, t_item *item)
 	item_fill_assets(beg, item);
 }
 
-int	main()
-{
-//	test_double();
-//	test_vec3();
-	char	*file_str = get_file_str();
-	t_entities	*beg;
-	t_item	item;
-
-	if (!(beg = get_entities(file_str)))
-		return (-1);
-	if (!(item_obj_alloc(beg, &item)))
-		return (-2);
-	item_fill(beg, &item);
-	entities_destroy(beg);
-	free (file_str);
-	return (0);
-
-}
+//
+//int	main()
+//{
+////	test_double();
+////	test_vec3();
+//	char	*file_str = get_file_str();
+//	t_entities	*beg;
+//	t_item	item;
+//
+//	if (!(beg = get_entities(file_str)))
+//		return (-1);
+//	if (!(item_obj_alloc(beg, &item)))
+//		return (-2);
+//	item_fill(beg, &item);
+//	entities_destroy(beg);
+//	free (file_str);
+//	return (0);
+//
+//}
 
 /*
 **	Tan qu'on est pas a la fin du fichier

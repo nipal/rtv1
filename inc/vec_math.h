@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:04:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 23:35:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void			vec_set(double vec[VDIM], double a, double b, double c);				// mouahahaha
 void			vec_sub(double src_a[VDIM], double src_b[VDIM], double dst[VDIM]);
 
 void			vec3_init(double *vec, double v0, double v1, double v2);		// must change name
-void			vec3_print(double vec[3]);									// must change name
-void			vec3_print_str(double vec[3], char *str);					// must change name
+//void			vec3_print(double vec[3]);									// must change name
+//void			vec3_print_str(double vec[3], char *str);					// must change name
 
 void			mat_set_id(double mat[VDIM][VDIM]);
 void			mat_set_one_rot(double mat[VDIM][VDIM], int id1, int id2, double ang);

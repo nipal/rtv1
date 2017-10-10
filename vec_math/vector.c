@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 03:13:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 23:39:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	vec3_init(double *vec, double v0, double v1, double v2)
 	vec[2] = v2;
 }
 
+/*
 void	vec3_print(double vec[3])
 {
 	double	norme;
@@ -137,3 +138,4 @@ void	vec3_print_str(double vec[3], char *str)
 	printf("%s :|{%f, %f, %f}| = %f\n", str, vec[0], vec[1], vec[2], norme);
 
 }
+*/

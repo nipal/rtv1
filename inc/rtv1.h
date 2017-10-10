@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 15:51:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 23:32:11 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,27 @@
 #include "mlx_key.h"
 #include "vec_math.h"
 #include "libft.h"
+
+/*
+**	use in parse_rtv1.c
+*/
+
+# define KEY_WORD_SIZE 16
+
+# define OBJ_TYPE 		0
+# define ASSETS_COMP	1
+# define CAM_COMP		2
+# define LIGHT_COMP		3
+
+# define TYPE_ASSET	0
+# define TYPE_LIGHT	1
+# define TYPE_CAM	2
+
+# define PLAN		0
+# define SPHERE		1
+# define CYLINDER	2
+# define CONE		3
+
 
 /*
 **	|
