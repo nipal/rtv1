@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/10 00:02:15 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 23:21:00 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,19 @@ typedef	struct	s_item
 //////////////////////////////////////////////////////////////
 
 # define KEY_WORD_SIZE 16
+# define OBJ_TYPE 		0
+# define ASSETS_COMP	1
+# define CAM_COMP		2
+# define LIGHT_COMP		3
+
+# define TYPE_ASSET	0
+# define TYPE_LIGHT	1
+# define TYPE_CAM	2
+
+# define PLAN		0
+# define SPHERE		1
+# define CYLINDER	2
+# define CONE		3
 
 //////////////////////////////////////////////////////////////
 
@@ -386,11 +399,6 @@ void	obj_add_value(t_obj *obj, char *str, int *curs)
 {
 
 }
-
-# define OBJ_TYPE 		0
-# define ASSETS_COMP	1
-# define CAM_COMP		2
-# define LIGHT_COMP		3
 
 
 long		get_asset_offset(int id_assets)
@@ -718,16 +726,13 @@ t_entities	*get_entities(char *file_str)
 	return(beg);
 }
 
-int		item_obj_alloc(t_entities *beg, t_item *item)
+int		item_obj_alloc(t_entities *node, t_item *item)
 {
-	t_entities *node;
-
-	if (!beg || !item)
+	if (!node || !item)
 		return (0);
 	item->nb_light = 0;
 	item->nb_obj = 0;
 	item->nb_cam = 0;
-	node = beg;
 	while (node)
 	{
 		if (node->type == 0)
@@ -745,14 +750,103 @@ int		item_obj_alloc(t_entities *beg, t_item *item)
 	return (1);
 }
 
-int		item_fill(t_entities *beg, t_item *item)
+
+void		item_finish_plan(t_obj *plan)
 {
-	t_entities *node;
+	if (vec3_norme((plan->dir = vec3_normalise(plan->dir))) != 1)
+		plan->dir = vec3_set(0, 1, 0);
+	plan->value = -vec3_dot(plan->dir, plan->pos);
+}
 
-	if (!(item_obj_alloc(beg, item)))
-		return (0);
+void		item_finish_cylinder(t_obj *cylinder)
+{
+}
 
-	return (1);
+//	initialisaiton particulier a un element
+// PLAN: 		il faut que le 4ieme terme de l'equation soit calculer
+// SPHERE:		rien
+// CYLINDRE:	rien
+// CONE:		rien
+// 	il faut juste que toute les direction normaliser
+
+// TODO put in object.c
+void		obj_manage_rot(t_obj *obj)
+{
+	t_vec3	ang;
+
+	ang = vec3_cartesien_spherique(obj->dir);
+//	obj_set_mat_invrot(obj, ang.x, ang.y, 0);
+}
+
+void		item_fill_assets(t_entities *node, t_item *item)
+{
+	int		i;
+	t_obj	obj;
+
+	i = 0;
+	while (node)
+	{
+		if (node->type == TYPE_ASSET)
+		{
+			obj = *((t_obj*)(node->entities));
+			if (vec3_norme((obj.dir = vec3_normalise(obj.dir))) != 1)
+				obj.dir = vec3_set(0, 1, 0);
+			if (node->sub_type == PLAN)
+				obj.value = -vec3_dot(obj.dir, obj.pos);
+			if (node->sub_type == CYLINDER || node->sub_type == CONE)
+				obj_manage_rot(&obj);
+			item->obj[i++] = obj;
+		}
+		node = node->next;
+	}
+}
+
+void		item_fill_cam(t_entities *node, t_item *item)
+{
+	int		i;
+	t_cam	cam;
+
+	i = 0;
+	while (node)
+	{
+		if (node->type == TYPE_CAM)
+		{
+			cam = *((t_cam*)(node->entities));
+			if (vec3_norme((cam.uz = vec3_normalise(cam.uz))) != 1)
+				cam.uz = vec3_set(0, 0, 1);
+			if (vec3_cross(cam.uz, vec3_set(0, 1, 0)) == 0) // si uz est paralle a (0, 1, 0)
+				cam.uy = vec3_set(0, 0, -1);
+			else if (cam.uz.y == 0)	// un cas particulier de uy
+				cam.uy = vec3_set(0, 1, 0);
+			else
+				cam.uy = vec3_normalise(vec3_add(vec3_set(0, -vec3_dot(cam.uz, cam.uz) / cam.uz.y, 0), cam.uz);
+			cam.ux = vec3_normalise(vec3_cross(cam.uy, cam.uz));
+			item->cam[i++] = cam;
+		}
+		node = node->next;
+	}
+}
+
+void		item_fill_light(t_entities *node, t_item *item)
+{
+	int	i;
+
+	i = 0;
+	while (node)
+	{
+		if (node->type == TYPE_LIGHT)
+			item->light[i++] = *((t_light*)(node->entities));
+		node = node->next;
+	}
+}
+
+
+
+void	item_fill(t_entities *beg, t_item *item)
+{
+	item_fill_light(beg, item);
+	item_fill_cam(beg, item);
+	item_fill_assets(beg, item);
 }
 
 int	main()
@@ -763,10 +857,15 @@ int	main()
 	t_entities	*beg;
 	t_item	item;
 
-	beg = get_entities(file_str);
+	if (!(beg = get_entities(file_str)))
+		return (-1);
+	if (!(item_obj_alloc(beg, &item)))
+		return (-2);
+	item_fill(beg, &item);
 	entities_destroy(beg);
 	free (file_str);
 	return (0);
+
 }
 
 /*
