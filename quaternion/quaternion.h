@@ -6,7 +6,7 @@
 /*   q2y: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 19:45:00 q2y fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 22:11:22 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define QUATERNION_H
 
 #include <math.h>
+#include <stdio.h>		// to print vec value
 
 typedef	struct	s_vec3
 {
@@ -54,6 +55,10 @@ double   	vec3_dot(t_vec3 v1, t_vec3 v2);
 double   	vec3_norme(t_vec3 v);
 t_vec3		vec3_normalise(t_vec3 v);
 t_vec3		vec3_scalar(t_vec3 v, double factor);
+t_vec3		vec3_cartesien_spherique(t_vec3 in);
+t_vec3		vec3_spherique_cartesien(t_vec3 in);
+void		vec3_print(t_vec3 vec);
+void		vec3_print_str(t_vec3 vec, char *str);
 
 t_vec3		vec3_cast(double vec[3]);
 t_vec3		vec3_set(double x, double y, double z);

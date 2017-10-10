@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 20:35:13 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 22:11:40 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,43 @@ t_vec3		vec3_set(double x, double y, double z)
 	v.y = y;
 	v.z = z;
 	return (v);
+}
+
+t_vec3	vec3_cartesien_spherique(t_vec3 in)
+{
+	t_vec3	out;
+	t_vec3	u;
+
+	out.z = vec3_norme(in);
+	in = vec3_normalise(in);
+	u = vec3_normalise(vec3_set(in.x, 0, in.z));
+	out.x = acos(vec3_dot(in, u));
+	out.y = asin(u.x);
+	return (out);
+}
+
+t_vec3	vec3_spherique_cartesien(t_vec3 in)
+{
+	t_vec3	out;
+	t_vec3	ux;
+	t_vec3	uy;
+
+	uy = vec3_set(0, 1, 0);
+	ux = vec3_set(1, 0, 0);
+	out = vec3_set(0, 0, 1);
+	out = quaternion_rot(out, uy, in.y);
+	ux = quaternion_rot(ux, uy, in.y);
+	out = quaternion_rot(out, ux, in.x);
+	out = vec3_scalar(out, in.z);
+	return (out);
+}
+
+void	vec3_print(t_vec3 vec)
+{
+	printf("x:%f	y:%f	z:%f\n", vec.x, vec.y, vec.z);
+}
+
+void	vec3_print_str(t_vec3 vec, char *str)
+{
+	printf("%sx:%f	y:%f	z:%f\n", str, vec.x, vec.y, vec.z);
 }

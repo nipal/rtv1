@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 14:03:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 14:37:39 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/10 21:40:53 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ t_vec3	quaternion_rot(t_vec3 pt, t_vec3 axe, double angle)
 	t_quater	r;		// le pt qui devindra la rotation
 	t_quater	q;		// le truc qui applique la rotation
 
+	angle *= 0.5;
 	r.s = 0;
 	r.v = pt;
 	q.s = cos(angle);
