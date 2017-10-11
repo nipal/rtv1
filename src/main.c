@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:48:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 12:29:02 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/11 12:44:50 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	init_rtv1(t_env *e, const char *file_name)
 	cam_init(&e->scene.cam);
 	item_init(&e->item, &e->scene, file_name);
 	init_win_event(&e->scene);
-
 
 	mlx_start(e);
 }

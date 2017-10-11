@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/11 10:17:53 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,24 +75,19 @@ double	solve_eq_2nd(double a, double b, double c)
 //TODO Refacto les rotation de la lib quaterion
 void	obj_set_invrot(t_obj *obj, double rx, double ry, double rz)
 {
-	double	rot_dir[3][3];
-	double	ang[3];
-	(void) (rx + ry + rz);
-	(void)obj;
-	(void)ang;
-	(void)rot_dir;
-
+	obj->rot_inv = mat3_rot_all(rx, ry, 0);
+	(void)rz;
 	/*
 	obj->ang[0] = -rx;
 	obj->ang[1] = -ry;
 	obj->ang[2] = -rz;
 	mat_set_all_rot(obj->rot_inv, obj->ang);
 	ang[0] = rx;
-	ang[1] = ry;
+	ang[1] = ry;	
 	ang[2] = rz;
-	mat_set_all_rot(rot_dir, ang);
-	vec_set(obj->dir, 0, 0, 1);
-	mat_mult_vec(rot_dir, obj->dir, obj->dir);
+	mat_set_all_rot(rot_dir, ang);					// on initialise la matrice pour faire tourner la direction
+	vec_set(obj->dir, 0, 0, 1);						// on initialise un vecteur pour le faire tourner
+	mat_mult_vec(rot_dir, obj->dir, obj->dir);		// on defini la direction
 	*/
 }
 

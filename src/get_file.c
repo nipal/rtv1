@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 20:20:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/05 16:34:53 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/11 10:47:45 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char	*get_entry(int fd, int *size)
 	return (str);
 }
 
-char	*file_str(const char *file_path, int *size)
+char	*file_get_str(const char *file_path, int *size)
 {
 	char 	*str;
 	int		fd;
