@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/10 23:32:11 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/11 12:40:28 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,15 @@ typedef	struct	s_env
 	long		last_frame;
 }				t_env;
 
+typedef	struct	s_entities
+{
+	int					type;				// assets:0, light:1, cam:2
+	int					sub_type;			// if assets:[0-4] else:0
+	void				*entities;			//
+	struct	s_entities	*next;
+}				t_entities;
+
+
 /*
 **	cam.c
 */
@@ -269,13 +278,18 @@ void	item_init(t_item *item, t_mlx_win *w, const char *str);
 **	get_file.c
 */
 
-char	*file_str(const char *file_path, int *size);
+char	*file_get_str(const char *file_path, int *size);
 
 /*
-**	parseur.c
+**	parse_rtv1.c
 */
 
+int		item_obj_alloc(t_entities *node, t_item *item);
+void		entities_destroy(t_entities *elem);
+t_entities	*get_entities(char *file_str);
+void		item_fill(t_entities *beg, t_item *item);
 
-void	rtv1_parse_file(char *file_content, int file_size, t_item *item);
+//void	rtv1_parse_file(char *file_content, int file_size, t_item *item);
+
 
 #endif
