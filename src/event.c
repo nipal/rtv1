@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 17:10:23 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/12 16:24:42 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,17 @@ int		key_press(int key_code, t_mlx_win *w)
 	
 //	printf("key_press:%d\n", key_code);	
 	(key_code == KEY_ESC) ? rtv1_exit(w->env), w->refresh = 1: (void)w;
-	(key_code == KEY_A) ? cam_turn_left(&w->cam, ang * DEG), w->refresh = 1: (void)w;
-	(key_code == KEY_D) ? cam_turn_right(&w->cam, ang * DEG), w->refresh = 1: (void)w;
-	(key_code == KEY_S) ? cam_turn_down(&w->cam, ang * DEG), w->refresh = 1: (void)w;
-	(key_code == KEY_W) ? cam_turn_up(&w->cam, ang * DEG), w->refresh = 1: (void)w;
-	(key_code == KEY_H) ? cam_go_left(&w->cam, dist) , w->refresh = 1: (void)w;
-	(key_code == KEY_L) ? cam_go_right(&w->cam, dist) , w->refresh = 1: (void)w;
-	(key_code == KEY_J) ? cam_go_back(&w->cam, dist) , w->refresh = 1: (void)w;
-	(key_code == KEY_K) ? cam_go_front(&w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_A) ? cam_turn_left(w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_D) ? cam_turn_right(w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_S) ? cam_turn_down(w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_W) ? cam_turn_up(w->cam, ang * DEG), w->refresh = 1: (void)w;
+	(key_code == KEY_H) ? cam_go_left(w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_L) ? cam_go_right(w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_J) ? cam_go_back(w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_K) ? cam_go_front(w->cam, dist) , w->refresh = 1: (void)w;
+	(key_code == KEY_P) ? cam_describe2(w->cam) : (void)w;
+	(key_code == KEY_O) ? obj_describe(w->env->item.obj) : (void)w;
+	(key_code == KEY_I) ? light_describe(w->env->item.light) : (void)w;
 //	mlx_put_image_to_window(w->env->mlx, w->env->scene.win, w->env->scene.img, 0, 0);
 	return (0);
 }
@@ -57,15 +60,15 @@ int		mousse_press(int button, int x, int y, t_mlx_win *w)
 
 int		mousse_release(int button, int x, int y, t_mlx_win *w)
 {
-	(void)w;
+	(void)w;(void)x;(void)y;
 	printf("mousse_release:%d	{%d, %d}\n", button, x, y);
 	return (0);
 }
 
 int		mousse_motion(int x, int y, t_mlx_win *w)
 {
-	(void)w;
-	printf("mouse_motion:	{%d, %d}\n", x, y);
+	(void)w;(void)x;(void)y;
+//	printf("mouse_motion:	{%d, %d}\n", x, y);
 	return (0);
 }
 
@@ -143,7 +146,7 @@ int		main_bcl(t_env *e)
 {
 	(void)e;
 
-	if (e->scene.refresh)	
+	if (1 || e->scene.refresh)	
 	{
 		e->scene.refresh = 0;
 		launch_ray(&e->scene, &e->item);
