@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/11 10:17:53 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/12 20:01:30 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ double	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 	return (dist);
 }
 
+//	si on test sans les corection, on doit avoir l'objet en 0 et de dir uz
 double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	double	a;
@@ -133,11 +134,13 @@ double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 	double	c;
 	t_vec3	ray_pos2;
 	t_vec3	ray_dir2;
+(void) ray_pos; (void) ray_dir;
+(void) ray_pos2; (void) ray_dir2;
 
 	// must adapte position then orientation
 	// ray_pos2 = ray_pos - obj->pos;
-	ray_pos2 = vec3_sub(ray_pos, cylinder->pos);
-	ray_dir2 = mat3_mult_vec3(cylinder->rot_inv, ray_dir);
+//	ray_pos2 = vec3_sub(ray_pos, cylinder->pos);
+//	ray_dir2 = mat3_mult_vec3(cylinder->rot_inv, ray_dir);
 	a = ray_dir2.x * ray_dir2.x + ray_dir2.y * ray_dir2.y;
 	b = 2 * (ray_dir2.x * ray_pos2.x + ray_dir2.y * ray_pos2.y);
 	c = ray_pos2.x * ray_pos2.x + ray_pos2.y * ray_pos2.y - cylinder->value * cylinder->value;
@@ -151,6 +154,8 @@ double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 	double	c;
 	t_vec3	ray_pos2; // on pourrai laisser le r2 (cone->radisu)
 	t_vec3	ray_dir2;
+(void) ray_pos; (void) ray_dir;
+(void) ray_pos2; (void) ray_dir2;
 
 	// must adapte position then orientation
 	ray_pos2 = vec3_sub(ray_pos, cone->pos);
@@ -168,66 +173,66 @@ double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 // TODO need refacto return
 t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, double dist)
 {
-	t_vec3	result;
+	t_vec3	out;
 
-	result = vec3_scalar(ray_dir, dist);
-	result = vec3_add(result, ray_pos);
-	return (result);
+	out = vec3_scalar(ray_dir, dist);
+	out = vec3_add(out, ray_pos);
+	return (out);
 }
 
 //						   |   GET_NORMAL 	|	
 //	###################### V 				V ############################
 t_vec3	get_normal_plan(t_obj *plan, t_vec3 pos_impact)
 {
-	t_vec3	result;
+	t_vec3	out;
 
 	//	c'est directement la normale du plan
 	(void)pos_impact;
-	result = vec3_scalar(plan->dir, 1);
-//	ft_memmove(result, plan->dir, sizeof(t_vec3) * 3);
-	return (result);
+	out = vec3_scalar(plan->dir, 1);
+//	ft_memmove(out, plan->dir, sizeof(t_vec3) * 3);
+	return (out);
 }
 
 t_vec3	get_normal_sphere(t_obj *sphere, t_vec3 pos_impact)
 {
-	t_vec3	result;
+	t_vec3	out;
 
 	//	du centre de la sphere auy point d'impact
-	result = vec3_sub(pos_impact, sphere->pos);
-	result = vec3_normalise(result);
-	result = vec3_scalar(result, -1);
-	return (result);
+	out = vec3_sub(pos_impact, sphere->pos);
+	out = vec3_normalise(out);
+	out = vec3_scalar(out, -1);
+	return (out);
 }
 
 t_vec3	get_normal_cylinder(t_obj *cylinder, t_vec3 pos_impact)
 {
-	t_vec3	result;
+	t_vec3	out;
 	double	coef;
 	t_vec3	u;
 
 	u = vec3_sub(pos_impact, cylinder->pos);
-	coef = vec3_dot(cylinder->dir, u);
-	result = vec3_scalar(cylinder->dir, coef);
-	result = vec3_add(result, cylinder->pos);
-	result = vec3_sub(pos_impact, result);
-	result = vec3_normalise(result);
-	result = vec3_scalar(result, -1);
-	return (result);
+	coef = -vec3_dot(cylinder->dir, u) / vec3_dot(cylinder->dir, cylinder->dir); // normalement la direction est normaliser donc pas trop besoin de diviser par un truc qui ferra 1
+	out = vec3_scalar(cylinder->dir, coef);
+	out = vec3_add(out, u);
+	out = vec3_normalise(out);
+//	out = vec3_normalise(vec3_add(vec3_scalar(cylinder->dir, coef), u));
+	return (out);
 }
 
+//	c'est juste le coeficient qui change que on obten 0 avec un produit sclaire different
 t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact)
 {
-	t_vec3	result;
+	t_vec3	out;
 	double	coef;
 	t_vec3	u;	// impacte - origin
 	
 	u = vec3_sub(pos_impact, cone->pos);
 	coef = -(vec3_dot(u, u)) / vec3_dot(cone->dir, u);
-	result = vec3_scalar(cone->dir, coef);
-	result = vec3_add(result, u);
-	result = vec3_normalise(result);
-	result = vec3_scalar(result, -1);
-	return (result);
+	out = vec3_scalar(cone->dir, coef);
+	out = vec3_add(out, u);
+	out = vec3_normalise(out);
+//	out = vec3_normalise(vec3_add(vec3_scalar(cylinder->dir, coef), u));
+	return (out);
 }
 /*
  
