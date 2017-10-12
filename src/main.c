@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:48:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/11 12:44:50 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/11 20:20:42 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	init_rtv1(t_env *e, const char *file_name)
 	e->scene.env = e;
 	mlx_win_init(&e->scene, SCENE_X, SCENE_Y, "scene");
 	e->scene.env = e; // il faudra mieux metre la camera dans la scene
-	cam_init(&e->scene.cam);
 	item_init(&e->item, &e->scene, file_name);
+	cam_init(e->scene.cam);
 	init_win_event(&e->scene);
 
 	mlx_start(e);

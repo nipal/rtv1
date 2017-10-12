@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/11 19:18:28 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/12 14:51:43 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	old_item_init(t_item *item, t_mlx_win *w)
 	test_init_light(item->light, item->nb_light);
 	item->size_x = w->size_x;
 	item->size_y = w->size_y;
-	item->cam = &w->cam;
+	item->cam = w->cam;
 	TEMP_set_obj_nb(item);
 
 }
@@ -86,10 +86,9 @@ void	cam_describe2(t_cam *cam)
 {
 	printf("camera\n");
 	printf("{\n");
-	vec3_print_str(cam->pos, "	pos	");
-	vec3_print_str(cam->uz, "	uz	");
-	vec3_print_str(cam->uy, "	uy	");
-	vec3_print_str(cam->ux, "	ux	");
+	printf("	pos	%f, %f, %f\n", cam->pos.x, cam->pos.y, cam->pos.z);
+	printf("	dir	%f, %f, %f\n", cam->uz.x, cam->uz.y, cam->uz.z);
+	printf("	up	%f, %f, %f\n", cam->uy.x, cam->uy.y, cam->uy.z);
 	printf("}\n\n");
 }
 
@@ -147,6 +146,7 @@ void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
 	item->size_y = w->size_y;
 	free(file_str);
 	init_obj_func(item);
+	w->cam = item->cam;
 //printf("\n===========================================\n");
 	item_describe(item);
 //	old_item_init(item, w);
