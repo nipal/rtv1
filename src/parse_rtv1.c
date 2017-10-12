@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/11 19:03:44 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/12 17:41:20 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -708,7 +708,7 @@ void		item_fill_cam(t_entities *node, t_item *item)
 		if (node->type == TYPE_CAM)
 		{
 			cam = *((t_cam*)(node->entities));
-			if (vec3_norme((cam.uz = vec3_normalise(cam.uz))) != 1)
+			if ((float)vec3_norme((cam.uz = vec3_normalise(cam.uz))) != 1)
 				cam.uz = vec3_set(0, 0, 1);
 			if (cam.uz.x == 0 && cam.uz.z == 0) // si uz est paralle a (0, 1, 0)
 				cam.uy = vec3_set(0, 0, -1); // TODO ajuster le signe en fonction de selui de uZ
@@ -716,8 +716,19 @@ void		item_fill_cam(t_entities *node, t_item *item)
 				cam.uy = vec3_set(0, 1, 0);
 			else
 				cam.uy = vec3_normalise(vec3_add(vec3_set(0, -vec3_dot(cam.uz, cam.uz) / cam.uz.y, 0), cam.uz));
+
+	printf("=================**=================\n");
+			vec3_print_str(cam.uz, "uz:");
+			vec3_print_str(cam.uy, "uy:");
+			printf("uz_nrm:%f\n", vec3_norme(cam.uz));
+			printf("uy_nrm:%f\n", vec3_norme(cam.uy));
+			printf("uz . uy:%f\n", vec3_dot(cam.uz, cam.uy));
+			printf("==>%f\n", vec3_dot(vec3_cross(cam.uz, cam.uy), cam.uz));
+			printf("==>%f\n", vec3_dot(vec3_cross(cam.uz, cam.uy), cam.uy));
+	printf("=================**=================\n");
 			cam.ux = vec3_normalise(vec3_cross(cam.uy, cam.uz));
 			item->cam[i++] = cam;
+			test_cam_axes(&cam);
 		}
 		node = node->next;
 	}
@@ -746,7 +757,6 @@ void	item_fill(t_entities *beg, t_item *item)
 	item_fill_cam(beg, item);
 	item_fill_assets(beg, item);
 }
-
 //int		manage_parsing(char *file_str, t_item *item)
 //{
 //	t_entities	*lst;
