@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/11 12:40:28 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/12 17:15:01 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ typedef	struct	s_mlx_win
 	t_env		*env;
 	void		*img;
 	void		*win;
-	t_cam		cam;		// elle est cree ici. #CAM#
+	t_cam		*cam;		// elle est cree ici. #CAM#
 	int			depth;
 	int			endian;
 	t_pix		*data;
@@ -261,6 +261,8 @@ void	rtv1_exit(t_env *e);
 **	test.c
 */
 
+
+void	test_cam_axes(t_cam *c);
 void	test_basique(t_env *e);
 void	rotation_test();
 
@@ -271,6 +273,9 @@ void	test_init_light(t_light *light, int nb_light);
 **	item.c
 */
 
+void	obj_describe(t_obj *obj);
+void	light_describe(t_light *light);
+void	cam_describe2(t_cam *cam);
 void	item_destroy(t_item *it);
 void	item_init(t_item *item, t_mlx_win *w, const char *str);
 
