@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 15:56:53 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/12 20:08:30 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,25 @@
 void	cam_go_front(t_cam *cam, double dist)
 {
 	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, dist));
+//	cam_describe(cam);
 }
 
 void	cam_go_back(t_cam *cam, double dist)
 {
 	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, -dist));
+//	cam_describe(cam);
 }
 
 void	cam_go_left(t_cam *cam, double dist)
 {
 	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, -dist));
+//	cam_describe(cam);
 }
 
 void	cam_go_right(t_cam *cam, double dist)
 {
 	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, dist));
+//	cam_describe(cam);
 }
 
 // left/right: axe = uy
@@ -93,9 +97,10 @@ void	cam_reset(t_cam *cam)
 
 void	cam_init(t_cam *cam)
 {
+	(void)cam;
 	cam_init_draw_func(get_env(NULL)); // need to init the pontiner on function
-	cam_reset(cam);
-	cam->pos = vec3_set(0, 0, -21); // youpi
+//	cam_reset(cam);
+//	cam->pos = vec3_set(0, 0, -21); // youpi
 	// on pourrai aussi faire un trouc ou on ne donne que 2 valeur dir, up
 }
 
@@ -191,17 +196,6 @@ void	find_normale(t_env *e)
 // 		 	apres faire les calcul de lumiere et tout et tout
 // 		dir = i * dx + j * dy
 
-static	inline	void	init_ray(t_item *item, t_vec3 *dir, t_vec3 *dx, t_vec3 *dy)
-{
-	t_cam	*cam;
-
-	cam = item->cam;	
-	*dir = vec3_add(cam->ux, cam->uy);
-	*dir = vec3_scalar(*dir, -0.5);
-	*dir = vec3_add(cam->uz, *dir);
-	*dx = vec3_scalar(cam->ux, item->size_x / item->size_y / item->size_x);
-	*dy = vec3_scalar(cam->uy, 1.0 / item->size_y);
-}
 
 // si on a pas calculer la distance (au carre), on met -1
 int		is_free_path(t_item *item, t_vec3 from, t_vec3 to, int self)
@@ -289,9 +283,10 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 {
 	t_vec3		light_dir;
 	double		dist2;
-	t_coef_fong	coef = {0.05, 0.95, 1};  // may be change
+	t_coef_fong	coef = {0.2, 0.8, 1};  // may be change
 	int			id;
 
+	coef.diffuse = 1 - coef.ambient;
 	id = zbuff->id;
 	/* pour chaque lumiere */ 
 	light_dir = vec3_sub(item->light[0].pos, zbuff->pos);
@@ -307,6 +302,18 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 	return (set_color(item->obj[id].col, coef.diffuse + coef.ambient, coef.specular));
 }
 
+static	inline	void	init_ray(t_item *item, t_vec3 *dir, t_vec3 *dx, t_vec3 *dy)
+{
+	t_cam	*cam;
+
+	cam = item->cam;
+	*dir = vec3_add(cam->ux, cam->uy);
+	*dir = vec3_scalar(*dir, -0.5);
+	*dir = vec3_add(cam->uz, *dir);
+	*dx = vec3_scalar(cam->ux, item->size_x / item->size_y / item->size_x);
+	*dy = vec3_scalar(cam->uy, 1.0 / item->size_y);
+}
+
 void	launch_ray(t_mlx_win *w, t_item *item)
 {
 	int		i;
@@ -317,6 +324,7 @@ void	launch_ray(t_mlx_win *w, t_item *item)
 	t_vec3	dy;
 
 	init_ray(item, &dir, &dx, &dy);
+//	vec3_print_str(dir, "dir:");
 	j = 0;
 	while (j < w->size_y)
 	{
@@ -327,7 +335,6 @@ void	launch_ray(t_mlx_win *w, t_item *item)
 			dir_nrm = vec3_normalise(dir);
 			find_collision(w->z_buff + i + j * w->size_x, item, dir_nrm);
 			w->data[i + j * w->size_x].nb = get_phong_color(item, w->z_buff + i + j * w->size_x, dir_nrm);
-
 			i++;
 		}
 		dir = vec3_sub(dir, item->cam->ux);
