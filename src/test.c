@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:21:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/12 17:25:13 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,32 @@ void	rotation_test()
 		print_vec(vec);
 		i++;
 	}
+}
+
+void	test_cam_axes(t_cam *c)
+{
+	// vecteur unitaire			(norme == 1)
+	printf("nrm_ux:%f\n", vec3_norme(c->ux));
+	printf("nrm_uy:%f\n", vec3_norme(c->uy));
+	printf("nrm_uz:%f\n", vec3_norme(c->uz));
+	// vecteur orogonaux		(ux dot uy == 0)
+	printf("ux . uy:%f\n", vec3_dot(c->ux, c->uy));
+	printf("uy . uz:%f\n", vec3_dot(c->uy, c->uz));
+	printf("uz . ux:%f\n", vec3_dot(c->uz, c->ux));
+	// vecteur orienter selon 	(ux ^ uy = uz) ==> norme de diff avec e resulta
+	printf("||(ux ^ uy) - uz||:%f\n", vec3_norme(vec3_sub(vec3_cross(c->ux, c->uy), c->uz)));
+	printf("||(uy ^ uz) - ux||:%f\n", vec3_norme(vec3_sub(vec3_cross(c->uy, c->uz), c->ux)));
+	printf("||(uz ^ ux) - uy||:%f\n", vec3_norme(vec3_sub(vec3_cross(c->uz, c->ux), c->uy)));
+
+
+	printf("==================================\n");
+	t_vec3	u1, u2, u3;
+
+	u1 = vec3_set(0, 1, 0);
+	u2 = vec3_set(1, 0, 0);
+	u3 = vec3_cross(u1, u2);
+	vec3_print_str(u1, "u1");
+	vec3_print_str(u2, "u2");
+	vec3_print_str(u3, "u3");
+	printf("==================================\n");
 }
