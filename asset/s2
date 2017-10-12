@@ -1,0 +1,43 @@
+light
+{
+	pos		0, 0, -3
+	col		255, 255, 255 # couleur + puissance...
+}
+
+camera
+{
+	pos	-1.000000, 0.000000, -10.000000
+	dir		0, 0, 1	
+	up	0.685008, -0.576282, 0.445717
+}
+
+cylinder
+{
+	pos		0, 0, 3
+	col		255, 0, 0
+	dir		0, 1, 0
+	value 	0.1
+}
+
+plan
+{
+	pos		0, 5, 0
+	col		100, 206, 209
+	dir		0, 1, 0.1
+}
+
+sphere
+{
+	value	 1.007
+	pos		0, 0, 3
+	col		200,  50, 70
+
+}
+
+cone
+{
+	pos		2, 3, 3
+	col		108, 139, 61
+	dir		0, 0, 1
+	value	 3.14
+}

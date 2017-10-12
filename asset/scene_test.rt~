@@ -1,0 +1,60 @@
+light
+{
+	pos		1, 1, -5
+	col		255, 255, 255 # couleur + puissance...
+}
+
+camera
+{
+	pos		0, 0, -20
+	up		0, 1, 0
+	dir		0, 0, 1
+}
+
+plan
+{
+	pos		0, -2, 0
+	col		0, 206, 209
+	dir		0, -1, 0.1
+}
+
+plan
+{
+	pos		0, 3, 0
+	col		100, 206, 209
+	dir		0, -1, -0.1
+}
+
+
+sphere
+{
+	value	 1.007
+	pos		2, 3, -3
+	col		255,  255, 255
+
+}
+
+cylinder
+{
+	pos		2, 3, -3
+	col		239, 28, 98
+	value 	0.4
+	dir		.0, .00, 0.000
+
+}
+
+cone
+{
+	pos		0, -3, 5
+	col		108, 139, 61
+	dir		1, 0, 0
+	value	 3.14
+}
+
+
+# On eleve tout les comentaire
+# On doit trouver des objet avec des parametre (float)
+# Il ne sont pas necessairement tous definie
+# Il peu y avoir des erreur: truc en trop, mal parametrer
+# 	- on met des valeur par default, ou autre chose
+#	- il peu y a voir une double definition ... on prend la dernier
