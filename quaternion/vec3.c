@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 20:35:13 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/12 17:42:36 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/17 23:57:13 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,11 @@ t_vec3		vec3_scalar(t_vec3 v, double factor)
 
 t_vec3		vec3_normalise(t_vec3 v)
 {
-	return (vec3_scalar(v, 1 / vec3_norme(v)));
+	double	coef;
+
+	coef = fabs(vec3_norme(v));
+	coef = (coef < 0.0000000001) ? 0 : 1 / coef;
+	return (vec3_scalar(v, coef));
 }
 
 t_vec3		vec3_cast(double vec[3])
@@ -97,32 +101,34 @@ t_vec3		vec3_set(double x, double y, double z)
 	return (v);
 }
 
+
+/*
+**	Attention ce ne sont pas vraiment des coordoner spherique dans le sens ou
+**	les axes choisie ne sont pas les bon
+**	il y a des erreur avec ang_x == -M_PI / 2... probablement 
+**	il faut aussi faire attention a normalize... dailler si on ne voudrai
+**	pas trop se faire chier on pourrait l'itiliser puisqu'il a ete fixe
+*/
+
 t_vec3	vec3_cartesien_spherique(t_vec3 in)
 {
 	t_vec3	out;
-	t_vec3	u;
+	double	coef;
 
 	out.z = vec3_norme(in);
-	in = vec3_normalise(in);
-	u = vec3_normalise(vec3_set(in.x, 0, in.z));
-	out.x = acos(vec3_dot(in, u));
-	out.y = asin(u.x);
+	coef = in.z / (sqrt(in.x * in.x + in.z * in.z));
+	out.y = acos(coef) * (((in.x) > 0) ? 1 : -1);
+	out.x = asin(-in.y);
 	return (out);
 }
 
 t_vec3	vec3_spherique_cartesien(t_vec3 in)
 {
 	t_vec3	out;
-	t_vec3	ux;
-	t_vec3	uy;
 
-	uy = vec3_set(0, 1, 0);
-	ux = vec3_set(1, 0, 0);
-	out = vec3_set(0, 0, 1);
-	out = quaternion_rot(out, uy, in.y);
-	ux = quaternion_rot(ux, uy, in.y);
-	out = quaternion_rot(out, ux, in.x);
-	out = vec3_scalar(out, in.z);
+	out.z = in.z * cos(in.x) * cos(in.y);
+	out.x = in.z * cos(in.x) * sin(in.y);
+	out.y = -in.z * sin(in.x);
 	return (out);
 }
 
