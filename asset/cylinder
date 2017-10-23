@@ -1,0 +1,74 @@
+light
+{
+	pos		3, 3, -3
+	col		255, 255, 255 # couleur + puissance...
+}
+
+#camera
+#{
+#	pos	0.000000, 0.000000, -10.000000
+#	dir		0, 0, 1	
+#	up	0.685008, -0.576282, 0.445717
+#}
+
+
+# couleur bizard autour de 
+#camera
+#{
+#	pos	5.287710, -0.871557, -12.270817
+#	dir	-0.498097, 0.087156, 0.862730
+#	up	-0.043578, -0.996195, 0.075479
+#}
+
+# test bug
+camera
+{
+	pos	3.349156, -1.633997, -0.434665
+	dir	-0.086823, 0.087156, 0.992404
+	up	0.007596, 0.996195, -0.086824
+}
+
+
+#camera
+#{
+#	pos	-11.712280, -0.871548, 17.174053
+#	dir	0.416197, 0.173648, -0.892539
+#	up	-0.073387, 0.984808, 0.157378
+#}
+
+# {position + direction} cas le plus simple
+# on a pas besoin d'ajuster la position et la direction
+
+cylinder
+{
+	pos		6, 0, 0
+	col		0, 255, 0
+	dir		0, 0, 1
+	value 	0.7
+}
+
+cylinder
+{
+	pos		4, 0, 0
+	col		200, 255, 0
+	dir		0, 0, 1
+	value 	0.7
+}
+
+# la on test de deplscer des position
+
+cylinder
+{
+	pos		2, -2, 0
+	col		200, 0, 0
+	dir		0, 0, 1
+	value 	0.7
+}
+
+cylinder
+{
+	pos		0, 2, 0
+	col		100, 100, 255
+	dir		0, 0.03, 1.1
+	value 	0.7
+}

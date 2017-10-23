@@ -1,0 +1,23 @@
+light
+{
+	pos		0, 0, 0
+	col		255, 255, 255 # couleur + puissance...
+}
+
+camera
+{
+	pos	.000000, 0.000000, -10.000000
+	dir		0, 0, 1	
+	up	0.685008, -0.576282, 0.445717
+}
+
+
+cone
+{
+	pos		2, 3, 3
+	col		108, 139, 61
+	dir		0, 1, 0
+	value	 1
+}
+
+# On veux juste voir si ca fontione
