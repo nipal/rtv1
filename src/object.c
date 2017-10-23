@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/12 20:01:30 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/23 19:24:28 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,22 @@ double	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 	return (dist);
 }
 
+void	ray_adapt_pos_dir(t_vec3 *ray_dir, t_vec3 *ray_pos, t_vec3 obj_pos, t_mat3 rot_inv)
+{
+(void)rot_inv;
+	// on translate la position
+	// on applique une rotation a la positon
+	// on applique une roation a la direction // et c'est la
+	t_vec3 tmp1, tmp2;	
+
+	tmp1 = vec3_sub(*ray_pos, obj_pos);
+//	tmp2 = vec3_normalise(mat3_mult_vec3(rot_inv, *ray_dir));
+	tmp2 = *ray_dir;
+
+	*ray_pos = tmp1;
+	*ray_dir = tmp2;
+}
+
 //	si on test sans les corection, on doit avoir l'objet en 0 et de dir uz
 double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 {
@@ -137,10 +153,12 @@ double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 (void) ray_pos; (void) ray_dir;
 (void) ray_pos2; (void) ray_dir2;
 
-	// must adapte position then orientation
-	// ray_pos2 = ray_pos - obj->pos;
-//	ray_pos2 = vec3_sub(ray_pos, cylinder->pos);
-//	ray_dir2 = mat3_mult_vec3(cylinder->rot_inv, ray_dir);
+// debug phase
+	ray_adapt_pos_dir(&ray_dir, &ray_pos, cylinder->pos, cylinder->rot_inv);
+
+	ray_pos2 = ray_pos;
+	ray_dir2 = ray_dir;
+
 	a = ray_dir2.x * ray_dir2.x + ray_dir2.y * ray_dir2.y;
 	b = 2 * (ray_dir2.x * ray_pos2.x + ray_dir2.y * ray_pos2.y);
 	c = ray_pos2.x * ray_pos2.x + ray_pos2.y * ray_pos2.y - cylinder->value * cylinder->value;
@@ -158,8 +176,12 @@ double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 (void) ray_pos2; (void) ray_dir2;
 
 	// must adapte position then orientation
-	ray_pos2 = vec3_sub(ray_pos, cone->pos);
-	ray_dir2 = mat3_mult_vec3(cone->rot_inv, ray_dir);
+//	ray_pos2 = vec3_sub(ray_pos, cone->pos);
+//	ray_dir2 = mat3_mult_vec3(cone->rot_inv, ray_dir);
+
+// debug phase
+	ray_pos2 = ray_pos;
+	ray_dir2 = ray_dir;
 	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
 	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * cone->value);
 	c = RP0 * RP0 + RP1 * RP1 - RP2 * RP2 * cone->value;

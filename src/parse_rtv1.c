@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/12 17:41:20 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/23 19:18:58 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -671,7 +671,7 @@ void		obj_manage_rot(t_obj *obj)
 
 	ang = vec3_cartesien_spherique(obj->dir);
 //	obj_set_invrot(obj, ang.x, ang.y, 0);
-	obj->rot_inv = mat3_rot_all(ang.x, ang.y, 0);
+	obj->rot_inv = mat3_rot_all(-ang.x, -ang.y, 0);
 }
 
 void		item_fill_assets(t_entities *node, t_item *item)
@@ -716,19 +716,8 @@ void		item_fill_cam(t_entities *node, t_item *item)
 				cam.uy = vec3_set(0, 1, 0);
 			else
 				cam.uy = vec3_normalise(vec3_add(vec3_set(0, -vec3_dot(cam.uz, cam.uz) / cam.uz.y, 0), cam.uz));
-
-	printf("=================**=================\n");
-			vec3_print_str(cam.uz, "uz:");
-			vec3_print_str(cam.uy, "uy:");
-			printf("uz_nrm:%f\n", vec3_norme(cam.uz));
-			printf("uy_nrm:%f\n", vec3_norme(cam.uy));
-			printf("uz . uy:%f\n", vec3_dot(cam.uz, cam.uy));
-			printf("==>%f\n", vec3_dot(vec3_cross(cam.uz, cam.uy), cam.uz));
-			printf("==>%f\n", vec3_dot(vec3_cross(cam.uz, cam.uy), cam.uy));
-	printf("=================**=================\n");
 			cam.ux = vec3_normalise(vec3_cross(cam.uy, cam.uz));
 			item->cam[i++] = cam;
-			test_cam_axes(&cam);
 		}
 		node = node->next;
 	}
@@ -757,37 +746,6 @@ void	item_fill(t_entities *beg, t_item *item)
 	item_fill_cam(beg, item);
 	item_fill_assets(beg, item);
 }
-//int		manage_parsing(char *file_str, t_item *item)
-//{
-//	t_entities	*lst;
-//
-//	if (!(lst = get_entities(file_str)))
-//		return (0);
-//	item_fill(lst, item);
-//	entities_destroy(lst);
-//	// normalement ici on a recuperer les objet comme il faut
-//	return (1);
-//}
-
-//
-//int	main()
-//{
-////	test_double();
-////	test_vec3();
-//	char	*file_str = get_file_str();
-//	t_entities	*beg;
-//	t_item	item;
-//
-//	if (!(beg = get_entities(file_str)))
-//		return (-1);
-//	if (!(item_obj_alloc(beg, &item)))
-//		return (-2);
-//	item_fill(beg, &item);
-//	entities_destroy(beg);
-//	free (file_str);
-//	return (0);
-//
-//}
 
 // On pourais aussi faire pouvoir editer des parametre comme:
 // 		- taille de la fenetre

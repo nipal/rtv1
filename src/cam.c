@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/12 20:08:30 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/23 16:26:13 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,7 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 	dist2 = vec3_dot(light_dir, light_dir);
 	light_dir = vec3_normalise(light_dir);
 	if (zbuff->dist < 0)
-		return (0);
+		return (0x33CCFF); // on a toucher aucun objet
 	// on met la difuse
 	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id))
 		coef.diffuse = 0;
