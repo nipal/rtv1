@@ -1,1 +1,1 @@
-gcc test_anlge_converstion.c ../../quaternion/*.c && ./a.out
+gcc ang_u=uy.c ../../quaternion/*.c -I ../../inc  && ./a.out
