@@ -6,11 +6,21 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/06 19:03:55 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 13:58:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 15:38:17 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quaternion.h"
+
+void	mat3_print_str(t_mat3 m, char *str)
+{
+	printf("%s\n{", str);
+	vec3_print_str(m.ux, "	ux:");
+	vec3_print_str(m.uy, "	uy:");
+	vec3_print_str(m.uz, "	uz:");
+	printf("}");
+
+}
 
 t_mat3	mat3_get_id()
 {
@@ -18,7 +28,7 @@ t_mat3	mat3_get_id()
 
 	mat.ux = vec3_set(1, 0, 0);
 	mat.uy = vec3_set(0, 1, 0);
-	mat.ux = vec3_set(0, 0, 1);
+	mat.uz = vec3_set(0, 0, 1);
 	return (mat);
 }
 

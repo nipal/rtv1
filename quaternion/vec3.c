@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 20:35:13 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/17 23:57:13 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/24 22:01:50 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ t_vec3		vec3_add(t_vec3 v1, t_vec3 v2)
 	v3.y = v1.y + v2.y;
 	v3.z = v1.z + v2.z;
 	return (v3);
+}
+
+t_vec3		vec3_add_scalar(t_vec3 v, double nb)
+{
+	v.x += nb;
+	v.y += nb;
+	v.z += nb;
+	return (v);
 }
 
 t_vec3		vec3_add3(t_vec3 v1, t_vec3 v2, t_vec3 v3)
