@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/25 17:47:43 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 20:06:31 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,3 +294,96 @@ t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact)
 **	il faut trouver l'objet le plus proche: z_buffer + (id_obj/type_obj)
 **
 */
+
+int		solve_eq_2nd_2(double a, double b, double c)
+{
+	double	delta;
+	double	r1;
+	double	r2;
+	int		sum_result;
+
+	sum_result = 0;
+	delta = b * b - 4 * a * c;
+	if (delta < 0)
+		return (-1);
+	delta = sqrt(delta);
+	r1 = (-delta - b) / (2 * a);
+	r2 = (delta - b) / (2 * a);
+//	printf("a:%f	b:%f	c:%f	r1:%.20f	r2:%.20f\n", a, b, c, r1, r2);
+	if ((float)r1 >= 0)
+		sum_result++;
+	if ((float)r2 >= 0)
+		sum_result++;
+	return (sum_result);
+}
+
+// on ne devrai pas avoir le problem avec le plan
+int		get_dist_plan2(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir)
+{
+	(void)plan;
+	(void)ray_pos;
+	(void)ray_dir;
+	return (0);
+}
+
+int		get_dist_sphere2(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
+{
+	int		dist;
+	double	a;
+	double	b;
+	double	c;
+
+	a = vec3_dot(ray_dir, ray_dir);
+	b = 2 * (vec3_dot(ray_dir, ray_pos) - vec3_dot(ray_dir, sphere->pos));
+	c = vec3_dot(ray_pos, ray_pos) + vec3_dot(sphere->pos, sphere->pos) - 2 * vec3_dot(ray_pos, sphere->pos) - sphere->value * sphere->value;
+	dist = solve_eq_2nd_2(a, b, c);
+	return (dist);
+}
+
+
+//	si on test sans les corection, on doit avoir l'objet en 0 et de dir uz
+int		get_dist_cylinder2(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
+{
+	double	a;
+	double	b;
+	double	c;
+	t_vec3	ray_pos2;
+	t_vec3	ray_dir2;
+(void) ray_pos; (void) ray_dir;
+(void) ray_pos2; (void) ray_dir2;
+
+	ray_adapt_pos_dir(&ray_dir, &ray_pos, cylinder->pos, cylinder->rot_inv);
+
+	ray_pos2 = ray_pos;
+	ray_dir2 = ray_dir;
+
+	a = ray_dir2.x * ray_dir2.x + ray_dir2.y * ray_dir2.y;
+	b = 2 * (ray_dir2.x * ray_pos2.x + ray_dir2.y * ray_pos2.y);
+	c = ray_pos2.x * ray_pos2.x + ray_pos2.y * ray_pos2.y - cylinder->value * cylinder->value;
+	return (solve_eq_2nd_2(a, b, c));
+}
+
+int		get_dist_cone2(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
+{
+	double	a;
+	double	b;
+	double	c;
+	t_vec3	ray_pos2; // on pourrai laisser le r2 (cone->radisu)
+	t_vec3	ray_dir2;
+(void) ray_pos; (void) ray_dir;
+(void) ray_pos2; (void) ray_dir2;
+
+	// must adapte position then orientation
+//	ray_pos2 = vec3_sub(ray_pos, cone->pos);
+//	ray_dir2 = mat3_mult_vec3(cone->rot_inv, ray_dir);
+
+// debug phase
+	ray_adapt_pos_dir(&ray_dir, &ray_pos, cone->pos, cone->rot_inv);
+
+	ray_pos2 = ray_pos;
+	ray_dir2 = ray_dir;
+	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
+	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * cone->value);
+	c = RP0 * RP0 + RP1 * RP1 - RP2 * RP2 * cone->value;
+	return (solve_eq_2nd_2(a, b, c));
+}

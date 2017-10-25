@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/25 16:52:41 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 20:15:45 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,16 @@ void	find_normale(t_env *e)
 //	si la lumiere et la vue sont du meme cote de la normal
 int		is_light_right_way(t_vec3 ray_dir, t_vec3 light_dir, t_vec3 normal)
 {
-	if (vec3_dot(normal, ray_dir) * vec3_dot(normal, light_dir) >= 0)
+	if ((vec3_dot(normal, ray_dir) * vec3_dot(normal, light_dir)) >= 0)
 		return (1);
 	return (0);
+}
+
+int		is_self_intersect(t_item *item, t_vec3 from, t_vec3 to, int self)
+{
+	(void) item; (void)self; (void)from; (void)to;
+	return (0);
+	// dont si on a deux intersection don une qui est loin ... on peu aussi essayer de partir de plus loin
 }
 
 // si on a pas calculer la distance (au carre), on met -1
@@ -223,10 +230,11 @@ int		is_free_path(t_item *item, t_vec3 from, t_vec3 to, int self)
 	i = 0;
 	while (i < item->nb_obj)
 	{
+(void)self;
 		if (i == self && ++i)
 			continue ;
 		dist.v2 = obj_dist[obj[i].type](obj + i, from, dir);
-		if (dist.v2 > 0 && dist.v2 < dist.v1)
+		if ((float)dist.v2 > 1 && dist.v2 < dist.v1)
 			return (0);
 		i++;
 	}
@@ -313,7 +321,7 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 		return (0);
 //		return (0x26053e); // on a toucher AUCUN objet la c'est du violet fonce
 	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id)
-	   || is_light_right_way(ray_dir, light_dir, zbuff->nrm))
+	   )//||  is_light_right_way(ray_dir, light_dir, zbuff->nrm))
 	{
 //		printf("youpi");
 		coef.diffuse = 0;
