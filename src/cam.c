@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/23 16:26:13 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 13:12:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,14 @@ void	find_normale(t_env *e)
 // 		dir = i * dx + j * dy
 
 
+//	si la lumiere et la vue sont du meme cote de la normal
+int		is_light_right_way(t_vec3 ray_dir, t_vec3 light_dir, t_vec3 normal)
+{
+	if (vec3_dot(normal, ray_dir) * vec3_dot(normal, light_dir) >= 0)
+		return (1);
+	return (0);
+}
+
 // si on a pas calculer la distance (au carre), on met -1
 int		is_free_path(t_item *item, t_vec3 from, t_vec3 to, int self)
 {
@@ -248,10 +256,13 @@ double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
 double	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, double dist2)
 {
 	double	coef;
+	double a, b, c; (void)a; (void)b; (void)c;
 	(void)ray_dir;
 		
 // TODO: find solution for light power
-	coef = -(10 / (0.1 + dist2) * vec3_dot(light_dir, nrm));
+	a = fabs(vec3_dot(vec3_normalise(light_dir), vec3_normalise(nrm)));
+	coef = ((5 / (0.01 + dist2)) * fabs(vec3_dot(vec3_normalise(light_dir), vec3_normalise(nrm))));
+//	printf("coef_finale:%f	coef_dot_prod:%f\n", coef, a);
 	if (coef > 1)
 		return (1);
 	else if (coef < 0)
@@ -267,15 +278,20 @@ typedef	struct	s_phong_coef
 	double		specular;
 }				t_coef_fong;
 
+// coef = ambient + diffuse
+// spec = cef_speculare
 int		set_color(t_vec3 col, double coef, double spec)
 {
+	(void)spec;
 	int		color;
 	t_vec3	c;
 	
+	printf("coef:%f\n", coef);
 	c = vec3_scalar(col, coef);
-	color = (int)(c.x + (255 - c.x) * spec) << 16 
-		| (int)(c.y + (255 - c.y * spec)) << 8 
-		| (int)(c.z + (255 - c.z) * spec);
+	color = (((int)(c.x * 255)) << 16) | (((int)(c.y * 255)) << 8) | (((int)(c.z * 255))); 
+//	color = (int)(c.x + (255 - c.x) * spec) << 16 
+//		| (int)(c.y + (255 - c.y * spec)) << 8 
+//		| (int)(c.z + (255 - c.z) * spec);
 	return (color);
 }
 
@@ -283,7 +299,7 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 {
 	t_vec3		light_dir;
 	double		dist2;
-	t_coef_fong	coef = {0.2, 0.8, 1};  // may be change
+	t_coef_fong	coef = {0, 0, 1};  // may be change
 	int			id;
 
 	coef.diffuse = 1 - coef.ambient;
@@ -293,9 +309,9 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 	dist2 = vec3_dot(light_dir, light_dir);
 	light_dir = vec3_normalise(light_dir);
 	if (zbuff->dist < 0)
-		return (0x33CCFF); // on a toucher aucun objet
-	// on met la difuse
-	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id))
+		return (0x33BBFF); // on a toucher AUCUN objet
+	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id)
+		|| !is_light_right_way(ray_dir, light_dir, zbuff->nrm))
 		coef.diffuse = 0;
 	coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
 	coef.specular = 0;//light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
