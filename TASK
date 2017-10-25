@@ -1,0 +1,84 @@
+#init_ray()	: cam.c
+	adapter les coef pour dx et dy en fonction du ratio de la resolution
+
+une mielleur initialisation des objt avec la camera tout ca... On la met ou la camera
+
+# ** CAM MOVE **
+-	rajouter les deplacement							[DONE]
+-	meilleur roation (pour les deplacement)				[DONE]
+	-	quaternion
+-	bouger la camera avec la souri (Si on est  fluide)
+
+--> il n'y a pas la camera qui switch quand on regarde vers le haut,
+		mais quand on a fait un demi tour
+
+
+# ** COLOR PROPRIETE **
+-	multi spot ==> algo COLOR ADDITION intensitet tout ca
+-	(is_free_path():cam.c) verifier si il faut que le rayon soit normer (distance) genre comme le truc qui lance les rayon
+
+
+# ** DEGBUG **
+-		VERIFIER si is_free_path ne s'intersecte pas avec lui meme... peut etre les distance negative seron neglier --> tested...
+ must NORMALISE all dir path
+
+
+# BENSMARK 
+- 	Acceder a une variable dans une structure de structure de strucuture, si aucun dereferencement, c'est pareille		[DONE]... tres equivalent 0.003 d eccart type
+-	tester si vraiment les nouveau vecteur son plus opti
+	- conteur dans les fonction de vecteur: savoir les quel sont les plus appeler
+	- mix avec {copie + pointeur} 
+	- eventuelement des inline tout ca
+
+# ** BIG_VECTOR_RAFECTORING **
+[DONE] all_functionalities
+		- need debug cone and 
+	'FINISH' to implement vec3 func: obj_set_inv_rot  file:object.c
+
+# RECOVERY + PARSE
+-	add 'comp' in struct s_entities
+	-	insert it in parsing time
+	-	use in recovery to manage with dir and angle
+
+# DEBUG PARSING
+pour l'instant tout va bien, il est robuste... need some test to be sure
+
+
+# camera
+- verifier si on eregistre bien comme il faux les axe: uz, uy, ux
+
+# ** lighting **
+	- de quel coter est on de la lumiere? dot(ray_lum, nrm_surface) * dot(ray_cam, nrm_surface) > 0
+			(on peu aussi metre la limiere)
+	- limiter lors du parsing les valeur possible pour les couleu apaprtien a [0, 255], 'peut etre [0, 1] ...' (si la motive)
+
+"========================================================================================"
+
+# to fix:
+[DONE]	'rotation' => cone and cylinder are not in the same incilaison when the normal is negative
+		'illumination' => the sens of surface normale does not impact the light, they are therfore visible frome both side
+		'manie scene' => do some differente scene to test several situtation
+		'Segfault'    => if no 'light' or no 'cam'  do some one by default... or quit an print error message
+		'parsing'		=> define range of value like color
+		'if nothing touch' 0x33, 0xCC, 0xFF # bleu cyan
+
+# is the adatp ray functional ??
+
+
+# OPTIMISATION:
+	'copy' vs 'pointer'	==> pointeur souvent plus aventageux... avoir, il  faudrait 
+
+
+# THE QUEATION OF THE DAY
+	- Est ce que toute les lumiere sont utiliser ?
+	- Est ce aue toute les camera sont utiliser?
+	- Est ce que tu ne voudrait pas tout refacto
+	- Est ce qe 	
+
+# pourquoi on a l'imporession qu'il n'y a que la difuse.
+# relire le code un peu, voir si les nouveau vecteur n'on pas fait de la merde
+# tester si les matrice de ratiation sont bien legtite
+# et voir si on leur donne bien les bonne angle
+
+
+# le zbuffer
