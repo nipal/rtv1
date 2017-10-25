@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/25 13:12:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 16:52:41 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,7 @@ double	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, double di
 		
 // TODO: find solution for light power
 	a = fabs(vec3_dot(vec3_normalise(light_dir), vec3_normalise(nrm)));
-	coef = ((5 / (0.01 + dist2)) * fabs(vec3_dot(vec3_normalise(light_dir), vec3_normalise(nrm))));
+	coef = ((3 / (0.01 + dist2)) * fabs(vec3_dot(vec3_normalise(light_dir), vec3_normalise(nrm))));
 //	printf("coef_finale:%f	coef_dot_prod:%f\n", coef, a);
 	if (coef > 1)
 		return (1);
@@ -286,9 +286,10 @@ int		set_color(t_vec3 col, double coef, double spec)
 	int		color;
 	t_vec3	c;
 	
-	printf("coef:%f\n", coef);
+//	printf("coef:%f\n", coef);
 	c = vec3_scalar(col, coef);
-	color = (((int)(c.x * 255)) << 16) | (((int)(c.y * 255)) << 8) | (((int)(c.z * 255))); 
+//	vec3_print_str(c, "col:");
+	color = (((int)(c.x)) << 16) | (((int)(c.y)) << 8) | (((int)(c.z))); 
 //	color = (int)(c.x + (255 - c.x) * spec) << 16 
 //		| (int)(c.y + (255 - c.y * spec)) << 8 
 //		| (int)(c.z + (255 - c.z) * spec);
@@ -299,7 +300,7 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 {
 	t_vec3		light_dir;
 	double		dist2;
-	t_coef_fong	coef = {0, 0, 1};  // may be change
+	t_coef_fong	coef = {0.1, 0, 1};  // may be change
 	int			id;
 
 	coef.diffuse = 1 - coef.ambient;
@@ -309,10 +310,14 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 	dist2 = vec3_dot(light_dir, light_dir);
 	light_dir = vec3_normalise(light_dir);
 	if (zbuff->dist < 0)
-		return (0x33BBFF); // on a toucher AUCUN objet
+		return (0);
+//		return (0x26053e); // on a toucher AUCUN objet la c'est du violet fonce
 	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id)
-		|| !is_light_right_way(ray_dir, light_dir, zbuff->nrm))
+	   || is_light_right_way(ray_dir, light_dir, zbuff->nrm))
+	{
+//		printf("youpi");
 		coef.diffuse = 0;
+	}
 	coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
 	coef.specular = 0;//light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
 	return (set_color(item->obj[id].col, coef.diffuse + coef.ambient, coef.specular));
