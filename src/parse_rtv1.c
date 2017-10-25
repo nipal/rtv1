@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/23 19:18:58 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 16:45:10 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,7 +436,7 @@ void	asset_finish(t_obj *obj, int comp)
 	if (!(comp & 2))
 		obj->pos = vec3_set(0, 0, 0);
 	if (!(comp & 4))
-		obj->dir = vec3_set(1, -1, -1);
+		obj->dir = vec3_normalise(vec3_set(1, -1, -1));
 	if (!(comp & 8))
 		obj->col = vec3_set(200, 200, 200);
 }
