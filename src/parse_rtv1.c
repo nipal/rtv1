@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/25 16:45:10 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 17:49:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -670,6 +670,7 @@ void		obj_manage_rot(t_obj *obj)
 	t_vec3	ang;
 
 	ang = vec3_cartesien_spherique(obj->dir);
+	vec3_print_str(ang, "ang");
 //	obj_set_invrot(obj, ang.x, ang.y, 0);
 	obj->rot_inv = mat3_rot_all(-ang.x, -ang.y, 0);
 }

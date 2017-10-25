@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 20:35:13 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/24 22:01:50 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 18:22:19 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,15 @@ t_vec3	vec3_cartesien_spherique(t_vec3 in)
 {
 	t_vec3	out;
 	double	coef;
+	double	tmp;
 
 	out.z = vec3_norme(in);
-	coef = in.z / (sqrt(in.x * in.x + in.z * in.z));
-	out.y = acos(coef) * (((in.x) > 0) ? 1 : -1);
+	tmp = sqrt(in.x * in.x + in.z * in.z);
+	coef = in.z / tmp;
+	if ((float)tmp == 0)
+		out.y = 0;
+	else
+		out.y = (acos(coef) * ((in.x) > 0)) ? 1 : -1;
 	out.x = asin(-in.y);
 	return (out);
 }
