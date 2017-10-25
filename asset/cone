@@ -11,6 +11,13 @@ camera
 	up	0.029809, 0.939693, 0.340719
 }
 
+# debg the NOT light visible if light and cam are not on the same side
+#camera
+#{
+#	pos	-0.244958, -0.868240, 1.822595
+#	dir	0.851651, -0.422618, -0.309976
+#	up	0.397131, 0.906308, -0.144544
+#}
 
 cone
 {
