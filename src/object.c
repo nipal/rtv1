@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/23 19:24:28 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/25 16:56:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,18 +128,8 @@ double	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 
 void	ray_adapt_pos_dir(t_vec3 *ray_dir, t_vec3 *ray_pos, t_vec3 obj_pos, t_mat3 rot_inv)
 {
-(void)rot_inv;
-	// on translate la position
-	// on applique une rotation a la positon
-	// on applique une roation a la direction // et c'est la
-	t_vec3 tmp1, tmp2;	
-
-	tmp1 = vec3_sub(*ray_pos, obj_pos);
-//	tmp2 = vec3_normalise(mat3_mult_vec3(rot_inv, *ray_dir));
-	tmp2 = *ray_dir;
-
-	*ray_pos = tmp1;
-	*ray_dir = tmp2;
+	*ray_pos = mat3_mult_vec3(rot_inv, vec3_sub(*ray_pos, obj_pos));
+	*ray_dir = vec3_normalise(mat3_mult_vec3(rot_inv, *ray_dir));
 }
 
 //	si on test sans les corection, on doit avoir l'objet en 0 et de dir uz
@@ -153,7 +143,6 @@ double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 (void) ray_pos; (void) ray_dir;
 (void) ray_pos2; (void) ray_dir2;
 
-// debug phase
 	ray_adapt_pos_dir(&ray_dir, &ray_pos, cylinder->pos, cylinder->rot_inv);
 
 	ray_pos2 = ray_pos;
@@ -180,6 +169,8 @@ double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 //	ray_dir2 = mat3_mult_vec3(cone->rot_inv, ray_dir);
 
 // debug phase
+	ray_adapt_pos_dir(&ray_dir, &ray_pos, cone->pos, cone->rot_inv);
+
 	ray_pos2 = ray_pos;
 	ray_dir2 = ray_dir;
 	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
