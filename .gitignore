@@ -7,3 +7,8 @@ idee
 rtv1
 push_vogsphere.sh
 todo*
+DEBUG
+TASK
+*.vimsession
+*.a.out
+
