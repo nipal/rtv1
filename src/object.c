@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/25 20:06:31 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/26 15:45:37 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,40 +69,34 @@ double	solve_eq_2nd(double a, double b, double c)
 	return ((r1 < r2) ? r1 : r2);
 }
 
+void	ray_adapt_pos_dir(t_vec3 *ray_dir, t_vec3 *ray_pos, t_vec3 obj_pos, t_mat3 rot_inv)
+{
+	*ray_pos = mat3_mult_vec3(rot_inv, vec3_sub(*ray_pos, obj_pos));
+	*ray_dir = vec3_normalise(mat3_mult_vec3(rot_inv, *ray_dir));
+}
+
 //						   |  GET_DIST 	|	
 //	###################### V 			V ############################
 
 //TODO Refacto les rotation de la lib quaterion
 void	obj_set_invrot(t_obj *obj, double rx, double ry, double rz)
 {
-	obj->rot_inv = mat3_rot_all(rx, ry, 0);
 	(void)rz;
-	/*
-	obj->ang[0] = -rx;
-	obj->ang[1] = -ry;
-	obj->ang[2] = -rz;
-	mat_set_all_rot(obj->rot_inv, obj->ang);
-	ang[0] = rx;
-	ang[1] = ry;	
-	ang[2] = rz;
-	mat_set_all_rot(rot_dir, ang);					// on initialise la matrice pour faire tourner la direction
-	vec_set(obj->dir, 0, 0, 1);						// on initialise un vecteur pour le faire tourner
-	mat_mult_vec(rot_dir, obj->dir, obj->dir);		// on defini la direction
-	*/
+	obj->rot_inv = mat3_rot_all(-rx, -ry, 0);
 }
 
-//	la new pos de l'abjet est nul mais 
-//TODO Refacto les rotation de la lib quaterion
-t_vec3	adapt_cam_pos(t_obj *obj, t_vec3 cam_pos)
-{
-	return (mat3_mult_vec3(obj->rot_inv, vec3_sub(cam_pos, obj->pos)));
-}
-
-//TODO Refacto les rotation de la lib quaterion
-t_vec3	adapt_ray_dir(t_obj *obj, t_vec3 ray_dir)
-{
-	return (mat3_mult_vec3(obj->rot_inv, ray_dir));
-}
+////	la new pos de l'abjet est nul mais 
+////TODO Refacto les rotation de la lib quaterion
+//t_vec3	adapt_cam_pos(t_obj *obj, t_vec3 cam_pos)
+//{
+//	return (mat3_mult_vec3(obj->rot_inv, vec3_sub(cam_pos, obj->pos)));
+//}
+//
+////TODO Refacto les rotation de la lib quaterion
+//t_vec3	adapt_ray_dir(t_obj *obj, t_vec3 ray_dir)
+//{
+//	return (mat3_mult_vec3(obj->rot_inv, ray_dir));
+//}
 
 double	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir)
 {
@@ -126,31 +120,17 @@ double	get_dist_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 	return (dist);
 }
 
-void	ray_adapt_pos_dir(t_vec3 *ray_dir, t_vec3 *ray_pos, t_vec3 obj_pos, t_mat3 rot_inv)
-{
-	*ray_pos = mat3_mult_vec3(rot_inv, vec3_sub(*ray_pos, obj_pos));
-	*ray_dir = vec3_normalise(mat3_mult_vec3(rot_inv, *ray_dir));
-}
-
 //	si on test sans les corection, on doit avoir l'objet en 0 et de dir uz
 double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	double	a;
 	double	b;
 	double	c;
-	t_vec3	ray_pos2;
-	t_vec3	ray_dir2;
-(void) ray_pos; (void) ray_dir;
-(void) ray_pos2; (void) ray_dir2;
 
 	ray_adapt_pos_dir(&ray_dir, &ray_pos, cylinder->pos, cylinder->rot_inv);
-
-	ray_pos2 = ray_pos;
-	ray_dir2 = ray_dir;
-
-	a = ray_dir2.x * ray_dir2.x + ray_dir2.y * ray_dir2.y;
-	b = 2 * (ray_dir2.x * ray_pos2.x + ray_dir2.y * ray_pos2.y);
-	c = ray_pos2.x * ray_pos2.x + ray_pos2.y * ray_pos2.y - cylinder->value * cylinder->value;
+	a = ray_dir.x * ray_dir.x + ray_dir.y * ray_dir.y;
+	b = 2 * (ray_dir.x * ray_pos.x + ray_dir.y * ray_pos.y);
+	c = ray_pos.x * ray_pos.x + ray_pos.y * ray_pos.y - cylinder->value * cylinder->value;
 	return (solve_eq_2nd(a, b, c));
 }
 
@@ -159,20 +139,8 @@ double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 	double	a;
 	double	b;
 	double	c;
-	t_vec3	ray_pos2; // on pourrai laisser le r2 (cone->radisu)
-	t_vec3	ray_dir2;
-(void) ray_pos; (void) ray_dir;
-(void) ray_pos2; (void) ray_dir2;
 
-	// must adapte position then orientation
-//	ray_pos2 = vec3_sub(ray_pos, cone->pos);
-//	ray_dir2 = mat3_mult_vec3(cone->rot_inv, ray_dir);
-
-// debug phase
 	ray_adapt_pos_dir(&ray_dir, &ray_pos, cone->pos, cone->rot_inv);
-
-	ray_pos2 = ray_pos;
-	ray_dir2 = ray_dir;
 	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
 	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * cone->value);
 	c = RP0 * RP0 + RP1 * RP1 - RP2 * RP2 * cone->value;
@@ -295,40 +263,46 @@ t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact)
 **
 */
 
-int		solve_eq_2nd_2(double a, double b, double c)
+// la il faut recuperer les multiple intersection positive
+/*
+**	z: nb_solus
+**	x: dist 1
+**	y: dist 2
+**
+**	Si il une distance n'est pas defini on laisse la valeur negative
+*/
+
+t_vec3	eq_2nd_get_all_solution(double a, double b, double c)
 {
 	double	delta;
-	double	r1;
-	double	r2;
-	int		sum_result;
+	t_vec3	solus;
 
-	sum_result = 0;
+	solus = vec3_set(-1, -1, 0);
 	delta = b * b - 4 * a * c;
 	if (delta < 0)
-		return (-1);
+		return (solus);
 	delta = sqrt(delta);
-	r1 = (-delta - b) / (2 * a);
-	r2 = (delta - b) / (2 * a);
-//	printf("a:%f	b:%f	c:%f	r1:%.20f	r2:%.20f\n", a, b, c, r1, r2);
-	if ((float)r1 >= 0)
-		sum_result++;
-	if ((float)r2 >= 0)
-		sum_result++;
-	return (sum_result);
+	if ((solus.x = (-delta - b) / (2 * a)) >= 0)
+		solus.z++;
+	if ((solus.y = (delta - b) / (2 * a)) >= 0)
+		solus.z++;
+	return (solus);
 }
 
-// on ne devrai pas avoir le problem avec le plan
-int		get_dist_plan2(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir)
+/*
+**	le plan ne peu pas se faire de l'ombre sur lui meme
+*/
+
+t_vec3	dist_all_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	(void)plan;
 	(void)ray_pos;
 	(void)ray_dir;
-	return (0);
+	return (vec3_set(-1, -1, 0));
 }
 
-int		get_dist_sphere2(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
+t_vec3	dist_all_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 {
-	int		dist;
 	double	a;
 	double	b;
 	double	c;
@@ -336,54 +310,32 @@ int		get_dist_sphere2(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir)
 	a = vec3_dot(ray_dir, ray_dir);
 	b = 2 * (vec3_dot(ray_dir, ray_pos) - vec3_dot(ray_dir, sphere->pos));
 	c = vec3_dot(ray_pos, ray_pos) + vec3_dot(sphere->pos, sphere->pos) - 2 * vec3_dot(ray_pos, sphere->pos) - sphere->value * sphere->value;
-	dist = solve_eq_2nd_2(a, b, c);
-	return (dist);
+	return (eq_2nd_get_all_solution(a, b, c));
 }
-
 
 //	si on test sans les corection, on doit avoir l'objet en 0 et de dir uz
-int		get_dist_cylinder2(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
+t_vec3	dist_all_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	double	a;
 	double	b;
 	double	c;
-	t_vec3	ray_pos2;
-	t_vec3	ray_dir2;
-(void) ray_pos; (void) ray_dir;
-(void) ray_pos2; (void) ray_dir2;
 
 	ray_adapt_pos_dir(&ray_dir, &ray_pos, cylinder->pos, cylinder->rot_inv);
-
-	ray_pos2 = ray_pos;
-	ray_dir2 = ray_dir;
-
-	a = ray_dir2.x * ray_dir2.x + ray_dir2.y * ray_dir2.y;
-	b = 2 * (ray_dir2.x * ray_pos2.x + ray_dir2.y * ray_pos2.y);
-	c = ray_pos2.x * ray_pos2.x + ray_pos2.y * ray_pos2.y - cylinder->value * cylinder->value;
-	return (solve_eq_2nd_2(a, b, c));
+	a = ray_dir.x * ray_dir.x + ray_dir.y * ray_dir.y;
+	b = 2 * (ray_dir.x * ray_pos.x + ray_dir.y * ray_pos.y);
+	c = ray_pos.x * ray_pos.x + ray_pos.y * ray_pos.y - cylinder->value * cylinder->value;
+	return (eq_2nd_get_all_solution(a, b, c));
 }
 
-int		get_dist_cone2(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
+t_vec3	dist_all_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir)
 {
 	double	a;
 	double	b;
 	double	c;
-	t_vec3	ray_pos2; // on pourrai laisser le r2 (cone->radisu)
-	t_vec3	ray_dir2;
-(void) ray_pos; (void) ray_dir;
-(void) ray_pos2; (void) ray_dir2;
 
-	// must adapte position then orientation
-//	ray_pos2 = vec3_sub(ray_pos, cone->pos);
-//	ray_dir2 = mat3_mult_vec3(cone->rot_inv, ray_dir);
-
-// debug phase
 	ray_adapt_pos_dir(&ray_dir, &ray_pos, cone->pos, cone->rot_inv);
-
-	ray_pos2 = ray_pos;
-	ray_dir2 = ray_dir;
 	a = RD0 * RD0 + RD1 * RD1 - RD2 * RD2 * cone->value;
 	b = 2 * (RD0 * RP0 + RD1 * RP1 - RD2 * RP2 * cone->value);
 	c = RP0 * RP0 + RP1 * RP1 - RP2 * RP2 * cone->value;
-	return (solve_eq_2nd_2(a, b, c));
+	return (eq_2nd_get_all_solution(a, b, c));
 }

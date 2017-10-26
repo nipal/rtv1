@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/25 17:41:35 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/26 19:55:57 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@
 **	|
 **	v   to be more readeble in get_dist_cone (object.c)
 */
-# define RD0 ray_dir2.x
-# define RD1 ray_dir2.y
-# define RD2 ray_dir2.z
+# define RD0 ray_dir.x
+# define RD1 ray_dir.y
+# define RD2 ray_dir.z
 # define RP0 ray_pos.x
 # define RP1 ray_pos.y
 # define RP2 ray_pos.z
@@ -159,6 +159,7 @@ typedef	struct	s_item
 	int			nb_obj;
 	int			nb_cam;
 	double		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
+	t_vec3		(*obj_dist_all[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
 	t_vec3		(*obj_nrm[4])(t_obj *obj, t_vec3 pos_impact);
 }				t_item;
 
@@ -211,6 +212,10 @@ void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
 void	obj_set_invrot(t_obj *obj, double rx, double ry, double rz);
 t_vec3	obj_get_pos(t_vec3 ray_pos, t_vec3 ray_dir, double dist);
 void	plan_init(t_obj *plan);
+t_vec3	dist_all_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir);
+t_vec3	dist_all_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir);
+t_vec3	dist_all_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir);
+t_vec3	dist_all_sphere(t_obj *sphere, t_vec3 ray_pos, t_vec3 ray_dir);
 double	get_dist_cone(t_obj *cone, t_vec3 ray_pos, t_vec3 ray_dir);
 double	get_dist_cylinder(t_obj *cylinder, t_vec3 ray_pos, t_vec3 ray_dir);
 double	get_dist_plan(t_obj *plan, t_vec3 ray_pos, t_vec3 ray_dir);

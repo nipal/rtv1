@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/12 14:51:43 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/26 15:37:21 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,31 @@ void	TEMP_set_obj_nb(t_item *item)
 	item->nb_obj = i;
 }
 
-void	old_item_init(t_item *item, t_mlx_win *w)
-{
-	if (!item)
-		rtv1_exit(get_env());
-	ft_bzero(item, sizeof(item));
-	if (!(item->obj = (t_obj*)malloc(sizeof(t_obj) * 5))
-		|| !(item->light = (t_light*)malloc(sizeof(t_light) * 5)))
-		rtv1_exit(get_env());
-	item->nb_light = 4;
-	item->nb_obj = 4;
-	item->obj_dist[0] = get_dist_plan;
-	item->obj_dist[1] = get_dist_sphere;
-	item->obj_dist[2] = get_dist_cylinder;
-	item->obj_dist[3] = get_dist_cone;
-	item->obj_nrm[0] = get_normal_plan;
-	item->obj_nrm[1] = get_normal_sphere;
-	item->obj_nrm[2] = get_normal_cylinder;
-	item->obj_nrm[3] = get_normal_cone;
-	test_init_obj(item->obj);
-	test_init_light(item->light, item->nb_light);
-	item->size_x = w->size_x;
-	item->size_y = w->size_y;
-	item->cam = w->cam;
-	TEMP_set_obj_nb(item);
-
-}
+//void	old_item_init(t_item *item, t_mlx_win *w)
+//{
+//	if (!item)
+//		rtv1_exit(get_env());
+//	ft_bzero(item, sizeof(item));
+//	if (!(item->obj = (t_obj*)malloc(sizeof(t_obj) * 5))
+//		|| !(item->light = (t_light*)malloc(sizeof(t_light) * 5)))
+//		rtv1_exit(get_env());
+//	item->nb_light = 4;
+//	item->nb_obj = 4;
+//	item->obj_dist[0] = get_dist_plan;
+//	item->obj_dist[1] = get_dist_sphere;
+//	item->obj_dist[2] = get_dist_cylinder;
+//	item->obj_dist[3] = get_dist_cone;
+//	item->obj_nrm[0] = get_normal_plan;
+//	item->obj_nrm[1] = get_normal_sphere;
+//	item->obj_nrm[2] = get_normal_cylinder;
+//	item->obj_nrm[3] = get_normal_cone;
+//	test_init_obj(item->obj);
+//	test_init_light(item->light, item->nb_light);
+//	item->size_x = w->size_x;
+//	item->size_y = w->size_y;
+//	item->cam = w->cam;
+////	TEMP_set_obj_nb(item);
+//}
 
 const	char	*obj_get_type_name(int id)
 {
@@ -118,6 +117,10 @@ void	item_describe(t_item *item)
 
 void	init_obj_func(t_item *item)
 {
+	item->obj_dist_all[0] = dist_all_plan;
+	item->obj_dist_all[1] = dist_all_sphere;
+	item->obj_dist_all[2] = dist_all_cylinder;
+	item->obj_dist_all[3] = dist_all_cone;
 	item->obj_dist[0] = get_dist_plan;
 	item->obj_dist[1] = get_dist_sphere;
 	item->obj_dist[2] = get_dist_cylinder;
