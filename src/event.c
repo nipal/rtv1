@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/12 16:24:42 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/29 19:52:25 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		key_press(int key_code, t_mlx_win *w)
 {
 	(void)key_code;
 	double	ang = 5;
-	double	dist = 1;
+	double	dist = 0.5;
 	
 //	printf("key_press:%d\n", key_code);	
 	(key_code == KEY_ESC) ? rtv1_exit(w->env), w->refresh = 1: (void)w;
@@ -54,14 +54,16 @@ int		key_release(int key_code, t_mlx_win *w)
 int		mousse_press(int button, int x, int y, t_mlx_win *w)
 {
 	(void)w;
-	printf("mousse_press:%d	{%d, %d}\n", button, x, y);
+	if (button == 1)
+		test_ray(w, &w->env->item, x, y);
+//	printf("mousse_press:%d	{%d, %d}\n", button, x, y);
 	return (0);
 }
 
 int		mousse_release(int button, int x, int y, t_mlx_win *w)
 {
-	(void)w;(void)x;(void)y;
-	printf("mousse_release:%d	{%d, %d}\n", button, x, y);
+	(void)w;(void)x;(void)y;(void)button;
+//	printf("mousse_release:%d	{%d, %d}\n", button, x, y);
 	return (0);
 }
 

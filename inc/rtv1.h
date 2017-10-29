@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/26 19:55:57 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/29 18:18:52 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@
 # define RP2 ray_pos.z
 
 # define DEG  (M_PI / 180)
+
+extern int debug_ray;
+# define ZERO_P 0.0000001
+# define ZERO_N -0.0000001
 
 typedef	struct	timeval t_time;
 
@@ -301,5 +305,8 @@ void		item_fill(t_entities *beg, t_item *item);
 
 //void	rtv1_parse_file(char *file_content, int file_size, t_item *item);
 
-
+/*
+**	debug.c
+*/
+void	test_ray(t_mlx_win *w, t_item *item, int i, int j);
 #endif

@@ -1,0 +1,52 @@
+light
+{
+	pos		0, 0, 0
+	col		255, 255, 255 # couleur + puissance...
+}
+
+camera
+{
+	pos	1.877809, -2.350437, -0.120406
+	dir	-0.172987, 0.087156, 0.981060
+	up	-0.015134, -0.996195, 0.085832
+}
+
+# debg the NOT light visible if light and cam are not on the same side
+#camera
+#{
+#	pos	-0.244958, -0.868240, 1.822595
+#	dir	0.851651, -0.422618, -0.309976
+#	up	0.397131, 0.906308, -0.144544
+#}
+
+cone
+{
+	pos		2, -2, 1
+  	col		0, 100, 0
+	dir		0, 0, 1
+	value 	0.5
+}
+
+cone
+{
+	pos		2, -2, 3
+  	col		0, 50, 250
+	dir		0, 1, 0
+	value 	0.5
+}
+
+#cone
+#{
+#	pos		0, 2, -7
+#   col		200, 200, 200
+#	dir		0, 4, 1.1
+#	value 	0.5
+#}
+
+#cone
+#{
+#	pos		2, 3, 3
+#	col		108, 139, 61
+#	dir		0, 1, 0
+#	value	 1
+#}

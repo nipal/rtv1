@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/10/26 15:45:01 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/10/29 18:07:12 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ DEPS = ../inc/rtv1.h ../inc/vec_math.h ../inc/key_linux.h ../inc/key_mac.h
 
 SRC		= 						\
 			cam.c				\
+			debug.c				\
 			event.c				\
 			exit.c				\
 			item.c				\
@@ -28,7 +29,6 @@ SRC		= 						\
 			get_file.c			\
 			test.c				\
 			test_parsing.c		\
-								\
 			object.c			\
 
 
