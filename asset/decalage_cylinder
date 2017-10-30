@@ -1,0 +1,75 @@
+light
+{
+	pos	-0.544143, -2.646922, -1.037375
+	col		255, 255, 255 # couleur + puissance...
+}
+
+#camera
+#{
+#	pos	0, 0, -5
+#	dir	0, 0, 1
+#	up 	0, 1, 0
+#}
+
+camera
+{
+	pos	-0.309689, -6.027663, -1.912375
+	dir	-0.066987, 0.965926, 0.250000
+	up	0.250000, 0.258819, -0.933013
+}
+
+cylinder
+{
+	pos		-6, 0, 0
+ 	col		0, 255, 0
+	dir		1, 0, 0
+	value 	0.5
+}
+
+cylinder
+{
+	pos		-4, 0, 0
+ 	col		0, 255, 30
+	dir		1, 0, 0
+	value 	0.5
+}
+
+cylinder
+{
+	pos		-2, 0, 0
+ 	col		0, 255, 60
+	dir		1, 0, 0
+	value 	0.5
+}
+
+cylinder
+{
+	pos		0, 0, 0
+ 	col		0, 255, 90
+	dir		1, 0, 0
+	value 	0.5
+}
+
+cylinder
+{
+	pos		2, 0, 0
+ 	col		0, 255, 120
+	dir		1, 0, 0
+	value 	0.5
+}
+
+cylinder
+{
+	pos		4, 0, 0
+ 	col		0, 255, 150
+	dir		1, 0, 0
+	value 	0.5
+}
+
+cylinder
+{
+	pos		6, 0, 0
+ 	col		0, 255, 180
+	dir		1, 0, 0
+	value 	0.5
+}

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/29 19:52:25 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/30 23:41:53 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	print_time(long *histo, int size, int beg)
 
 }
 
+//TODO implement the time !!!!!!!!!!!!
 void	actual_time(t_env *e)
 {
 	(void)e;
@@ -152,12 +153,13 @@ int		main_bcl(t_env *e)
 	{
 		e->scene.refresh = 0;
 		launch_ray(&e->scene, &e->item);
+		pp_draw_light(&e->scene, e->item.light, 1, vec3_set(255, 255, 255));
 		mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 	}
 	actual_time(e);
 //	test_put_pixel(&e->scene);
-	test_basique(e);
-	mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
+//	test_basique(e);
+//	mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 	
 	return (0);
 }

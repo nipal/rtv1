@@ -1,0 +1,54 @@
+light
+{
+	pos		0, 0, 0
+	col		255, 255, 255 # couleur + puissance...
+}
+
+camera
+{
+	pos	0.000000, 0.000000, -10.000000
+	dir		0, 0, 1	
+	up	0.685008, -2.176282, 0.445717
+}
+
+sphere
+{
+	pos		-5, 0, -5
+	col		255, 0, 0
+	value	5.1
+}
+
+sphere
+{
+	pos		-5, 0, 0
+	col		255, 255, 0
+	value	5.1
+}
+
+sphere
+{
+	pos		-5, 0, 5
+	col		255, 255, 255
+	value	5.1
+}
+
+sphere
+{
+	pos		5, 0, 5
+	col		255, 0, 255
+	value	5.1
+}
+
+sphere
+{
+	pos		5, 0, 0
+	col		0, 255, 255
+	value	5.1
+}
+
+sphere
+{
+	col		0, 0, 255
+	pos		5, 0, -5
+	value	5.1
+}

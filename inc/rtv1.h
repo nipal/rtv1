@@ -6,14 +6,14 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/29 18:18:52 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/30 23:30:43 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# define SCENE_X		200
+# define SCENE_X		400
 # define SCENE_Y 		200
 
 # define KEY_PRESS                2
@@ -128,7 +128,7 @@ typedef	struct	s_mlx_win
 	t_env		*env;
 	void		*img;
 	void		*win;
-	t_cam		*cam;		// elle est cree ici. #CAM#
+	t_cam		*cam;		// c'est une adresse qui y est copier
 	int			depth;
 	int			endian;
 	t_pix		*data;
@@ -309,4 +309,21 @@ void		item_fill(t_entities *beg, t_item *item);
 **	debug.c
 */
 void	test_ray(t_mlx_win *w, t_item *item, int i, int j);
+
+/*
+**	ray_condition.c
+*/
+
+int		is_opposite_side(t_vec3 nrm1, t_vec3 nrm2, t_vec3 light_dir);
+int		is_light_right_side(t_vec3 ray_dir, t_vec3 light_dir, t_vec3 normal);
+int		is_self_intersect(t_item *item, t_vec3 from, t_vec3 to, int self);
+int		is_free_path(t_item *item, t_vec3 from, t_vec3 to, int self);
+int		is_light(t_item *item, t_vec3 from, t_vec3 to, int self);
+
+/*
+**	post_processing.c
+*/
+
+void	pp_draw_light(t_mlx_win *w, t_light *l, double radius, t_vec3 col);
+void	pp_draw_segment(t_mlx_win *w, t_vec3 from, t_vec3 to, t_vec3 color);
 #endif
