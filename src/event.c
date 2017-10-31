@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/30 23:41:53 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/10/31 18:04:38 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,11 +149,12 @@ int		main_bcl(t_env *e)
 {
 	(void)e;
 
-	if (1 || e->scene.refresh)	
+	if (e->scene.refresh)	
 	{
 		e->scene.refresh = 0;
 		launch_ray(&e->scene, &e->item);
-		pp_draw_light(&e->scene, e->item.light, 1, vec3_set(255, 255, 255));
+		// on pourrai aussi faire un truc ou on ne dessinne les lumiere que quand on appui sur une touche
+		pp_draw_light(&e->scene, e->item.light, 0.1, vec3_set(255, 200, 30));
 		mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 	}
 	actual_time(e);
