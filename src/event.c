@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 03:20:25 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 13:23:48 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,18 @@ void	post_processing(t_env *e)
 	t_obj		*obj;
 	t_item		*item;
 	t_light		*light;
+	int			i;
 
 	w = &e->scene;
 	item = &e->item;
 	obj = item->obj; 
 	light = item->light;
-	pp_draw_light_flat(w, light, 0.1, vec3_set(255, 200, 30));			// to test
+	i = 0;
+	while (i < item->nb_light)
+	{
+		pp_draw_light_flat(w, &item->light[i], 0.1, vec3_set(255, 200, 30));			// to test
+		i++;
+	}
 //	pp_draw_segment(w, light->pos, obj->pos, vec3_set(100, 50, 255));	// ok ca fonctionne
 	print_all_segement(e); // la on dessine les segment qui on ete ajouter
 }
