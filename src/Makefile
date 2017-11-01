@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/10/30 23:26:11 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/11/01 01:30:52 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC		= 						\
 			event.c				\
 			exit.c				\
 			item.c				\
+			lst.c				\
 			main.c				\
 			mlx_win.c			\
 			parse_rtv1.c		\
@@ -29,6 +30,7 @@ SRC		= 						\
 			ray.c				\
 			ray_condition.c		\
 			get_file.c			\
+			segment.c			\
 			test.c				\
 			test_parsing.c		\
 			object.c			\
