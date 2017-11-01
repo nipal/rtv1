@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 20:20:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/11 10:47:45 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 15:28:52 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_list	*create_node(char *str, int size)
 	
 	if (!(str)
 		|| !(node = malloc(sizeof(t_list)))
-		|| !(node->str = strdup(str)))
+		|| !(node->str = ft_strdup(str)))
 		return (NULL);
 	node->size = size;
 	node->next = NULL;
