@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:42:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 13:22:06 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 15:14:18 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,16 +152,17 @@ t_vec3	color_mix(t_vec3 light, t_vec3 obj, double spec)
 
 // coef = ambient + diffuse
 // spec = cef_speculare
-int		set_color(t_vec3 col, double coef, double spec)
+int		set_color(t_vec3 col, double coef, double spec, t_vec3 light_color)
 {
 	(void)spec;
 	int		color;
 	t_vec3	c;
+	t_vec3	l;
 	
-//	printf("coef:%f\n", coef);
+	l = vec3_scalar(light_color, 1.0 / 255);
+	col = vec3_set(l.x * col.x, l.y * col.y, l.z * col.z);
 	c = vec3_scalar(col, coef);
-	c = color_mix(vec3_set(255, 255, 255), c, spec);
-//	vec3_print_str(c, "col:");
+	c = color_mix(light_color, c, spec);
 	color = (((int)(c.x)) << 16) | (((int)(c.y)) << 8) | (((int)(c.z))); 
 	return (color);
 }
@@ -207,28 +208,29 @@ t_pix	color_add(t_pix a, int c2)
 int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 {
 	t_vec3		light_dir;
-	t_coef_fong	coef = {0.1, 0, 1};  // may be change c'est un truc propre a l'objet
+	static	t_coef_fong	coef = {0.1, 0, 1};  // may be change c'est un truc propre a l'objet
 	int			i;
 	t_pix		sum_color;
 	double		dist2;
 
 	sum_color.nb = 0;
-	i = 0;
-	while (i < item->nb_light)
+	i = -1;
+	while (++i < item->nb_light)
 	{
 		coef.diffuse = 1 - coef.ambient;
+		coef.specular = 1;
 		light_dir = vec3_sub(item->light[i].pos, zbuff->pos);
 		dist2 = vec3_dot(light_dir, light_dir);
 		light_dir = vec3_normalise(light_dir);
 		if (zbuff->dist < 0)
 			return (0);
-		if (!is_free_path(item, zbuff->pos, item->light[i].pos, zbuff->id)
+		if ((!is_free_path(item, zbuff->pos, item->light[i].pos, zbuff->id) && !(coef.specular = 0))
 		   ||  !is_light_right_side(ray_dir, light_dir, zbuff->nrm))
 			coef.diffuse = 0;
 		coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
-		coef.specular = light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
-		sum_color = color_add(sum_color, set_color(item->obj[zbuff->id].col, coef.diffuse + coef.ambient, coef.specular));
-		i++;
+		coef.specular *= light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
+		sum_color = color_add(sum_color,
+			set_color(item->obj[zbuff->id].col, coef.diffuse + coef.ambient, coef.specular, item->light[i].col));
 	}
 	return (sum_color.nb);
 }
@@ -268,7 +270,6 @@ void	launch_ray(t_mlx_win *w, t_item *item)
 
 	init_ray(item, &dir, &dx, &dy);
 	ratio = item->size_x / item->size_y;
-//	vec3_print_str(dir, "dir:");
 	j = 0;
 	while (j < w->size_y)
 	{
