@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 02:24:45 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 06:21:29 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,6 @@ void	cam_turn_up(t_cam *cam, double ang);
 void	cam_turn_down(t_cam *cam, double ang);
 void	cam_turn_right(t_cam *cam, double ang);
 void	cam_turn_left(t_cam *cam, double ang);
-void	launch_ray(t_mlx_win *w, t_item *item);
 void	reset_zbuff(t_mlx_win *w);
 void	find_collision(t_zbuff *zbuff, t_item *item, t_vec3 ray_dir);
 void	color_scene(t_mlx_win *w, t_light *light, t_obj *obj);
@@ -344,6 +343,13 @@ void		item_fill(t_entities *beg, t_item *item);
 **	debug.c
 */
 void	test_ray(t_mlx_win *w, t_item *item, int i, int j);
+
+/*
+**	ray.c
+*/
+
+t_vec3	ray_reflect(t_vec3 ray_dir, t_vec3 normal);
+void	launch_ray(t_mlx_win *w, t_item *item);
 
 /*
 **	ray_condition.c

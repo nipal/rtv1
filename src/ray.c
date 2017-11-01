@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:42:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 01:36:14 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 09:58:56 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,42 @@ void	find_collision(t_zbuff *zbuff, t_item *item, t_vec3 ray_dir)
 //	phong: Ambient, difuse, speculaire
 // is_free_path -> difuse, speculaire
 
+//	pour recuperer le rayon reflechis
+t_vec3	ray_reflect(t_vec3 ray_dir, t_vec3 normal)
+{
+//	double	coef;
+//	t_vec3	tmp;
+//	t_vec3	tmp2;
+
+//	coef = vec3_dot(ray_dir, normal);
+//	tmp = vec3_scalar(normal, coef);
+//	tmp2 = vec3_sub(tmp, ray_dir);
+//	reflect = vec3_add(ray_dir, vec3_scalar(tmp2, 2));
+
+	t_vec3	reflect;
+
+	reflect = vec3_add(ray_dir, vec3_scalar(vec3_sub(vec3_scalar(
+						normal, vec3_dot(ray_dir, normal)), ray_dir), 2));
+	return (reflect);
+//	return (vec3_add(ray_dir, vec3_scalar(vec3_sub(
+//			vec3_scalar(normal, vec3_dot(ray_dir, normal)), ray_dir), 2)));
+}
 
 double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
 {
 	t_vec3	ray_opp;
 	double	coef;
-	
-	// on construit le rayon reflechi
-	coef = vec3_dot(nrm, ray_dir);
-	ray_opp = vec3_scalar(nrm, coef);
-	ray_opp = vec3_sub(ray_opp, ray_dir);
-	ray_opp = vec3_scalar(ray_opp, 2);
-	ray_opp = vec3_add(ray_dir, ray_opp);
-	// on le compar au rayon lumineux
-	coef = vec3_dot(ray_opp, light_dir);
-	return ((coef > -0.999) ? 0 : -coef);
+
+	ray_opp = ray_reflect(ray_dir, nrm);	
+	coef = vec3_dot(light_dir, ray_opp);
+	if (debug_ray)
+		printf("signe: %c ", (coef > 0) ? '+' : '-');
+	coef = (coef < 0) ? -coef : 0;
+	coef = pow(coef, 6);
+	if (debug_ray)
+		printf("specular:%f\n", coef);
+//	coef = fabs(pow(coef, 5));
+	return (coef);
 }
 
 double	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, double dist2)
@@ -128,6 +149,12 @@ typedef	struct	s_phong_coef
 	double		specular;
 }				t_coef_fong;
 
+//	coef_1 => [0, 1]
+t_vec3	color_mix(t_vec3 light, t_vec3 obj, double spec)
+{
+	return (vec3_add(vec3_scalar(light, spec), vec3_scalar(obj, 1 - spec)));
+}
+
 // coef = ambient + diffuse
 // spec = cef_speculare
 int		set_color(t_vec3 col, double coef, double spec)
@@ -138,11 +165,9 @@ int		set_color(t_vec3 col, double coef, double spec)
 	
 //	printf("coef:%f\n", coef);
 	c = vec3_scalar(col, coef);
+	c = color_mix(vec3_set(255, 255, 255), c, spec);
 //	vec3_print_str(c, "col:");
 	color = (((int)(c.x)) << 16) | (((int)(c.y)) << 8) | (((int)(c.z))); 
-//	color = (int)(c.x + (255 - c.x) * spec) << 16 
-//		| (int)(c.y + (255 - c.y * spec)) << 8 
-//		| (int)(c.z + (255 - c.z) * spec);
 	return (color);
 }
 
@@ -166,7 +191,7 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 	   ||  !is_light_right_side(ray_dir, light_dir, zbuff->nrm))
 		coef.diffuse = 0;
 	coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
-	coef.specular = 0;//light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
+	coef.specular = light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
 	return (set_color(item->obj[id].col, coef.diffuse + coef.ambient, coef.specular));
 }
 
