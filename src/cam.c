@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/29 16:45:46 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 02:58:42 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ void	reset_zbuff(t_mlx_win *w)
 	i = 0;
 	while (i < max)
 	{
-		w->z_buff[i].id = -1;
-		w->z_buff[i].dist = -1;
+		w->zbuff[i].id = -1;
+		w->zbuff[i].dist = -1;
 		i++;
 	}
 }

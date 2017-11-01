@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 19:32:10 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/29 21:18:14 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 01:36:14 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,7 +284,7 @@ t_vec3	get_normal_cone(t_obj *cone, t_vec3 pos_impact)
 
 /*
 **	Pour dessiner la scene on va faire des baille.
-**	il faut trouver l'objet le plus proche: z_buffer + (id_obj/type_obj)
+**	il faut trouver l'objet le plus proche: zbuffer + (id_obj/type_obj)
 **
 */
 

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:42:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/30 22:22:41 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 01:36:14 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,8 @@ void	launch_ray(t_mlx_win *w, t_item *item)
 		{
 			dir = vec3_add(dir, dx);
 			dir_nrm = vec3_normalise(dir);
-			find_collision(w->z_buff + i + j * w->size_x, item, dir_nrm);
-			w->data[i + j * w->size_x].nb = get_phong_color(item, w->z_buff + i + j * w->size_x, dir_nrm);
+			find_collision(w->zbuff + i + j * w->size_x, item, dir_nrm);
+			w->data[i + j * w->size_x].nb = get_phong_color(item, w->zbuff + i + j * w->size_x, dir_nrm);
 			i++;
 		}
 		dir = vec3_sub(dir, vec3_scalar(item->cam->ux, ratio));

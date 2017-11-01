@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/29 17:57:35 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/30 18:34:01 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 01:36:14 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	test_ray(t_mlx_win *w, t_item *item, int i, int j)
 	tmp_y = vec3_scalar(dy, j);
 	dir = vec3_add3(dir, tmp_x, tmp_y);
 	dir_nrm = vec3_normalise(dir);
-	find_collision(w->z_buff + i + j * w->size_x, item, dir_nrm);
-	w->data[i + j * w->size_x].nb = get_phong_color(item, w->z_buff + i + j * w->size_x, dir_nrm);
+	find_collision(w->zbuff + i + j * w->size_x, item, dir_nrm);
+	w->data[i + j * w->size_x].nb = get_phong_color(item, w->zbuff + i + j * w->size_x, dir_nrm);
 	debug_ray = 0;
 }

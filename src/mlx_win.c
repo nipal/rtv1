@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/06 17:16:02 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 01:38:59 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 #include <mlx.h>
 
 /*suppresion de size_ine dans la structure win_mlx*/
+
+int			mlx_win_is_inside(t_mlx_win *w, int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < w->size_x && y < w->size_y);
+}
 
 int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 {
@@ -31,7 +36,7 @@ int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 			|| !(w->img = mlx_new_image(e->mlx, size_x, size_y))
 			|| !(w->data = (t_pix*)mlx_get_data_addr(w->img, &(w->depth)
 					, &(w->size_x), &(w->endian)))
-			|| !(w->z_buff = (t_zbuff*)malloc(sizeof(t_zbuff) * size_x * size_y)))
+			|| !(w->zbuff = (t_zbuff*)malloc(sizeof(t_zbuff) * size_x * size_y)))
 		return (-1);
 	w->name = name;
 	w->mouse = vec3_set(0, 0, 0);
@@ -54,7 +59,7 @@ void		init_win_event(t_mlx_win *w)
 
 void		mlx_win_finish(t_mlx_win *w)
 {
-	free(w->z_buff);
+	free(w->zbuff);
 			/*	les evenltuel fonction de fin de la mlx	*/
 			/*	mais bon voila	*/
 }
