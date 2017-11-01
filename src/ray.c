@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:42:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 09:58:56 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 13:22:06 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,11 @@ double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
 
 	ray_opp = ray_reflect(ray_dir, nrm);	
 	coef = vec3_dot(light_dir, ray_opp);
-	if (debug_ray)
-		printf("signe: %c ", (coef > 0) ? '+' : '-');
-	coef = (coef < 0) ? -coef : 0;
-	coef = pow(coef, 6);
+	if (coef >= 0)
+		return (0);
+	coef = pow(-coef, 20);
 	if (debug_ray)
 		printf("specular:%f\n", coef);
-//	coef = fabs(pow(coef, 5));
 	return (coef);
 }
 
@@ -129,11 +127,8 @@ double	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, double di
 // TODO: find solution for light power
 	a = fabs(vec3_dot(vec3_normalise(light_dir), vec3_normalise(nrm)));
 	if (debug_ray)
-	{
 		printf("coef_difuse:%f\n", a);
-	}
 	coef = ((3 / (0.01 + dist2)) * a);
-//	printf("coef_finale:%f	coef_dot_prod:%f\n", coef, a);
 	if (coef > 1)
 		return (1);
 	else if (coef < 0)
@@ -171,28 +166,71 @@ int		set_color(t_vec3 col, double coef, double spec)
 	return (color);
 }
 
+//int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
+//{
+//	t_vec3		light_dir;
+//	double		dist2;
+//	t_coef_fong	coef = {0.1, 0, 1};  // may be change
+//	int			id;
+//
+//	coef.diffuse = 1 - coef.ambient;
+//	id = zbuff->id;
+//	/* pour chaque lumiere */ 
+//	light_dir = vec3_sub(item->light[0].pos, zbuff->pos);
+//	dist2 = vec3_dot(light_dir, light_dir);
+//	light_dir = vec3_normalise(light_dir);
+//	if (zbuff->dist < 0)
+//		return (0);
+////		return (0x26053e); // on a toucher AUCUN objet la c'est du violet fonce
+//	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id)
+//	   ||  !is_light_right_side(ray_dir, light_dir, zbuff->nrm))
+//		coef.diffuse = 0;
+//	coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
+//	coef.specular = light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
+//	return (set_color(item->obj[id].col, coef.diffuse + coef.ambient, coef.specular));
+//}
+
+t_pix	color_add(t_pix a, int c2)
+{
+	t_pix 	b;
+	t_pix	sum;
+	int		tmp;
+
+	b.nb = c2;
+	sum.comp[0] = ((tmp = a.comp[0] + b.comp[0]) > 255) ? 255 : tmp;
+	sum.comp[1] = ((tmp = a.comp[1] + b.comp[1]) > 255) ? 255 : tmp;
+	sum.comp[2] = ((tmp = a.comp[2] + b.comp[2]) > 255) ? 255 : tmp;
+	sum.comp[3] = ((tmp = a.comp[3] + b.comp[3]) > 255) ? 255 : tmp;
+	return (sum);
+}
+
 int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 {
 	t_vec3		light_dir;
+	t_coef_fong	coef = {0.1, 0, 1};  // may be change c'est un truc propre a l'objet
+	int			i;
+	t_pix		sum_color;
 	double		dist2;
-	t_coef_fong	coef = {0.1, 0, 1};  // may be change
-	int			id;
 
-	coef.diffuse = 1 - coef.ambient;
-	id = zbuff->id;
-	/* pour chaque lumiere */ 
-	light_dir = vec3_sub(item->light[0].pos, zbuff->pos);
-	dist2 = vec3_dot(light_dir, light_dir);
-	light_dir = vec3_normalise(light_dir);
-	if (zbuff->dist < 0)
-		return (0);
-//		return (0x26053e); // on a toucher AUCUN objet la c'est du violet fonce
-	if (!is_free_path(item, zbuff->pos, item->light[0].pos, id)
-	   ||  !is_light_right_side(ray_dir, light_dir, zbuff->nrm))
-		coef.diffuse = 0;
-	coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
-	coef.specular = light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
-	return (set_color(item->obj[id].col, coef.diffuse + coef.ambient, coef.specular));
+	sum_color.nb = 0;
+	i = 0;
+	while (i < item->nb_light)
+	{
+		coef.diffuse = 1 - coef.ambient;
+		light_dir = vec3_sub(item->light[i].pos, zbuff->pos);
+		dist2 = vec3_dot(light_dir, light_dir);
+		light_dir = vec3_normalise(light_dir);
+		if (zbuff->dist < 0)
+			return (0);
+		if (!is_free_path(item, zbuff->pos, item->light[i].pos, zbuff->id)
+		   ||  !is_light_right_side(ray_dir, light_dir, zbuff->nrm))
+			coef.diffuse = 0;
+		coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
+		coef.specular = light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
+		sum_color = color_add(sum_color, set_color(item->obj[zbuff->id].col, coef.diffuse + coef.ambient, coef.specular));
+		i++;
+	}
+	return (sum_color.nb);
 }
 
 void	init_ray(t_item *item, t_vec3 *dir, t_vec3 *dx, t_vec3 *dy)
