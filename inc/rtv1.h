@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/30 23:30:43 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 02:24:45 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,23 @@ extern int debug_ray;
 # define ZERO_P 0.0000001
 # define ZERO_N -0.0000001
 
+typedef	struct	s_lst	t_lst;
+struct		s_lst
+{
+	char	cpy;
+	void	*ptr;
+	t_lst	*next;
+};
+
 typedef	struct	timeval t_time;
+
+typedef	struct	s_seg
+{
+	t_vec3	from;
+	t_vec3	to;
+	t_vec3	c1;
+	t_vec3	c2;		// dans l'enticipation de faire des degtrader avec des ligne
+}				t_seg;
 
 typedef	struct	s_index
 {
@@ -132,7 +148,7 @@ typedef	struct	s_mlx_win
 	int			depth;
 	int			endian;
 	t_pix		*data;
-	t_zbuff		*z_buff;
+	t_zbuff		*zbuff;
 	char		*name;
 	int			size_x;
 	int			size_y;
@@ -159,6 +175,7 @@ typedef	struct	s_item
 	t_cam		*cam;					//		#CAM# on a une copie du pointeur ici qui est declarer dans t_mlx_win
 	t_light		*light;
 	t_obj		*obj;
+	t_lst		*all_segment;	// ... 	on verra si c'est approprier
 	int			nb_light;
 	int			nb_obj;
 	int			nb_cam;
@@ -187,6 +204,23 @@ typedef	struct	s_entities
 	struct	s_entities	*next;
 }				t_entities;
 
+
+/////////// NEED TO TEST THE LST FUNCTION BECAUSE I DIDNT DO IT	\\\\\\\\\\\#
+/*
+**	lst.c
+*/
+
+t_lst	*lst_create_node(void *ptr);
+t_lst	*lst_create_node_copy(void *ptr, size_t size);
+void	lst_add_front(t_lst **beg, t_lst *node);
+void	lst_add_back(t_lst **beg, t_lst *node);
+void	lst_destroy_one(t_lst **node);
+void	lst_destroy_all(t_lst **beg);
+void	lst_map(t_lst *beg, void (*f)(void *data));
+void	lst_map_env(t_lst *beg, void (*f)(void *env, void *ptr), void *env);
+void	lst_remove_node(t_lst **beg, t_lst *target);
+void	lst_remove_node_if(t_lst **beg, int (*f)(t_lst*));
+void	lst_remove_destroy_node_if(t_lst **beg, int (*f)(t_lst*));
 
 /*
 **	cam.c
@@ -233,6 +267,7 @@ t_vec3	get_normal_sphere(t_obj *sphere, t_vec3 pos_impact);
 **	mlx_win.c
 */
 
+int			mlx_win_is_inside(t_mlx_win *w, int x, int y);
 int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name);
 void		init_win_event(t_mlx_win *w);
 void		mlx_win_finish(t_mlx_win *w);
@@ -324,6 +359,15 @@ int		is_light(t_item *item, t_vec3 from, t_vec3 to, int self);
 **	post_processing.c
 */
 
-void	pp_draw_light(t_mlx_win *w, t_light *l, double radius, t_vec3 col);
+void	pp_draw_light_flat(t_mlx_win *w, t_light *l, double radius, t_vec3 col);
 void	pp_draw_segment(t_mlx_win *w, t_vec3 from, t_vec3 to, t_vec3 color);
+
+/*
+**	segment.c
+*/
+
+t_seg	seg_set(t_vec3 from, t_vec3 to, t_vec3 c1, t_vec3 c2);
+t_seg	*seg_create(t_vec3 from, t_vec3 to, t_vec3 c1, t_vec3 c2);
+void	seg_add_obj_nrm(t_lst **beg, t_mlx_win *w, int x, int y);
+void	seg_print(void *t_win_mlx, void *t_seg);
 #endif
