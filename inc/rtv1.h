@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 06:21:29 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 12:53:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ typedef	struct	s_env	t_env;
 
 typedef	union	u_pix
 {
-	int			nb;
-	char		comp[4];
+	int					nb;
+	unsigned	char	comp[4];
 }				t_pix;
 
 typedef	struct	s_zbuff
