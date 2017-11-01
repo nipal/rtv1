@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 17:52:41 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/30 18:05:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 15:03:58 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int		is_light_right_side(t_vec3 ray_dir, t_vec3 light_dir, t_vec3 normal)
 	ray_dir = vec3_normalise(ray_dir);
 	light_dir = vec3_normalise(light_dir);
 	normal = vec3_normalise(normal);
-	condition = ((vec3_dot(normal, ray_dir) * vec3_dot(normal, light_dir)) > 0);
-	condition = 1;
+	condition = !((vec3_dot(normal, ray_dir) * vec3_dot(normal, light_dir)) > 0);
+//	condition = 1;
 //	return (1);
 	if (debug_ray)
 		printf("is_light_right_side:	%s\n", condition ? "YES" : "NO");
@@ -67,7 +67,7 @@ int		is_self_intersect(t_item *item, t_vec3 from, t_vec3 to, int self)
 	c2 = (solus.y > ZERO_P && solus.y < dist);
 	condition = c1 || c2;
 
-	condition = 0;
+//	condition = 0;
 
 //	pt1 = obj_get_pos(from, dir, solus.x);
 //	pt2 = obj_get_pos(from, dir, solus.y);
