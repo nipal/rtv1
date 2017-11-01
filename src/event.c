@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/31 18:04:38 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 03:10:29 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int		key_press(int key_code, t_mlx_win *w)
 	(void)key_code;
 	double	ang = 5;
 	double	dist = 0.5;
-	
+
+
+/// 	TODO refacto poiteur sur fonction + meilleur gestion des evenement	genre ON_PRESS, ON_RELEAS , ON_PRESS
+//							----------> + multpress etc. etc. etc.
 //	printf("key_press:%d\n", key_code);	
 	(key_code == KEY_ESC) ? rtv1_exit(w->env), w->refresh = 1: (void)w;
 	(key_code == KEY_A) ? cam_turn_left(w->cam, ang * DEG), w->refresh = 1: (void)w;
@@ -55,7 +58,11 @@ int		mousse_press(int button, int x, int y, t_mlx_win *w)
 {
 	(void)w;
 	if (button == 1)
+	{
 		test_ray(w, &w->env->item, x, y);
+		seg_add_obj_nrm(&w->env->item.all_segment, w, x, y);
+		w->refresh = 1;
+	}
 //	printf("mousse_press:%d	{%d, %d}\n", button, x, y);
 	return (0);
 }
@@ -72,27 +79,6 @@ int		mousse_motion(int x, int y, t_mlx_win *w)
 	(void)w;(void)x;(void)y;
 //	printf("mouse_motion:	{%d, %d}\n", x, y);
 	return (0);
-}
-
-void	test_put_pixel(t_mlx_win *win)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	while (j < win->size_y)
-	{
-		i = 0;
-		while (i < win->size_x)
-		{
-			win->data[i + win->size_x * j].comp[0] = 10;
-			win->data[i + win->size_x * j].comp[1] = 40;
-			win->data[i + win->size_x * j].comp[2] = 3;
-			win->data[i + win->size_x * j].comp[3] = 0;
-			i++;
-		}
-		j++;
-	}
 }
 
 void	print_time(long *histo, int size, int beg)
@@ -145,6 +131,28 @@ void	actual_time(t_env *e)
 		*/
 }
 
+void	print_all_segement(t_env *e)
+{
+	lst_map_env(e->item.all_segment, seg_print, &e->scene);
+}
+
+
+void	post_processing(t_env *e)
+{
+	t_mlx_win	*w;
+	t_obj		*obj;
+	t_item		*item;
+	t_light		*light;
+
+	w = &e->scene;
+	item = &e->item;
+	obj = item->obj; 
+	light = item->light;
+//	pp_draw_light_flat(w, light, 0.1, vec3_set(255, 200, 30));			// to test
+	pp_draw_segment(w, light->pos, obj->pos, vec3_set(100, 50, 255));	// ok ca fonctionne
+	print_all_segement(e); // la on dessine les segment qui on ete ajouter
+}
+
 int		main_bcl(t_env *e)
 {
 	(void)e;
@@ -154,7 +162,7 @@ int		main_bcl(t_env *e)
 		e->scene.refresh = 0;
 		launch_ray(&e->scene, &e->item);
 		// on pourrai aussi faire un truc ou on ne dessinne les lumiere que quand on appui sur une touche
-		pp_draw_light(&e->scene, e->item.light, 0.1, vec3_set(255, 200, 30));
+		post_processing(e);
 		mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 	}
 	actual_time(e);
