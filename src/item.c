@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/26 15:37:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 02:28:42 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
 	free(file_str);
 	init_obj_func(item);
 	w->cam = item->cam;
+	item->all_segment = NULL;
 //printf("\n===========================================\n");
 	item_describe(item);
 //	old_item_init(item, w);
