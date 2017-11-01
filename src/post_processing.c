@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 19:34:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 02:13:37 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/01 05:42:22 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	pp_put_pix(t_mlx_win *w, t_vec3 pos, t_vec3 col)
 	y = (int)pos.y;
 	id = x + y * w->size_x;
 	if (mlx_win_is_inside(w, x, y) &&
-		(w->zbuff[id].dist < 0  || pos.z <= w->zbuff[id].dist))
+		(w->zbuff[id].dist < 0  || pos.z < w->zbuff[id].dist))
 	{
 		w->data[id].nb = pp_vec_to_color(col);
 		w->zbuff[id].dist = pos.z;
@@ -128,7 +128,7 @@ void	pp_draw_segment(t_mlx_win *w, t_vec3 from, t_vec3 to, t_vec3 color)
 	pt = pp_screen_proj_coord(w, from);
 	to = pp_screen_proj_coord(w, to);
 	dir_screen = vec3_sub(to, pt);
-	max = 2 * (sqrt(dir_screen.x * dir_screen.x + dir_screen.y * dir_screen.y));
+	max = (int)2 * (sqrt(dir_screen.x * dir_screen.x + dir_screen.y * dir_screen.y));
 	dir_screen = vec3_scalar(dir_screen, 1.0 / max);
 	dir_world = vec3_scalar(dir_world, 1.0 / max);
 	i = 0;
