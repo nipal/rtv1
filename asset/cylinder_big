@@ -1,0 +1,35 @@
+light
+{
+	pos		0, 0, 0
+	col		255, 255, 255 # couleur + puissance...
+}
+
+# test bug
+#camera
+#{
+#	pos	0, 0, 0
+#	dir 0, 0, -1
+#}
+
+camera
+{
+	pos	-3.775473, -3.111590, 1.932115
+	dir	0.709406, 0.500001, -0.496732
+	up	0.409576, -0.866025, -0.286789
+}
+
+cylinder
+{
+	pos		-7, 0, 0
+   col		0, 255, 255
+	dir		0, 0, 1
+	value 	2
+}
+
+cylinder
+{
+	pos		7, 0, 0
+   col		200, 200, 200
+	dir		0, 4, 1.1
+	value 	2
+}
