@@ -6,7 +6,7 @@
 #    By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/04 00:00:48 by fjanoty           #+#    #+#              #
-#    Updated: 2017/10/06 19:55:20 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/11/01 17:29:26 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,14 @@
 NAME	=	libquaternion.a
 DEPS	=	quaternion.h
 
-SRC		=	quaternion.c		\
-			mat3.c				\
-			vec3.c				\
+SRC		=	quaternion.c			\
+			quaternion_operator.c	\
+			mat3.c					\
+			mat3_rot.c				\
+			vec3.c					\
+			vec3_add_sub.c			\
+			vec3_operator.c			\
+			vec3_print.c			\
 
 OBJ		= $(SRC:.c=.o)
 
