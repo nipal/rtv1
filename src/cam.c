@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 02:58:42 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/03 19:40:39 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,22 @@ void	cam_turn_up(t_cam *cam, double ang)
 //	cam_describe(cam);
 }
 
-void	cam_describe(t_cam *c)
-{
-	t_vec3	n;
-
-	n.x = vec3_norme(c->ux);
-	n.y = vec3_norme(c->uy);
-	n.z = vec3_norme(c->uz);
-//	return ;
-	printf("pos:	{%f, %f, %f}\n\
-			ux :	|{%f, %f, %f}| = %f\n\
-			uy :	|{%f, %f, %f}| = %f\n\
-			uz :	|{%f, %f, %f}| = %f\n", c->pos.x, c->pos.y, c->pos.z,
-									c->ux.x, c->ux.y, c->ux.z, n.x,
-									c->uy.x, c->uy.y, c->uy.z, n.y,
-									c->uz.x, c->uz.y, c->uz.z, n.z);
-}
+//void	cam_describe(t_cam *c)
+//{
+//	t_vec3	n;
+//
+//	n.x = vec3_norme(c->ux);
+//	n.y = vec3_norme(c->uy);
+//	n.z = vec3_norme(c->uz);
+////	return ;
+//	printf("pos:	{%f, %f, %f}\n\
+//			ux :	|{%f, %f, %f}| = %f\n\
+//			uy :	|{%f, %f, %f}| = %f\n\
+//			uz :	|{%f, %f, %f}| = %f\n", c->pos.x, c->pos.y, c->pos.z,
+//									c->ux.x, c->ux.y, c->ux.z, n.x,
+//									c->uy.x, c->uy.y, c->uy.z, n.y,
+//									c->uz.x, c->uz.y, c->uz.z, n.z);
+//}
 
 void	cam_reset(t_cam *cam)
 {

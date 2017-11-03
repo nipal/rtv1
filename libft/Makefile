@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/09/13 19:48:58 by fjanoty           #+#    #+#              #
-#    Updated: 2017/11/03 17:21:48 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/11/03 22:50:21 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ SRC		= ft_atoi.c \
 		  ft_isdigit.c \
 		  ft_isprint.c \
 		  ft_itoa.c \
-		  ft_lstnew.c \
 		  ft_memalloc.c \
 		  ft_memccpy.c \
 		  ft_memchr.c \
@@ -73,9 +72,10 @@ SRC		= ft_atoi.c \
 		  ft_tolower.c \
 		  overflow_test.c \
 		  get_next_line.c \
+		  print_double.c	\
 		  ft_toupper.c 
 
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address 
+#CFLAGS = -Wall -Werror -g -fsanitize=address 
 
 OBJ		= $(SRC:.c=.o)
 

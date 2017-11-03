@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 13:31:56 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/03 23:29:06 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,10 +210,10 @@ t_vec3	str_get_vec3(const char *str, int *curs, int *err)
 	return (vec);
 }
 
-void	print_vec3(t_vec3 vec)
-{
-	printf("x:%f	y:%f	z:%f\n", vec.x, vec.y, vec.z);
-}
+//void	print_vec3(t_vec3 vec)
+//{
+//	printf("x:%f	y:%f	z:%f\n", vec.x, vec.y, vec.z);
+//}
 
 void	remove_coment(char *str)
 {
@@ -670,7 +670,7 @@ void		obj_manage_rot(t_obj *obj)
 	t_vec3	ang;
 
 	ang = vec3_cartesien_spherique(obj->dir);
-	vec3_print_str(ang, "ang");
+//	vec3_print_str(ang, "ang");
 //	obj_set_invrot(obj, ang.x, ang.y, 0);
 	obj->rot_inv = mat3_rot_all(-ang.x, -ang.y, 0);
 }

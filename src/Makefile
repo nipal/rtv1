@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/11/01 01:30:52 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/11/03 19:35:04 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,6 @@ SRC		= 						\
 			ray_condition.c		\
 			get_file.c			\
 			segment.c			\
-			test.c				\
-			test_parsing.c		\
 			object.c			\
 
 

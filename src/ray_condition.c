@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 17:52:41 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 15:03:58 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/03 19:40:00 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ int	is_opposite_side(t_vec3 nrm1, t_vec3 nrm2, t_vec3 light_dir)
 	int	condition;
 
 	condition = (vec3_dot(nrm1, light_dir) * vec3_dot(nrm2, light_dir)) < 0;
-	if (debug_ray)
-	{
-		printf("is_opposite_side:	%s\n", (condition) ? "YES" : "no");
-	}
 	return (condition);
 }
 
@@ -40,8 +36,6 @@ int		is_light_right_side(t_vec3 ray_dir, t_vec3 light_dir, t_vec3 normal)
 	condition = !((vec3_dot(normal, ray_dir) * vec3_dot(normal, light_dir)) > 0);
 //	condition = 1;
 //	return (1);
-	if (debug_ray)
-		printf("is_light_right_side:	%s\n", condition ? "YES" : "NO");
 	return (condition);
 }
 
@@ -74,15 +68,7 @@ int		is_self_intersect(t_item *item, t_vec3 from, t_vec3 to, int self)
 //	nrm1 = item->obj_nrm[obj->type](obj, pt1);
 //	nrm2 = item->obj_nrm[obj->type](obj, pt2);
 //	nrm_now = item->obj_nrm[obj->type](obj, from);
-	if (debug_ray)
-	{
-		printf("self_instersect	%s\n", (condition) ? "YES": "NO ");	
-		printf("	s1:%f	dist:%f	=> %s\n", solus.x, dist, (c1) ? "SHADOW" : "--");
-		printf("	s2:%f	dist:%f	=> %s\n", solus.y, dist, (c2) ? "SHADOW" : "--");
-//	printf("s1:%.25f	dist:%.25f	s1:%s 	dot_now:%.25f	dot_s1:%.25f\n", solus.x, dist, (solus.x > ZERO_P && solus.x < dist) ? "TRUE " : "false", vec3_dot(nrm_now, dir), vec3_dot(nrm1, dir));
-//	printf("s2:%.25f	dist:%.25f	s2:%s 	dot_now:%.25f	dot_s2:%.25f\n", solus.y, dist, (solus.y > ZERO_P && solus.y < dist) ? "TRUE " : "false", vec3_dot(nrm_now, dir), vec3_dot(nrm2, dir));
 
-	}
 //	if (((solus.x > 0 && solus.x < dist))
 //		|| ((solus.y > 0 && dist < dist)))
 //	printf("s1:%.15f	dist:%.15f	s1:%s 	dot_now:%.15f	dot_s1:%.15f\n", solus.x, dist, (solus.x > 0 && solus.x < dist) ? "TRUE " : "false", vec3_dot(nrm_now, dir), vec3_dot(nrm1, dir));

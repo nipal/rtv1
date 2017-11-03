@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 12:53:12 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/03 19:37:38 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@
 
 # define DEG  (M_PI / 180)
 
-extern int debug_ray;
+//extern int debug_ray;
 # define ZERO_P 0.0000001
 # define ZERO_N -0.0000001
 
@@ -226,7 +226,7 @@ void	lst_remove_destroy_node_if(t_lst **beg, int (*f)(t_lst*));
 **	cam.c
 */
 
-void	cam_describe(t_cam *c);
+//void	cam_describe(t_cam *c);
 void	cam_init(t_cam *cam);
 void	cam_init_draw_func(t_env *e);
 void	cam_reset(t_cam *cam);
@@ -316,8 +316,8 @@ void	test_init_light(t_light *light, int nb_light);
 **	item.c
 */
 
-void	obj_describe(t_obj *obj);
-void	light_describe(t_light *light);
+//void	obj_describe(t_obj *obj);
+//void	light_describe(t_light *light);
 void	cam_describe2(t_cam *cam);
 void	item_destroy(t_item *it);
 void	item_init(t_item *item, t_mlx_win *w, const char *str);

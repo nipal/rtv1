@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 15:16:03 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/03 23:30:56 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int		key_press(int key_code, t_mlx_win *w)
 	(key_code == KEY_J) ? cam_go_back(w->cam, dist) , w->refresh = 1: (void)w;
 	(key_code == KEY_K) ? cam_go_front(w->cam, dist) , w->refresh = 1: (void)w;
 	(key_code == KEY_P) ? cam_describe2(w->cam) : (void)w;
-	(key_code == KEY_O) ? obj_describe(w->env->item.obj) : (void)w;
-	(key_code == KEY_I) ? light_describe(w->env->item.light) : (void)w;
+//	(key_code == KEY_O) ? obj_describe(w->env->item.obj) : (void)w;
+//	(key_code == KEY_I) ? light_describe(w->env->item.light) : (void)w;
 //	mlx_put_image_to_window(w->env->mlx, w->env->scene.win, w->env->scene.img, 0, 0);
 	return (0);
 }
@@ -59,7 +59,6 @@ int		mousse_press(int button, int x, int y, t_mlx_win *w)
 	(void)w;
 	if (button == 1)
 	{
-		test_ray(w, &w->env->item, x, y);
 		seg_add_obj_nrm(&w->env->item.all_segment, w, x, y);
 		w->refresh = 1;
 	}
@@ -81,55 +80,55 @@ int		mousse_motion(int x, int y, t_mlx_win *w)
 	return (0);
 }
 
-void	print_time(long *histo, int size, int beg)
-{
-	int	i;
-	int	j;
+//void	print_time(long *histo, int size, int beg)
+//{
+//	int	i;
+//	int	j;
+//
+//	i = beg % size;
+//	j = 0;
+//	printf("========\n");
+//	while (j < size)
+//	{
+////		if (j == beg)
+////			printf("-->");
+//		printf("[%d]:%ld\n", j, histo[i]);
+//		i = (i + 1) % size;
+//		j++;
+//	}
+//
+//
+//}
 
-	i = beg % size;
-	j = 0;
-	printf("========\n");
-	while (j < size)
-	{
-//		if (j == beg)
-//			printf("-->");
-		printf("[%d]:%ld\n", j, histo[i]);
-		i = (i + 1) % size;
-		j++;
-	}
-
-
-}
-
-//TODO implement the time !!!!!!!!!!!!
-void	actual_time(t_env *e)
-{
-	(void)e;
-	/*
-	t_time	t;
-	static	int	i = 0;
-	static	long long	histo[30];
-	const	int		histo_size = (sizeof(histo) / sizeof(long));
-	
-	gettimeofday(&t, NULL);
-	e->last_frame = e->frame;
-	e->frame = (long)t.tv_usec + ((t.tv_sec % (3600))) * 1000000;
-//	printf("fps:%.1f\n", (1.0 / ((double)(e->frame - e->last_frame) / 1000000.0)));
-	if ((e->frame / 1000000) - (e->last_frame / 1000000) != 0)
-	{
-//		printf("[%ld][%ld]================\n", (e->frame / 1000000), (e->last_frame / 1000000));
-	}
-//	printf("time %ld\n", (e->frame - e->last_frame));
-	histo[i] = e->frame;
-	print_time(histo, histo_size, i + 1);
-//	printf("%d\n1000000\n", t.tv_usec);
-//	printf("i:%d\n", i);
-	long diff = (histo[i] - histo[(i - 1) % histo_size];
-	printf("FPS:	%.1f\n", ((1.0 / (double)((histo[i] - histo[(i - 1) % histo_size]) / 1000000.0))));
-	if (++i >= histo_size)
-		i = 0;
-		*/
-}
+////TODO implement the time !!!!!!!!!!!!
+//void	actual_time(t_env *e)
+//{
+//	(void)e;
+//	/*
+//	t_time	t;
+//	static	int	i = 0;
+//	static	long long	histo[30];
+//	const	int		histo_size = (sizeof(histo) / sizeof(long));
+//	
+//	gettimeofday(&t, NULL);
+//	e->last_frame = e->frame;
+//	e->frame = (long)t.tv_usec + ((t.tv_sec % (3600))) * 1000000;
+////	printf("fps:%.1f\n", (1.0 / ((double)(e->frame - e->last_frame) / 1000000.0)));
+//	if ((e->frame / 1000000) - (e->last_frame / 1000000) != 0)
+//	{
+////		printf("[%ld][%ld]================\n", (e->frame / 1000000), (e->last_frame / 1000000));
+//	}
+////	printf("time %ld\n", (e->frame - e->last_frame));
+//	histo[i] = e->frame;
+//	print_time(histo, histo_size, i + 1);
+////	printf("%d\n1000000\n", t.tv_usec);
+////	printf("i:%d\n", i);
+//	long diff = (histo[i] - histo[(i - 1) % histo_size];
+//	printf("FPS:	%.1f\n", ((1.0 / (double)((histo[i] - histo[(i - 1) % histo_size]) / 1000000.0))));
+//	if (++i >= histo_size)
+//		i = 0;
+//		*/
+//}
 
 void	print_all_segement(t_env *e)
 {
@@ -171,7 +170,7 @@ int		main_bcl(t_env *e)
 		post_processing(e);
 		mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
 	}
-	actual_time(e);
+//	actual_time(e);
 //	test_put_pixel(&e->scene);
 //	test_basique(e);
 //	mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);

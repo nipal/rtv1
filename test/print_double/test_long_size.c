@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   test_long_size.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/04 19:11:39 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/10/01 18:51:46 by fjanoty          ###   ########.fr       */
+/*   Created: 2017/11/03 20:14:58 by fjanoty           #+#    #+#             */
+/*   Updated: 2017/11/03 20:18:07 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdio.h>
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+int	main()
 {
-	if (src <= dst)
-		while (len--)
-			((unsigned char*)dst)[len] = ((unsigned char*)src)[len];
-	else
-		ft_memcpy(dst, src, len);
-	return (dst);
+//	long	l = -9223372036854775808;	
+
+	long l;
+	unsigned	long ul;
+
+	ul = -1;
+//	l = ul;
+	printf("%lu\n", ul);
+	return (0);
 }

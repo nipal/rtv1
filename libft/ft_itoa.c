@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/11 10:46:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/10/01 18:51:35 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 00:05:52 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,30 @@ char	*ft_itoa(int n)
 		return (ft_strcpy(s, "-2147483648"));
 	if (n == 0)
 		return (ft_strcpy(s, "0"));
+	if ((sign = n) < 0)
+		n = -n;
+	i = 0;
+	while (n > 0)
+	{
+		s[i++] = n % 10 + '0';
+		n /= 10;
+	}
+	if (sign < 0)
+		s[i++] = '-';
+	s[i] = '\0';
+	return (reverse(s));
+}
+
+char	*ft_ltoa(long n)
+{
+	int		i;
+	long	sign;
+	char	*s;
+
+	s = (char*)malloc(30);
+	bzero(s, 30);
+	if (n == 0)
+		return (strcpy(s, "0"));
 	if ((sign = n) < 0)
 		n = -n;
 	i = 0;

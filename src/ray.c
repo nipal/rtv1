@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:42:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 15:14:18 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/03 19:38:48 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
 	if (coef >= 0)
 		return (0);
 	coef = pow(-coef, 20);
-	if (debug_ray)
-		printf("specular:%f\n", coef);
 	return (coef);
 }
 
@@ -126,8 +124,6 @@ double	light_difuse_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, double di
 		
 // TODO: find solution for light power
 	a = fabs(vec3_dot(vec3_normalise(light_dir), vec3_normalise(nrm)));
-	if (debug_ray)
-		printf("coef_difuse:%f\n", a);
 	coef = ((3 / (0.01 + dist2)) * a);
 	if (coef > 1)
 		return (1);
