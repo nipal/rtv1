@@ -6,7 +6,7 @@
 #    By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/09/13 19:48:58 by fjanoty           #+#    #+#              #
-#    Updated: 2017/09/18 14:41:01 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/11/03 17:21:48 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ SRC		= ft_atoi.c \
 		  get_next_line.c \
 		  ft_toupper.c 
 
-#CFLAGS = -Wall -Werror -g -fsanitize=address 
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address 
 
 OBJ		= $(SRC:.c=.o)
 
