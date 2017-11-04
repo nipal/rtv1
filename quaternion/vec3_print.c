@@ -6,22 +6,12 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 16:38:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 00:07:00 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 09:16:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quaternion.h"
 #include "../inc/libft.h"
-
-//void	vec3_print(t_vec3 vec)
-//{
-//	ft_putstr("x:");
-//	print_double(vec.x, 10);
-//	ft_putstr("y:");
-//	print_double(vec.y, 10);
-//	ft_putstr("z:");
-//	print_double(vec.z, 10);
-//}
 
 void	vec3_print_str(t_vec3 vec, char *str)
 {

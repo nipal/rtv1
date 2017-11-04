@@ -6,12 +6,12 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 14:43:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 05:55:41 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 09:19:57 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEY_MAC
-# define KEY_MAC
+#ifndef KEY_MAC_H
+# define KEY_MAC_H
 
 # define SHIFT_L	257
 # define CTRL_L		256
@@ -31,8 +31,6 @@
 # define KEY_RIGHT	124
 # define KEY_DOWN	125
 # define KEY_UP		126
-
-
 
 # define KEY_A		0
 # define KEY_B		11
@@ -60,6 +58,5 @@
 # define KEY_X		7
 # define KEY_Y		16
 # define KEY_Z		6
-
 
 #endif

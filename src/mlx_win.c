@@ -6,12 +6,11 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 01:38:59 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 09:27:11 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-#include "vec_math.h"
 #include "libft.h"
 #include <mlx.h>
 

@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/04 18:24:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 23:50:30 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 09:15:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,21 @@ void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 
 /*
-typedef struct		s_list
-{
-	void			*content;
-	size_t			content_size;
-	struct s_list	*next;
-}					t_list;
-
-t_list				*ft_lstnew(void const *content, size_t content_size);
-void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
-void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void				ft_lstadd(t_list **alst, t_list *new);
-void				ft_lstadd_back(t_list **alst, t_list *new);
-void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
-t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-t_list				*read_line_number(int fd);
+**typedef struct		s_list
+**{
+**	void			*content;
+**	size_t			content_size;
+**	struct s_list	*next;
+**}					t_list;
+**
+**t_list				*ft_lstnew(void const *content, size_t content_size);
+**void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
+**void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
+**void				ft_lstadd(t_list **alst, t_list *new);
+**void				ft_lstadd_back(t_list **alst, t_list *new);
+**void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
+**t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+**t_list				*read_line_number(int fd);
 */
 
 int					is_int_over_flow(char *number);

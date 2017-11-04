@@ -6,13 +6,12 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 14:43:46 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 14:58:33 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 09:18:51 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef KEY_LINUX_H
 # define KEY_LINUX_H
-
 
 # define KEY_ESC	65307
 # define KEY_LEFT	65361

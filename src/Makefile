@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/11/03 19:35:04 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/11/04 09:29:01 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 #-fsanitize=address -g3
 NAME	=	../rtv1
-DEPS = ../inc/rtv1.h ../inc/vec_math.h ../inc/key_linux.h ../inc/key_mac.h
+DEPS =  ../inc/rtv1.h
 
 SRC		= 						\
 			cam.c				\
@@ -51,7 +51,7 @@ $(NAME): $(OBJ)
 #
 
 %.o: %.c $(DEPS)
-	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../vec_math
+	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc 
 
 clean:
 	rm -f $(OBJ)
