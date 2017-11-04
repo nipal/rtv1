@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:49:15 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 19:37:38 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 08:37:35 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,26 +162,29 @@ typedef	struct	s_obj
 	int			type;
 	t_vec3		col;					// pour l'instant comme on connais [0, 255] juste ca changera plus tard
 	t_mat3		rot_inv;
-	t_vec3		ang;	// on peut reconstruire ses transformation
+//	t_vec3		ang;	// on peut reconstruire ses transformation
 	t_vec3		pos;
 	t_vec3		dir;
 	double		value;
+	double		pow_spec;
 }				t_obj;
 
 typedef	struct	s_item
 {
 	double		size_x;
 	double		size_y;
-	t_cam		*cam;					//		#CAM# on a une copie du pointeur ici qui est declarer dans t_mlx_win
 	t_light		*light;
 	t_obj		*obj;
-	t_lst		*all_segment;	// ... 	on verra si c'est approprier
+	t_cam		*cam;					//		#CAM# on a une copie du pointeur ici qui est declarer dans t_mlx_win
+	t_cam		*all_cam;					//		#CAM# on a une copie du pointeur ici qui est declarer dans t_mlx_win
+	int			id_cam;
+	int			nb_cam;
 	int			nb_light;
 	int			nb_obj;
-	int			nb_cam;
 	double		(*obj_dist[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
 	t_vec3		(*obj_dist_all[4])(t_obj *obj, t_vec3 ray_pos, t_vec3 ray_dir);
 	t_vec3		(*obj_nrm[4])(t_obj *obj, t_vec3 pos_impact);
+	t_lst		*all_segment;	// ... 	on verra si c'est approprier
 }				t_item;
 
 typedef	struct	s_env
@@ -194,6 +197,7 @@ typedef	struct	s_env
 	t_item		item;
 	long		frame;
 	long		last_frame;
+	int			visual_debug;
 }				t_env;
 
 typedef	struct	s_entities
@@ -234,6 +238,7 @@ void	cam_go_back(t_cam *cam, double dist);
 void	cam_go_front(t_cam *cam, double dist);
 void	cam_go_left(t_cam *cam, double dist);
 void	cam_go_right(t_cam *cam, double dist);
+void	cam_switch(t_mlx_win *w, t_item *item);
 void	cam_turn_up(t_cam *cam, double ang);
 void	cam_turn_down(t_cam *cam, double ang);
 void	cam_turn_right(t_cam *cam, double ang);
