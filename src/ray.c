@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:42:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 19:38:48 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 08:51:21 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_vec3	ray_reflect(t_vec3 ray_dir, t_vec3 normal)
 //			vec3_scalar(normal, vec3_dot(ray_dir, normal)), ray_dir), 2)));
 }
 
-double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
+double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir, double pow_spec)
 {
 	t_vec3	ray_opp;
 	double	coef;
@@ -112,7 +112,9 @@ double	light_specular_coef(t_vec3 nrm, t_vec3 ray_dir, t_vec3 light_dir)
 	coef = vec3_dot(light_dir, ray_opp);
 	if (coef >= 0)
 		return (0);
-	coef = pow(-coef, 20);
+	coef = (pow_spec >= 3) ? pow(-coef, pow_spec): 0;
+	if (coef < 0.01)
+		return (0);
 	return (coef);
 }
 
@@ -204,7 +206,7 @@ t_pix	color_add(t_pix a, int c2)
 int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 {
 	t_vec3		light_dir;
-	static	t_coef_fong	coef = {0.1, 0, 1};  // may be change c'est un truc propre a l'objet
+	static	t_coef_fong	coef = {0.1, 0, 0.4};  // may be change c'est un truc propre a l'objet
 	int			i;
 	t_pix		sum_color;
 	double		dist2;
@@ -224,7 +226,7 @@ int		get_phong_color(t_item *item, t_zbuff *zbuff, t_vec3 ray_dir)
 		   ||  !is_light_right_side(ray_dir, light_dir, zbuff->nrm))
 			coef.diffuse = 0;
 		coef.diffuse *= light_difuse_coef(zbuff->nrm, ray_dir, light_dir, dist2);
-		coef.specular *= light_specular_coef(zbuff->nrm, ray_dir, light_dir); 
+		coef.specular *= light_specular_coef(zbuff->nrm, ray_dir, light_dir,item->obj[zbuff->id].pow_spec); 
 		sum_color = color_add(sum_color,
 			set_color(item->obj[zbuff->id].col, coef.diffuse + coef.ambient, coef.specular, item->light[i].col));
 	}
