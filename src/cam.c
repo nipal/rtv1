@@ -6,12 +6,18 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 19:40:39 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 06:05:48 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
+void	cam_switch(t_mlx_win *w, t_item *item)
+{
+	item->id_cam = (item->id_cam + 1) % item->nb_cam;
+	w->cam = &item->all_cam[item->id_cam];
+	item->cam = &item->all_cam[item->id_cam];
+}
 
 void	cam_go_front(t_cam *cam, double dist)
 {
