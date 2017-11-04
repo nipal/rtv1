@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 23:29:06 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 08:52:11 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,25 +162,25 @@ double	str_get_double(const char *str, int *curs)
 	return (nb);
 }
 
-void	test_get_double(const char *str)
-{
-	int	i;
-	
-	printf("%s -> %.20f\n", str, str_get_double(str, &i));
-	printf("%s -> %.20f\n", str, atof(str));
-}
+//void	test_get_double(const char *str)
+//{
+//	int	i;
+//	
+//	printf("%s -> %.20f\n", str, str_get_double(str, &i));
+//	printf("%s -> %.20f\n", str, atof(str));
+//}
 
 // debug
 
-void	print_bit(unsigned long toto, int val)
-{
-	char c;
-
-	c = (toto & 1) ? '1': '0';
-	if (++val < 64)
-		print_bit(toto >> 1, val);
-	printf("%c", c);
-}
+//void	print_bit(unsigned long toto, int val)
+//{
+//	char c;
+//
+//	c = (toto & 1) ? '1': '0';
+//	if (++val < 64)
+//		print_bit(toto >> 1, val);
+//	printf("%c", c);
+//}
 
 t_vec3	vec3_null(int i)
 {
@@ -228,7 +228,7 @@ void	remove_coment(char *str)
 			j = 0;
 			while (str[i + j] && str[i + j] != '\n')
 				j++;
-			memmove(str + i, str + i + j, strlen(str + i + j) + 1);
+			ft_memmove(str + i, str + i + j, ft_strlen(str + i + j) + 1);
 		}
 		i++;
 	}
@@ -264,7 +264,7 @@ long		get_asset_offset(int id_assets)
 	if (id_assets == 3)
 		return ((long)&o.col - (long)(&o));
 	if (id_assets == 4)
-		return ((long)&o.ang - (long)(&o));
+		return ((long)&o.pow_spec - (long)(&o));
 	return (-1);
 }
 
@@ -294,7 +294,7 @@ long		get_light_offset(int id_light)
 char	*get_tab(int tab_nb, int *size)
 {
 	static	char	object_type[][KEY_WORD_SIZE] = {"plan", "sphere", "cylinder", "cone", "light", "camera"};
-	static	char	assets_comp[][KEY_WORD_SIZE] = {"value", "pos", "dir", "col", "ang"};
+	static	char	assets_comp[][KEY_WORD_SIZE] = {"value", "pos", "dir", "col", "spec"};
 	static	char	cam_comp[][KEY_WORD_SIZE] = {"pos", "dir"};
 	static	char	light_comp[][KEY_WORD_SIZE] = {"pos", "col"};
 
@@ -346,7 +346,11 @@ int		find_id_from_name(char *word, int *add_curs, int tab_id)
 
 void	parse_error(int id, char *str)
 {
-	printf("parse error	%d:	txt==>%s<==\n", id, str);
+	ft_putstr("parse error	");
+	ft_putnbr(id);
+	ft_putstr(":	txt==>");
+	ft_putstr(str);
+	ft_putstr("<==\n");
 	exit(0);
 }
 
@@ -415,20 +419,35 @@ void	asset_comp_fill(char *str, int *add_curs, t_obj *obj, int id_comp)
 
 	i = 0;
 //printf("id_comp:%d\n", id_comp);
-	if (id_comp == 0)
+	if (id_comp == 0 || id_comp == 4)
 	{
-int	t1, t2; (void)t1; (void)t2;		
-//		printf("--------------->%.10s\n------------------------\n\n", str);
 		(*(double*)((long)obj + (long)get_asset_offset(id_comp))) = str_get_double(str, &i);
-	//	(*(double*)((long)obj + (long)get_asset_offset(id_comp))) = -123.345;
 	}
 	else
 		(*(t_vec3*)((long)obj + (long)get_asset_offset(id_comp))) = str_get_vec3(str, &i, &err);
 	*add_curs += i;
 }
 
+void	color_range(t_vec3 *col)
+{
+	if (col->x < 0)
+		col->x = 0;
+	if (col->y < 0)
+		col->y = 0;
+	if (col->z < 0)
+		col->z = 0;
+	if (col->x > 255)
+		col->x = 255;
+	if (col->y > 255)
+		col->y = 255;
+	if (col->z > 255)
+		col->z = 255;
+}
+
 void	asset_finish(t_obj *obj, int comp)
 {
+	double	coef;
+
 	if (!obj)
 		return ;
 	if (!(comp & 1))
@@ -439,6 +458,16 @@ void	asset_finish(t_obj *obj, int comp)
 		obj->dir = vec3_normalise(vec3_set(1, -1, -1));
 	if (!(comp & 8))
 		obj->col = vec3_set(200, 200, 200);
+	if (!(comp & 8))
+		obj->pow_spec = 0;
+	color_range(&obj->col);
+	if (obj->type == CONE)
+	{
+		coef = tan(obj->value * M_PI / 180.0); // converstion angle -> radian
+		obj->value = coef * coef;
+	}
+	else
+		obj->value = fabs(obj->value);
 }
 
 // str point sur le premier character apres la curly braket ouvrante
@@ -491,6 +520,7 @@ void	light_finish(t_light *light, int comp)
 		light->pos = vec3_set(0, 0, 0);
 	if (!(comp & 2))
 		light->col = vec3_set(255, 255, 255);
+	color_range(&light->col);
 }
 
 void	light_comp_fill(char *str, int *add_curs, t_light *light, int id_comp)
