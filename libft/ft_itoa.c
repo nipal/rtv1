@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/11 10:46:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 00:05:52 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 05:20:33 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*ft_ltoa(long n)
 	char	*s;
 
 	s = (char*)malloc(30);
-	bzero(s, 30);
+	ft_bzero(s, 30);
 	if (n == 0)
 		return (strcpy(s, "0"));
 	if ((sign = n) < 0)
