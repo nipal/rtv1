@@ -6,27 +6,24 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 19:34:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 05:42:22 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 15:15:46 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-/*
-**	renvoie les coordonnee projeter sur l'ecran
-**	donc (x, y)	=> ceux de l'ecran
-**	z 			=> la distance a l'ecran
-*/
 t_vec3	pp_screen_proj_coord(t_mlx_win *w, t_vec3 vec)
 {
 	t_vec3	proj;
 	double	ratio;
-	
+
 	ratio = w->size_x / w->size_y;
 	vec = vec3_sub(vec, w->cam->pos);
 	proj.z = vec3_dot(vec, w->cam->uz);
-	proj.x = (int)(((vec3_dot(vec, vec3_scalar(w->cam->ux, 1)) / (proj.z * ratio)) * w->size_x) + w->size_x / 2);
-	proj.y = (int)(((vec3_dot(vec, w->cam->uy) / proj.z) * w->size_y) + w->size_y / 2);
+	proj.x = (int)(((vec3_dot(vec, vec3_scalar(w->cam->ux, 1))
+					/ (proj.z * ratio)) * w->size_x) + w->size_x / 2);
+	proj.y = (int)(((vec3_dot(vec, w->cam->uy)
+					/ proj.z) * w->size_y) + w->size_y / 2);
 	return (proj);
 }
 
@@ -41,8 +38,9 @@ int		pp_is_circle(t_vec3 pos, double radius, double x, double y)
 
 int		pp_get_light_color(double radius, double x, double y, t_vec3 col)
 {
-	(void)radius; (void)x; (void)y;
-	// on fera plus tard un truc sympa sur les bord de la sphere
+	(void)radius;
+	(void)x;
+	(void)y;
 	return (((int)(col.x) << 16) |
 			((int)(col.y) << 8) |
 			((int)(col.z)));
@@ -65,16 +63,13 @@ void	pp_put_pix(t_mlx_win *w, t_vec3 pos, t_vec3 col)
 	y = (int)pos.y;
 	id = x + y * w->size_x;
 	if (mlx_win_is_inside(w, x, y) &&
-		(w->zbuff[id].dist < 0  || pos.z < w->zbuff[id].dist))
+		(w->zbuff[id].dist < 0 || pos.z < w->zbuff[id].dist))
 	{
 		w->data[id].nb = pp_vec_to_color(col);
 		w->zbuff[id].dist = pos.z;
-		//	il faudrait aussi metre a jour d'autre valeur... ou pas
 	}
 }
 
-//	pos.x , pos.y => le centre le la sphere
-//	pos.z sont radius
 void	pp_draw_circle(t_mlx_win *w, t_vec3 pos, double radius, t_vec3 col)
 {
 	int		i;
@@ -102,34 +97,26 @@ void	pp_draw_light_flat(t_mlx_win *w, t_light *l, double radius, t_vec3 col)
 {
 	t_vec3	pos;
 
-	pos	= pp_screen_proj_coord(w, l->pos);
+	pos = pp_screen_proj_coord(w, l->pos);
 	radius = (radius / pos.z) * w->size_y;
 	if (pos.z > 0)
 		pp_draw_circle(w, pos, radius, col);
 }
 
-/*
-**	En entrer on a deux point dans e repere du monde
-**	nous on va traduire ces coordoner dans le repere de la camera
-**	et on va tranquilement dessinner la ligne entre ces deux point
-**
-**	C'est dans une autre fonction que on va manager la creation, le stoquge
-**		et ordonner l'affichage, donc les appelle a cette fonction
-*/
 void	pp_draw_segment(t_mlx_win *w, t_vec3 from, t_vec3 to, t_vec3 color)
 {
 	int		i;
 	double	max;
-	t_vec3	dir_screen;
+	t_vec3	dir_scr;
 	t_vec3	dir_world;
 	t_vec3	pt;
 
 	dir_world = vec3_sub(to, from);
 	pt = pp_screen_proj_coord(w, from);
 	to = pp_screen_proj_coord(w, to);
-	dir_screen = vec3_sub(to, pt);
-	max = (int)2 * (sqrt(dir_screen.x * dir_screen.x + dir_screen.y * dir_screen.y));
-	dir_screen = vec3_scalar(dir_screen, 1.0 / max);
+	dir_scr = vec3_sub(to, pt);
+	max = (int)2 * (sqrt(dir_scr.x * dir_scr.x + dir_scr.y * dir_scr.y));
+	dir_scr = vec3_scalar(dir_scr, 1.0 / max);
 	dir_world = vec3_scalar(dir_world, 1.0 / max);
 	i = 0;
 	if (pt.z >= 0 && to.z >= 0
@@ -139,7 +126,7 @@ void	pp_draw_segment(t_mlx_win *w, t_vec3 from, t_vec3 to, t_vec3 color)
 			from = vec3_add(from, dir_world);
 			pt = pp_screen_proj_coord(w, from);
 			pt.z = vec3_norme(vec3_sub(from, w->cam->pos));
-			pp_put_pix(w, pt, color); 
+			pp_put_pix(w, pt, color);
 			i++;
 		}
 }
@@ -161,28 +148,7 @@ void	pp_draw_segment2(t_mlx_win *w, t_vec3 from, t_vec3 to, t_vec3 color)
 		while (i < max)
 		{
 			from = vec3_add(from, dir);
-			pp_put_pix(w, from, color); 
+			pp_put_pix(w, from, color);
 			i++;
 		}
 }
-
-
-	
-/*
-**	(1)	:Ou est-ce qu'on stoque toute les ligne
-**	(2)	:comment est-ce qu'on les cree
-**	(3)	:comment on en ajoute
-**	(4)	:comment en enleve? --> est-ce qu'on permet ca?
-**	(5)	:c'est quoi l'instance qui les manage?
-**	(6)	: A quelle moment, dans quel condition tout ca
-**			--> genre pour un normale a un obj...
-*/
-
-
-/*
-**	(1)	=>	on stoque tout dans des liste
-**	(2)	=>	avec une fonction 
-**	(3)	=>	foction de list: lst_add_front (pck + rapide)
-**	(4)	=>	on a des fonction generique de liste... 
-**	(5)	=>	un structur t_seg
-*/

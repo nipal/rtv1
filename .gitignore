@@ -4,6 +4,7 @@
 *.swp
 *.out
 **/**.swp
+*.gch
 *.vimsession
 *dYSM
 idee
