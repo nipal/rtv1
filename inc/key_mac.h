@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 14:43:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/07 14:56:57 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 05:55:41 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 # define CMD_R		260
 
 # define KEY_ESC	53
-# define ENTER		36
+# define KEY_ENTER	36
+# define KEY_TAB	48
 
 # define KEY_LEFT	123
 # define KEY_RIGHT	124
 # define KEY_DOWN	125
 # define KEY_UP		126
+
 
 
 # define KEY_A		0
