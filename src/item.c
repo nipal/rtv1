@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 23:36:44 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 06:06:59 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,33 @@ void	init_obj_func(t_item *item)
 	item->obj_nrm[3] = get_normal_cone;
 }
 
+void	add_cam_and_light_if_not(t_item *item, t_mlx_win *w)
+{
+	if (item->nb_cam <= 0)
+	{
+		if (!(item->cam = (t_cam*)malloc(sizeof(t_cam))))
+			rtv1_exit(get_env(NULL));
+		item->cam->pos = vec3_set(0, 0, -5);
+		item->cam->uz = vec3_set(0, 0, 1);
+		item->cam->uy = vec3_set(0, 1, 0);
+		item->cam->ux = vec3_set(1, 0, 0);
+		item->nb_cam = 1;
+		w->cam = item->cam;
+	}
+	if (item->nb_light <= 0)
+	{
+		if (!(item->light = (t_light*)malloc(sizeof(t_light))))
+			rtv1_exit(get_env(NULL));
+		if (item->nb_obj > 0)
+			item->light->pos = vec3_add(item->obj->pos, vec3_set(0, 0, 1));
+		else
+			item->light->pos = vec3_set(0, 0, 0);
+		item->light->col = vec3_set(255, 255, 255);
+		item->nb_light = 1;
+	}
+	item->all_cam = item->cam;
+}
+
 void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
 {
 	int			file_size;
@@ -129,6 +156,8 @@ void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
 	init_obj_func(item);
 	w->cam = item->cam;
 	item->all_segment = NULL;
+	add_cam_and_light_if_not(item, w);
+	item->id_cam = 0;
 //printf("\n===========================================\n");
 //	item_describe(item);
 //	old_item_init(item, w);
@@ -143,5 +172,5 @@ void	item_destroy(t_item *it)
 	if (it->obj)
 		free(it->obj);
 	if (it->cam)
-		free(it->cam);
+		free(it->all_cam);
 }
