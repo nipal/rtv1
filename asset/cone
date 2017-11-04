@@ -24,16 +24,16 @@ cone
 	pos		2, -2, 1
   	col		0, 255, 0
 	dir		0, 0, 1
-	value 	0.5
+	value 	10
 }
 
-cone
-{
-	pos		2, -2, 3
-  	col		0, 50, 250
-	dir		0, 1, 0
-	value 	0.5
-}
+#cone
+#{
+#	pos		2, -2, 3
+#  	col		0, 50, 250
+#	dir		0, 1, 0
+#	value 	30
+#}
 
 #cone
 #{
