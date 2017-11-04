@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/15 00:48:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/10/11 20:20:42 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 05:13:38 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		main(int ac, char **av)
 
 	if (ac < 2)
 	{
-		printf("usage:	rtv1 SCENE_FILE_PATH\n");
+		perror("usage:	rtv1 SCENE_FILE_PATH\n");
 		return (0);
 	}
 	ft_bzero(&e, sizeof(t_env));
