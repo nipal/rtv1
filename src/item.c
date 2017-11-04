@@ -6,55 +6,24 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 06:06:59 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 14:21:58 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-
-/*
-**	On va peuetre aussi metre une camera dedans
-**	en gros c'est la structure qui serra initialiser avec le parsing
-*/
-
-void	TEMP_set_obj_nb(t_item *item)
+char	*obj_get_type_name(int id)
 {
-	int	i;
-
-	i = 0;
-	while (item->obj[i].type >= 0)
-		i++;
-	item->nb_obj = i;
-}
-
-
-const	char	*obj_get_type_name(int id)
-{
-	switch (id)
-	{
-		case 0:
-			return ("plan");
-		case 1:
-			return ("sphere");
-		case 2:
-			return ("cylinder");
-		case 3:
-			return ("cone");
-	};
+	if (id == 0)
+		return ("plan");
+	if (id == 1)
+		return ("sphere");
+	if (id == 2)
+		return ("cylinder");
+	if (id == 3)
+		return ("cone");
 	return ("--noting--");
 }
-
-//void	obj_describe(t_obj *obj)
-//{
-//	ft_putstr(obj_get_type_name(obj->type));
-//	ft_putstr("\n{\n");
-//	vec3_print_str(obj->pos, "	pos	");
-//	vec3_print_str(obj->dir, "	dir	");
-//	vec3_print_str(obj->col, "	col	");
-//	printf("	value	%f\n", obj->value);
-//	printf("}\n\n");
-//}
 
 void	cam_describe2(t_cam *cam)
 {
@@ -63,35 +32,8 @@ void	cam_describe2(t_cam *cam)
 	vec3_print_str(cam->pos, "	pos");
 	vec3_print_str(cam->uz, "	dir");
 	vec3_print_str(cam->uy, "	up");
-//	printf("	pos	%f, %f, %f\n", cam->pos.x, cam->pos.y, cam->pos.z);
-//	printf("	dir	%f, %f, %f\n", cam->uz.x, cam->uz.y, cam->uz.z);
-//	printf("	up	%f, %f, %f\n", cam->uy.x, cam->uy.y, cam->uy.z);
 	ft_putstr("}\n\n");
 }
-
-//void	light_describe(t_light *light)
-//{
-//	printf("light\n");
-//	printf("{\n");
-//	vec3_print_str(light->pos, "	pos	");
-//	vec3_print_str(light->col, "	col	");
-//	printf("}\n\n");
-//}
-
-//void	item_describe(t_item *item)
-//{
-//	int	i;
-//	printf("obj:%d	light:%d	cam:%d\n\n", item->nb_obj, item->nb_light, item->nb_cam);
-//	i = 0;
-//	while (i < item->nb_obj)
-//		obj_describe(item->obj + i++);
-//	i = 0;
-//	while (i < item->nb_light)
-//		light_describe(item->light + i++);
-//	i = 0;
-//	while (i < item->nb_cam)
-//		cam_describe2(item->cam + i++);
-//}
 
 void	init_obj_func(t_item *item)
 {
@@ -158,9 +100,6 @@ void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
 	item->all_segment = NULL;
 	add_cam_and_light_if_not(item, w);
 	item->id_cam = 0;
-//printf("\n===========================================\n");
-//	item_describe(item);
-//	old_item_init(item, w);
 }
 
 void	item_destroy(t_item *it)

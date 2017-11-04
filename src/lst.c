@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 23:36:11 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/01 02:11:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 14:22:29 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	lst_destroy_all(t_lst **beg)
 	}
 }
 
-//	on le suprime juste, on ne le libere pas
 void	lst_remove_node(t_lst **beg, t_lst *target)
 {
 	t_lst	*prev;

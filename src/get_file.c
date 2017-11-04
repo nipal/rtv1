@@ -6,25 +6,16 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 20:20:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 05:13:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 14:16:40 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-# define BUFF_SIZE 1024
-
-typedef struct	s_list
-{
-	int				size;
-	char			*str;
-	struct	s_list	*next;
-}				t_list;
-
 t_list	*create_node(char *str, int size)
 {
 	t_list	*node;
-	
+
 	if (!(str)
 		|| !(node = malloc(sizeof(t_list)))
 		|| !(node->str = (char*)malloc(size)))
@@ -48,7 +39,7 @@ t_list	*get_lst_str(int *size, int fd)
 	char	buff[BUFF_SIZE + 1];
 	int		ret;
 	int		s;
-	
+
 	beg = NULL;
 	if (!size)
 		return (NULL);
@@ -73,7 +64,7 @@ void	free_lst(t_list *beg)
 {
 	t_list	*tmp;
 	t_list	*node;
-	
+
 	node = beg;
 	while (node)
 	{
@@ -84,22 +75,14 @@ void	free_lst(t_list *beg)
 	}
 }
 
-//void	print_lst(t_list *beg)
-//{
-//	printf("%d\n", beg->size);
-//	if (beg->next)
-//		print_lst(beg->next);
-//	printf("%s", beg->str);
-//}
-
 char	*get_entry(int fd, int *size)
 {
 	t_list	*beg;
 	t_list	*node;
 	char	*str;
-	int	i;
-	int	max;
-	
+	int		i;
+	int		max;
+
 	if (!size || !(beg = get_lst_str(size, fd))
 		|| !(str = malloc((*size + 1) * sizeof(char))))
 		return (NULL);
@@ -119,9 +102,9 @@ char	*get_entry(int fd, int *size)
 
 char	*file_get_str(const char *file_path, int *size)
 {
-	char 	*str;
+	char	*str;
 	int		fd;
-	
+
 	if (!size)
 		return (NULL);
 	if (((fd = open(file_path, O_RDONLY)) < 0))

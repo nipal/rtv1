@@ -6,15 +6,13 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 09:27:11 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 14:24:27 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include "libft.h"
 #include <mlx.h>
-
-/*suppresion de size_ine dans la structure win_mlx*/
 
 int			mlx_win_is_inside(t_mlx_win *w, int x, int y)
 {
@@ -27,7 +25,7 @@ int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 
 	e = get_env(NULL);
 	ft_bzero(&e->scene, sizeof(t_mlx_win));
-		e->scene.refresh = 1;
+	e->scene.refresh = 1;
 	if (!name)
 		name = "new w";
 	if (!(size_x > 0 && size_y > 0) || !w
@@ -35,7 +33,8 @@ int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 			|| !(w->img = mlx_new_image(e->mlx, size_x, size_y))
 			|| !(w->data = (t_pix*)mlx_get_data_addr(w->img, &(w->depth)
 					, &(w->size_x), &(w->endian)))
-			|| !(w->zbuff = (t_zbuff*)malloc(sizeof(t_zbuff) * size_x * size_y)))
+			|| !(w->zbuff = (t_zbuff*)malloc(sizeof(t_zbuff) *
+					size_x * size_y)))
 		return (-1);
 	w->name = name;
 	w->mouse = vec3_set(0, 0, 0);
@@ -45,7 +44,6 @@ int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 	return (0);
 }
 
-// il faudra encore un pe trier de truc
 void		init_win_event(t_mlx_win *w)
 {
 	mlx_hook(w->win, KEY_PRESS, (1 << 24) - 1, key_press, w);
@@ -54,16 +52,13 @@ void		init_win_event(t_mlx_win *w)
 	mlx_hook(w->win, BUTTON_RELEASE, (1 << 24) - 1, mousse_release, w);
 	mlx_hook(w->win, MOTION_NOTIFY, (1 << 24) - 1, mousse_motion, w);
 }
-////////////// pck voila
 
 void		mlx_win_finish(t_mlx_win *w)
 {
 	free(w->zbuff);
-			/*	les evenltuel fonction de fin de la mlx	*/
-			/*	mais bon voila	*/
 }
 
-void	mlx_start(t_env *e)
+void		mlx_start(t_env *e)
 {
 	mlx_loop_hook(e->mlx, main_bcl, e);
 	mlx_loop(e->mlx);

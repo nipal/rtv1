@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 09:24:19 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 14:07:02 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	cam_turn_up(t_cam *cam, double ang)
 	cam->uz = quaternion_rot(cam->uz, cam->ux, ang);
 }
 
-
 void	cam_reset(t_cam *cam)
 {
 	cam->pos = vec3_set(0, 0, 0);
@@ -88,7 +87,6 @@ void	cam_init_draw_func(t_env *e)
 	e->obj_dist[1] = get_dist_sphere;
 	e->obj_dist[2] = get_dist_cylinder;
 	e->obj_dist[3] = get_dist_cone;
-
 	e->obj_nrm[0] = get_normal_plan;
 	e->obj_nrm[1] = get_normal_sphere;
 	e->obj_nrm[2] = get_normal_cylinder;

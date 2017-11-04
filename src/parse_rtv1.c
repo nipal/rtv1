@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 18:28:09 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 08:52:11 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 14:32:04 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,17 +463,15 @@ void	asset_finish(t_obj *obj, int comp)
 	color_range(&obj->col);
 	if (obj->type == CONE)
 	{
-		coef = tan(obj->value * M_PI / 180.0); // converstion angle -> radian
+		coef = tan(obj->value * M_PI / 180.0); 
 		obj->value = coef * coef;
 	}
 	else
 		obj->value = fabs(obj->value);
 }
 
-// str point sur le premier character apres la curly braket ouvrante
 t_obj	*get_assets(char *str, int id, int *add_curs)
 {
-int	t1, t2, t3; (void)t1; (void)t2; (void)t3;
 	t_obj	*obj;
 	int		size;
 	int		id_comp;
@@ -489,21 +487,10 @@ int	t1, t2, t3; (void)t1; (void)t2; (void)t3;
 	id_comp = -1;
 	while (i < size - 1)
 	{
-t1 = i;
 		if ((id_comp = find_id_from_name(str + i, &i, ASSETS_COMP)) >= 0)
 		{
-			if (id_comp == 0)
-			{
-//				printf("#####[%d]####\n%.7s\n$$$$$$$$$\n%.5s\n", (i - t1), (str + t1), (str + i));
-			}
-t2 = i;
 			comp |= 1 << id_comp;
 			asset_comp_fill(str + i, &i, obj, id_comp);
-			if (id_comp == 0)
-{
-//	printf("11111111111111111111\n%.10s\n22222222222222222\n%.10s\n\n", (str + t1), (str + t2));
-//	exit(0);
-}
 		}
 	}
 	*add_curs += size;
@@ -612,12 +599,6 @@ t_cam	*get_cam(char *str, int id, int *add_curs)
 	return (cam);
 }
 
-/*
-**	On enleve les comentaire
-**	On recupere une liste de tout les objet recuperer
-**		TODO il faudrait noter qlq part les composante recuperer et celle 
-**		qui ne le sont pas
-*/
 t_entities	*get_entities(char *file_str)
 {
 	int	i;
@@ -625,13 +606,11 @@ t_entities	*get_entities(char *file_str)
 	t_entities	*beg;
 	t_entities	*node;
 
-//printf("func:%s	line:%d\n", __func__, __LINE__);
 	beg = NULL;
 	remove_coment(file_str);
 	i = 0;
 	while (!is_parsing_finnished(file_str + i))
 	{
-//		printf("i:%d\n", 0);
 		if ((id_obj = find_id_from_name(file_str + i, &i, OBJ_TYPE)) < 0)
 			parse_error(-1, "no obj_name found");
 		if ((i += find_char(file_str + i, '{')) < 0) 
@@ -646,12 +625,6 @@ t_entities	*get_entities(char *file_str)
 	}
 	return(beg);
 }
-
-//	TODO: gerer la destruction des objet allouer
-/*
-**	- On conte le nombre de t_obj, t_light, t_cam
-**	- on les alloue
-*/
 
 int		item_obj_alloc(t_entities *node, t_item *item)
 {
@@ -677,9 +650,6 @@ int		item_obj_alloc(t_entities *node, t_item *item)
 	return (1);
 }
 
-/*
-**	On initialise les valeur pour le plan
-*/
 void		item_finish_plan(t_obj *plan)
 {
 	if (vec3_norme((plan->dir = vec3_normalise(plan->dir))) != 1)
@@ -687,21 +657,13 @@ void		item_finish_plan(t_obj *plan)
 	plan->value = -vec3_dot(plan->dir, plan->pos);
 }
 
-//	initialisaiton particulier a un element
-// PLAN: 		il faut que le 4ieme terme de l'equation soit calculer
-// SPHERE:		rien
-// CYLINDRE:	rien
-// CONE:		rien
-// 	il faut juste que toute les direction normaliser
-
-// TODO put in object.c
 void		obj_manage_rot(t_obj *obj)
 {
 	t_vec3	ang;
 
 	ang = vec3_cartesien_spherique(obj->dir);
-//	vec3_print_str(ang, "ang");
-//	obj_set_invrot(obj, ang.x, ang.y, 0);
+
+
 	obj->rot_inv = mat3_rot_all(-ang.x, -ang.y, 0);
 }
 
@@ -741,9 +703,9 @@ void		item_fill_cam(t_entities *node, t_item *item)
 			cam = *((t_cam*)(node->entities));
 			if ((float)vec3_norme((cam.uz = vec3_normalise(cam.uz))) != 1)
 				cam.uz = vec3_set(0, 0, 1);
-			if (cam.uz.x == 0 && cam.uz.z == 0) // si uz est paralle a (0, 1, 0)
-				cam.uy = vec3_set(0, 0, -1); // TODO ajuster le signe en fonction de selui de uZ
-			else if (cam.uz.y == 0)	// un cas particulier de uy
+			if (cam.uz.x == 0 && cam.uz.z == 0) 
+				cam.uy = vec3_set(0, 0, -1); 
+			else if (cam.uz.y == 0)	
 				cam.uy = vec3_set(0, 1, 0);
 			else
 				cam.uy = vec3_normalise(vec3_add(vec3_set(0, -vec3_dot(cam.uz, cam.uz) / cam.uz.y, 0), cam.uz));
@@ -769,15 +731,9 @@ void		item_fill_light(t_entities *node, t_item *item)
 	}
 }
 
-
-
 void	item_fill(t_entities *beg, t_item *item)
 {
 	item_fill_light(beg, item);
 	item_fill_cam(beg, item);
 	item_fill_assets(beg, item);
 }
-
-// On pourais aussi faire pouvoir editer des parametre comme:
-// 		- taille de la fenetre
-// 		- vitesse: (translation, rotation)
