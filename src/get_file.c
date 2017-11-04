@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 20:20:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/03 19:25:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/04 05:13:21 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	*file_get_str(const char *file_path, int *size)
 	}
 	if (!(str = get_entry(fd, size)))
 	{
-		printf("reading file error\n");
+		perror("reading file error\n");
 		close(fd);
 		return (NULL);
 	}
