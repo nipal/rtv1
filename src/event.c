@@ -63,19 +63,17 @@ void	print_all_segement(t_env *e)
 void	post_processing(t_env *e)
 {
 	t_mlx_win	*w;
-	t_obj		*obj;
 	t_item		*item;
 	t_light		*light;
 	int			i;
 
 	w = &e->scene;
 	item = &e->item;
-	obj = item->obj;
 	light = item->light;
 	i = 0;
 	while (i < item->nb_light)
 	{
-		pp_draw_light_flat(w, &item->light[i], 0.1, item->light[i].col);
+		pp_draw_light_flat(w, light + i, 0.1, item->light[i].col);
 		i++;
 	}
 	print_all_segement(e);

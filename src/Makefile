@@ -51,21 +51,30 @@ SRC		= 							\
 			ray_geo.c				\
 			ray_condition.c			\
 			segment.c				\
-
+			print_vec.c				\
 
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../quaternion -L ../minilibx_macos
+LIB_DIR		= -L ../libft  -L ../quaternion
 
-LIB_NAME	= -lvec_math -lmlx -lft -lquaternion -lm #-lX11 -lXext
+#LIB_DIR	+= -L ../minilibx_macos
+LIB_DIR		+= -L /usr/lib/
 
-FRAMEWORK	= -framework OpenGl -framework AppKit #-framework opencl
+
+LIB_NAME	= -lft -lm -lmlx -lquaternion
+#LIB_NAME	+= -lmlx
+LIB_NAME	+= -lX11 -lXext
+
+#FRAMEWORK	= -framework OpenGl -framework AppKit #-framework opencl
+FRAMEWORK	= #-framework OpenGl -framework AppKit #-framework opencl
+-fsanitize=address
+LIB_NAME	+= $(FRAMEWORK)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		$(CC) $(CFLAGS) -o $(NAME) $(LIB_DIR) $(LIB_NAME) $(FRAMEWORK) $(OBJ) 
+		$(CC) $(CFLAGS) -o $(NAME)  $(OBJ)  $(LIB_DIR) $(LIB_NAME)
 #		-L /usr/lib/ -lmlx -lm -lX11 -lXext
 #
 

@@ -36,7 +36,7 @@ $(NAME) : $(OBJ)
 	$(CC) $(CFLAGS) -c $(SRC) -I .
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) 
 
 fclean : clean
 	rm -f $(NAME)
