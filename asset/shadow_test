@@ -1,0 +1,167 @@
+plan
+{
+	pos	0, 5.01, 0
+	col 255, 255, 255
+	dir 0, 1, 0
+}
+
+plan
+{
+	pos	0, -5.01, 0
+	col 255, 255, 255
+	dir 0, 1, 0
+}
+
+plan
+{
+	pos	5.01, 0, 0
+	col 255, 255, 255
+	dir 1, 0, 0
+}
+
+plan
+{
+	pos	-5.01, 0, 0
+	col 255, 255, 255
+	dir -1, 0, 0
+}
+
+plan
+{
+	pos	0, -5.01, 0
+	col 255, 255, 255
+	dir 0, 1, 0
+}
+
+plan
+{
+	pos	0, 5.01, 0
+	col 255, 255, 255
+	dir 0, -1, 0
+}
+
+light
+{
+	pos		1, 1, 1
+	col		255, 255, 255
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		0, -2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		-1, -2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		-2, -2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		-2, -1, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		-2, 0, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		-2, 1, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		-2, 2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		-1, 2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		0, 2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		1, 2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		2, 2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		2, 1, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		2, 0, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		2, -1, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		2, -2, 0
+	value	0.4
+}
+
+sphere
+{
+	col		200, 200, 200
+	pos		1, -2, 0
+	value	0.4
+}
+
+
+camera
+{
+	pos	0, 0, -4
+	dir	0, 0, 1
+	up	1, 0, 0
+}
