@@ -50,6 +50,7 @@ void		entities_destroy(t_entities *elem)
 	while (elem)
 	{
 		tmp = elem->next;
+		free(elem->entities);
 		free(elem);
 		elem = tmp;
 	}
