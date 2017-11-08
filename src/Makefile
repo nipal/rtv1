@@ -59,7 +59,8 @@ OBJ			= $(SRC:.c=.o)
 LIB_DIR		= -L ../libft  -L ../quaternion
 
 #LIB_DIR	+= -L ../minilibx_macos
-LIB_DIR		+= -L /usr/lib/
+#LIB_DIR		+= -L /usr/lib/
+LIB_DIR		+= -L ../minilibx
 
 
 LIB_NAME	= -lft -lm -lmlx -lquaternion
