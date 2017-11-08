@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   cam_move.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/18 17:43:43 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/08 06:27:06 by fjanoty          ###   ########.fr       */
+/*   Created: 2017/11/08 06:23:41 by fjanoty           #+#    #+#             */
+/*   Updated: 2017/11/08 06:25:16 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void	item_destroy(t_item *it)
+void	cam_go_front(t_cam *cam, double dist)
 {
-	if (!it)
-		return ;
-	if (it->light)
-		free(it->light);
-	if (it->obj)
-		free(it->obj);
-	if (it->cam)
-		free(it->all_cam);
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, dist));
 }
 
-void	rtv1_exit(t_env *e)
+void	cam_go_back(t_cam *cam, double dist)
 {
-	(void)e;
-	if (e)
-	{
-		mlx_win_finish(&e->scene);
-		lst_destroy_all(&e->item.all_segment);
-		item_destroy(&e->item);
-	}
-	exit(0);
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, -dist));
+}
+
+void	cam_go_left(t_cam *cam, double dist)
+{
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, -dist));
+}
+
+void	cam_go_right(t_cam *cam, double dist)
+{
+	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, dist));
 }

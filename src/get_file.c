@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 20:20:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 14:16:40 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/08 03:36:17 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ t_list	*create_node(char *str, int size)
 	return (node);
 }
 
-void	push_front(t_list **beg, t_list *node)
-{
-	node->next = *beg;
-	*beg = node;
-}
-
 t_list	*get_lst_str(int *size, int fd)
 {
 	t_list	*beg;
@@ -49,13 +43,12 @@ t_list	*get_lst_str(int *size, int fd)
 		buff[ret] = '\0';
 		if (!(node = create_node(buff, ret)))
 			return (NULL);
-		push_front(&beg, node);
+		node->next = beg;
+		beg = node;
 		s += ret;
 	}
 	if (ret < 0)
-	{
 		perror("read_error -->");
-	}
 	*size = s;
 	return (beg);
 }

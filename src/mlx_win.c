@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 18:47:38 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 14:24:27 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/08 02:48:16 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int			mlx_win_init(t_mlx_win *w, int size_x, int size_y, char *name)
 	w->prev_mouse = vec3_set(0, 0, 0);
 	w->size_x = size_x;
 	w->size_y = size_y;
+	w->ratio = (double)size_x / (double)size_y;
 	return (0);
 }
 

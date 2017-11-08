@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 14:13:25 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/08 06:28:56 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		key_press(int key_code, t_mlx_win *w)
 	double	dist;
 
 	ang = 5;
-	dist = 0.5;
+	dist = 1;
 	(void)key_code;
 	(key_code == KEY_ESC) ? rtv1_exit(w->env) : (void)w;
 	(key_code == KEY_A) ? cam_turn_left(w->cam, ang * DEG) : (void)w;
@@ -37,13 +37,6 @@ int		key_press(int key_code, t_mlx_win *w)
 	return (0);
 }
 
-int		key_release(int key_code, t_mlx_win *w)
-{
-	(void)w;
-	(void)key_code;
-	return (0);
-}
-
 int		mousse_press(int button, int x, int y, t_mlx_win *w)
 {
 	(void)w;
@@ -53,23 +46,12 @@ int		mousse_press(int button, int x, int y, t_mlx_win *w)
 			seg_add_obj_nrm(&w->env->item.all_segment, w, x, y);
 		w->refresh = 1;
 	}
-	return (0);
-}
-
-int		mousse_release(int button, int x, int y, t_mlx_win *w)
-{
-	(void)w;
-	(void)x;
-	(void)y;
-	(void)button;
-	return (0);
-}
-
-int		mousse_motion(int x, int y, t_mlx_win *w)
-{
-	(void)w;
-	(void)x;
-	(void)y;
+	if (button == 2)
+	{
+		if (w->env->visual_debug % 2)
+			seg_add_ray_light(&w->env->item.all_segment, w, x, y);
+		w->refresh = 1;
+	}
 	return (0);
 }
 

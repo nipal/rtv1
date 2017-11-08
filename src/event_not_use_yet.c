@@ -1,18 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.c                                            :+:      :+:    :+:   */
+/*   event_not_use_yet.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/26 21:14:13 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/09/26 21:19:54 by fjanoty          ###   ########.fr       */
+/*   Created: 2017/11/08 06:27:57 by fjanoty           #+#    #+#             */
+/*   Updated: 2017/11/08 06:28:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-/*
-**	On pourai avoir une archi scene, qui aurrai un obj win dedan
-**	Mais on verra ca plus tard
-*/
+int		key_release(int key_code, t_mlx_win *w)
+{
+	(void)w;
+	(void)key_code;
+	return (0);
+}
+
+int		mousse_release(int button, int x, int y, t_mlx_win *w)
+{
+	(void)w;
+	(void)x;
+	(void)y;
+	(void)button;
+	return (0);
+}
+
+int		mousse_motion(int x, int y, t_mlx_win *w)
+{
+	(void)w;
+	(void)x;
+	(void)y;
+	return (0);
+}

@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   lst_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/18 17:43:43 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/08 06:27:06 by fjanoty          ###   ########.fr       */
+/*   Created: 2017/11/08 06:30:54 by fjanoty           #+#    #+#             */
+/*   Updated: 2017/11/08 06:32:10 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void	item_destroy(t_item *it)
+void	lst_map(t_lst *beg, void (*f)(void *))
 {
-	if (!it)
-		return ;
-	if (it->light)
-		free(it->light);
-	if (it->obj)
-		free(it->obj);
-	if (it->cam)
-		free(it->all_cam);
+	t_lst	*node;
+
+	node = beg;
+	while (node)
+	{
+		f(node->ptr);
+		node = node->next;
+	}
 }
 
-void	rtv1_exit(t_env *e)
+void	lst_map_env(t_lst *beg, void (*f)(void *env, void *ptr), void *env)
 {
-	(void)e;
-	if (e)
+	t_lst	*node;
+
+	node = beg;
+	while (node)
 	{
-		mlx_win_finish(&e->scene);
-		lst_destroy_all(&e->item.all_segment);
-		item_destroy(&e->item);
+		f(env, node->ptr);
+		node = node->next;
 	}
-	exit(0);
 }

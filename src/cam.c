@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 14:07:02 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/08 06:25:13 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,54 +17,6 @@ void	cam_switch(t_mlx_win *w, t_item *item)
 	item->id_cam = (item->id_cam + 1) % item->nb_cam;
 	w->cam = &item->all_cam[item->id_cam];
 	item->cam = &item->all_cam[item->id_cam];
-}
-
-void	cam_go_front(t_cam *cam, double dist)
-{
-	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, dist));
-}
-
-void	cam_go_back(t_cam *cam, double dist)
-{
-	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->uz, -dist));
-}
-
-void	cam_go_left(t_cam *cam, double dist)
-{
-	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, -dist));
-}
-
-void	cam_go_right(t_cam *cam, double dist)
-{
-	cam->pos = vec3_add(cam->pos, vec3_scalar(cam->ux, dist));
-}
-
-void	cam_turn_left(t_cam *cam, double ang)
-{
-	cam->ux = quaternion_rot(cam->ux, vec3_set(0, 1, 0), -ang);
-	cam->uy = quaternion_rot(cam->uy, vec3_set(0, 1, 0), -ang);
-	cam->uz = quaternion_rot(cam->uz, vec3_set(0, 1, 0), -ang);
-}
-
-void	cam_turn_right(t_cam *cam, double ang)
-{
-	cam->ux = quaternion_rot(cam->ux, vec3_set(0, 1, 0), ang);
-	cam->uy = quaternion_rot(cam->uy, vec3_set(0, 1, 0), ang);
-	cam->uz = quaternion_rot(cam->uz, vec3_set(0, 1, 0), ang);
-}
-
-void	cam_turn_down(t_cam *cam, double ang)
-{
-	cam->ux = quaternion_rot(cam->ux, cam->ux, -ang);
-	cam->uy = quaternion_rot(cam->uy, cam->ux, -ang);
-	cam->uz = quaternion_rot(cam->uz, cam->ux, -ang);
-}
-
-void	cam_turn_up(t_cam *cam, double ang)
-{
-	cam->ux = quaternion_rot(cam->ux, cam->ux, ang);
-	cam->uy = quaternion_rot(cam->uy, cam->ux, ang);
-	cam->uz = quaternion_rot(cam->uz, cam->ux, ang);
 }
 
 void	cam_reset(t_cam *cam)

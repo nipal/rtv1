@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 16:26:28 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 14:21:58 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/08 06:27:08 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,4 @@ void	item_init(t_item *item, t_mlx_win *w, const char *file_path)
 	item->all_segment = NULL;
 	add_cam_and_light_if_not(item, w);
 	item->id_cam = 0;
-}
-
-void	item_destroy(t_item *it)
-{
-	if (!it)
-		return ;
-	if (it->light)
-		free(it->light);
-	if (it->obj)
-		free(it->obj);
-	if (it->cam)
-		free(it->all_cam);
 }
