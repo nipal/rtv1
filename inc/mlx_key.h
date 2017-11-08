@@ -13,6 +13,7 @@
 #ifndef MLX_KEY_H
 # define MLX_KEY_H
 
-# include "key_mac.h"
+//# include "key_mac.h"
+#include "key_linux.h"
 
 #endif
