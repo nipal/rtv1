@@ -13,7 +13,20 @@
 #ifndef KEY_LINUX_H
 # define KEY_LINUX_H
 
+# define SHIFT_L	65505
+# define CTRL_L		65507
+# define ALT_L		65613
+# define CMD_L		65515
+
+# define SHIFT_R	65506
+# define CTRL_R		65508
+# define ALT_R		65514
+# define CMD_R		65515
+
 # define KEY_ESC	65307
+# define KEY_ENTER	65293
+# define KEY_TAB	65289
+
 # define KEY_LEFT	65361
 # define KEY_RIGHT	65363
 # define KEY_DOWN	65364

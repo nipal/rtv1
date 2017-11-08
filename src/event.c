@@ -18,6 +18,7 @@ int		key_press(int key_code, t_mlx_win *w)
 	double	ang;
 	double	dist;
 
+	printf("key:%d\n", key_code);
 	ang = 5;
 	dist = 1;
 	(void)key_code;
