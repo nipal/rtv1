@@ -62,7 +62,7 @@ object_name{
 }
 
 object_value: vector OR float
-vector      : {2.0, .56, 0.}
+vector      : 2.0, .56, 0.
 float       : 42.1337
 ```
 
