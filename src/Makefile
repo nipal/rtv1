@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/11/08 06:48:49 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/12/04 12:03:10 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,9 +56,9 @@ SRC		= 							\
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft -L ../vec_math -L ../libft -L ../quaternion -L ../minilibx_macos
+LIB_DIR		= -L ../libft  -L ../libft -L ../quaternion -L ../minilibx_macos
 
-LIB_NAME	= -lvec_math -lmlx -lft -lquaternion -lm #-lX11 -lXext
+LIB_NAME	= -lmlx -lft -lquaternion -lm #-lX11 -lXext
 
 FRAMEWORK	= -framework OpenGl -framework AppKit #-framework opencl
 
@@ -70,7 +70,7 @@ $(NAME): $(OBJ)
 #
 
 %.o: %.c $(DEPS)
-	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc 
+	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../minilibx -I ../minilibx_macos
 
 clean:
 	rm -f $(OBJ)
