@@ -1,6 +1,5 @@
 
 ## Description
-----
 This raytracer displays the following objects: plane, sphere, cylinder, and cone. The lights are colored. We can place multiple cameras. The scenes are defined by a configuration file. The staining system is  [Phong](href="https://en.wikipedia.org/wiki/Phong_shading")
 
 ## Instalation
@@ -25,7 +24,6 @@ This raytracer displays the following objects: plane, sphere, cylinder, and cone
 ```
 
 ## utillisation
-------
 
 ```
     ./rtv1 file_scene
@@ -53,7 +51,6 @@ only in visual debug mode:
 
 
 ## File_input format
----
 
 #### General structure
 ```
@@ -137,7 +134,6 @@ sphere
 the scene are in the ***asset*** folder
 
 ## Image
----
 ![some object with white Light](https://image.noelshack.com/fichiers/2017/49/1/1512379936-screen-shot-2017-12-04-at-10-30-19-am.png)
 ![some object with colored light](https://image.noelshack.com/fichiers/2017/49/1/1512383169-screen-shot-2017-12-04-at-10-33-56-am.png)
 ![all abject and speculare](https://image.noelshack.com/fichiers/2017/49/1/1512383319-screen-shot-2017-12-04-at-11-28-11-am.png)
