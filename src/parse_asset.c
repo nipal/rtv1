@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 05:16:51 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/08 05:36:00 by fjanoty          ###   ########.fr       */
+/*   Updated: 2017/11/09 09:37:44 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		asset_finish(t_obj *obj, int comp)
 	}
 	else
 		obj->value = fabs(obj->value);
-	if (obj->type == CONE)
+	if (obj->type == PLAN)
 		item_finish_plan(obj);
 }
 
