@@ -25,8 +25,8 @@
 # include "mlx_key.h"
 # include "libft.h"
 
-# define SCENE_X        400
-# define SCENE_Y        200
+# define SCENE_X        600
+# define SCENE_Y        400
 
 # define BUFF_SIZE 1024
 
