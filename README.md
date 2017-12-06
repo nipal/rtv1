@@ -3,8 +3,7 @@
 This raytracer displays the following objects: plane, sphere, cylinder, and cone. The lights are colored. We can place multiple cameras. The scenes are defined by a configuration file. The staining system is  [Phong](href="https://en.wikipedia.org/wiki/Phong_shading")
 
 ## Instalation
-----
-### Linux
+### Linux (based on Debian)
 
 + You will need X11 and libxext
 + and just `make` the project
