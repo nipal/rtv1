@@ -17,7 +17,7 @@ t_vec3	pp_screen_proj_coord(t_mlx_win *w, t_vec3 vec)
 	t_vec3	proj;
 	double	ratio;
 
-	ratio = w->size_x / w->size_y;
+	ratio = (double)w->size_x / (double)w->size_y;
 	vec = vec3_sub(vec, w->cam->pos);
 	proj.z = vec3_dot(vec, w->cam->uz);
 	proj.x = (int)(((vec3_dot(vec, vec3_scalar(w->cam->ux, 1))
