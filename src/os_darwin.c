@@ -1,26 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_key.h                                          :+:      :+:    :+:   */
+/*   os_darwin.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/20 21:20:43 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/04 09:19:07 by fjanoty          ###   ########.fr       */
+/*   Created: 2017/09/18 18:30:32 by fjanoty           #+#    #+#             */
+/*   Updated: 2017/11/08 06:25:13 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_KEY_H
-# define MLX_KEY_H
-
-# ifdef OS_DARWIN_H
-#  include "key_mac.h"
-# endif
-
-# ifdef OS_LINUX_H
-#  include "key_linux.h"
-# endif
-
-#  include "key_linux.h"
-
-#endif
+#include "os_darwin.h"
