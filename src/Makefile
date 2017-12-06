@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/12/04 12:03:10 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/12/06 15:43:13 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,12 +81,17 @@ endif
 all: $(NAME)
 
 $(NAME): $(OBJ)
+ifeq "$(OS)" "Darwin"
+		@$(CC) $(CFLAGS) -o $(NAME)  $(LIB_DIR)  $(FRAMEWORK) $(LIB_NAME) $(OBJ)
+endif
+ifeq "$(OS)" "Linux"
 		@$(CC) $(CFLAGS) -o $(NAME)  $(LIB_DIR)  $(FRAMEWORK) $(OBJ) $(LIB_NAME)
+endif
 #		-L /usr/lib/ -lmlx -lm -lX11 -lXext
 #
 
 %.o: %.c $(DEPS)
-	@$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../minilibx -I ../minilibx_macos $(LIB_DIR) $(LIB_NAME) 
+	@$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../minilibx -I ../minilibx_macos 
 
 clean:
 	@rm -f $(OBJ)
