@@ -23,7 +23,23 @@ PROC	:= $(shell uname -p)
 NAME	=	../rtv1
 DEPS =  ../inc/rtv1.h
 
-SRC		= 							\
+
+LIB_DIR		= -L ../libft  -L ../libft -L ../quaternion
+LIB_NAME	=  -lmlx -lquaternion -lft -lm  #-lX11 -lXext
+
+ifeq "$(OS)" "Linux"
+LIB_DIR		+=  -L ../minilibx
+LIB_NAME	+=  -lX11 -lXext
+SRC		=  os_linux.c
+FRAMEWORK	= 
+endif
+ifeq "$(OS)" "Darwin"
+FRAMEWORK	= -framework OpenGl -framework AppKit
+LIB_DIR		+=  -L ../minilibx_macos
+SRC		=  os_darwin.c
+endif
+
+SRC		+= 							\
 			cam.c					\
 			cam_move.c				\
 			cam_turn.c				\
@@ -59,24 +75,12 @@ SRC		= 							\
 			ray_condition.c			\
 			segment.c				\
 
-
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft  -L ../libft -L ../quaternion
-
-LIB_NAME	=  -lmlx -lquaternion -lft -lm  #-lX11 -lXext
 
 
-ifeq "$(OS)" "Linux"
-LIB_DIR		+=  -L ../minilibx
-LIB_NAME	+=  -lX11 -lXext
-FRAMEWORK	= 
-endif
-ifeq "$(OS)" "Darwin"
-FRAMEWORK	= -framework OpenGl -framework AppKit
-LIB_DIR		+=  -L ../minilibx_macos
-endif
+
 
 all: $(NAME)
 

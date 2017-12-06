@@ -13,7 +13,9 @@
 #ifndef KEY_LINUX_H
 # define KEY_LINUX_H
 
+
 # define KEY_ESC	65307
+# define KEY_TAB	65289
 # define KEY_LEFT	65361
 # define KEY_RIGHT	65363
 # define KEY_DOWN	65364
@@ -45,5 +47,8 @@
 # define KEY_X		'x'
 # define KEY_Y		'y'
 # define KEY_Z		'z'
+
+# define BUTTON_RIGHT	3
+# define BUTTON_LEFT	1
 
 #endif

@@ -82,20 +82,20 @@ OBJ		= $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
 
 #%.o: %.c
 #$(OBJ):
 #	    $(CC) $(CFLAGS) -I ../includes/ -c $(SRC)
 
 %.o: %.c $(DEPS)
-	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc
+	@$(CC) $(CFLAGS) -o $@ -c $< -I ../inc
 
 clean:
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all

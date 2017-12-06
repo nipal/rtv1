@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "rtv1.h"
+#include "mlx_key.h"
 #include <stdio.h>
 
 int		key_press(int key_code, t_mlx_win *w)
@@ -40,13 +41,13 @@ int		key_press(int key_code, t_mlx_win *w)
 int		mousse_press(int button, int x, int y, t_mlx_win *w)
 {
 	(void)w;
-	if (button == 1)
+	if (button == BUTTON_LEFT)
 	{
 		if (w->env->visual_debug % 2)
 			seg_add_obj_nrm(&w->env->item.all_segment, w, x, y);
 		w->refresh = 1;
 	}
-	if (button == 2)
+	if (button == BUTTON_RIGHT)
 	{
 		if (w->env->visual_debug % 2)
 			seg_add_ray_light(&w->env->item.all_segment, w, x, y);

@@ -59,4 +59,7 @@
 # define KEY_Y		16
 # define KEY_Z		6
 
+# define BUTTON_RIGHT	2
+# define BUTTON_LEFT	1
+
 #endif
