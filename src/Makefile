@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/12/06 15:43:13 by fjanoty          ###   ########.fr        #
+#    Updated: 2017/12/06 17:11:50 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,22 +24,7 @@ NAME	=	../rtv1
 DEPS =  ../inc/rtv1.h
 
 
-LIB_DIR		= -L ../libft  -L ../libft -L ../quaternion
-LIB_NAME	=  -lmlx -lquaternion -lft -lm  #-lX11 -lXext
-
-ifeq "$(OS)" "Linux"
-LIB_DIR		+=  -L ../minilibx
-LIB_NAME	+=  -lX11 -lXext
-SRC		=  os_linux.c
-FRAMEWORK	= 
-endif
-ifeq "$(OS)" "Darwin"
-FRAMEWORK	= -framework OpenGl -framework AppKit
-LIB_DIR		+=  -L ../minilibx_macos
-SRC		=  os_darwin.c
-endif
-
-SRC		+= 							\
+SRC		= 							\
 			cam.c					\
 			cam_move.c				\
 			cam_turn.c				\
@@ -78,8 +63,18 @@ SRC		+= 							\
 OBJ			= $(SRC:.c=.o)
 
 
+LIB_DIR		= -L ../libft  -L ../libft -L ../quaternion
+LIB_NAME	=  -lmlx -lquaternion -lft -lm  #-lX11 -lXext
 
-
+ifeq "$(OS)" "Linux"
+LIB_DIR		+=  -L ../minilibx
+LIB_NAME	+=  -lX11 -lXext
+FRAMEWORK	= 
+endif
+ifeq "$(OS)" "Darwin"
+FRAMEWORK	= -framework OpenGl -framework AppKit
+LIB_DIR		+=  -L ../minilibx_macos
+endif
 
 
 all: $(NAME)
