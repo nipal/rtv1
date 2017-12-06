@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "rtv1.h"
+#include <math.h>
 
 long		get_asset_offset(int id_assets)
 {

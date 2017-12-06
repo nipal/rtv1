@@ -12,6 +12,13 @@
 
 .PHONY: clean all fclean re
 
+
+# //////////////// cross platforme
+OS	:=	$(shell uname -s)
+PROC	:= $(shell uname -p)
+# ////////////////
+
+
 #-fsanitize=address -g3
 NAME	=	../rtv1
 DEPS =  ../inc/rtv1.h
@@ -56,26 +63,35 @@ SRC		= 							\
 OBJ			= $(SRC:.c=.o)
 
 
-LIB_DIR		= -L ../libft  -L ../libft -L ../quaternion -L ../minilibx_macos
+LIB_DIR		= -L ../libft  -L ../libft -L ../quaternion
 
-LIB_NAME	= -lmlx -lft -lquaternion -lm #-lX11 -lXext
+LIB_NAME	=  -lmlx -lquaternion -lft -lm  #-lX11 -lXext
 
-FRAMEWORK	= -framework OpenGl -framework AppKit #-framework opencl
+
+ifeq "$(OS)" "Linux"
+LIB_DIR		+=  -L ../minilibx
+LIB_NAME	+=  -lX11 -lXext
+FRAMEWORK	= 
+endif
+ifeq "$(OS)" "Darwin"
+FRAMEWORK	= -framework OpenGl -framework AppKit
+LIB_DIR		+=  -L ../minilibx_macos
+endif
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		$(CC) $(CFLAGS) -o $(NAME) $(LIB_DIR) $(LIB_NAME) $(FRAMEWORK) $(OBJ) 
+		@$(CC) $(CFLAGS) -o $(NAME)  $(LIB_DIR)  $(FRAMEWORK) $(OBJ) $(LIB_NAME)
 #		-L /usr/lib/ -lmlx -lm -lX11 -lXext
 #
 
 %.o: %.c $(DEPS)
-	$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../minilibx -I ../minilibx_macos
+	@$(CC) $(CFLAGS) -o $@ -c $< -I ../inc -I ../minilibx -I ../minilibx_macos $(LIB_DIR) $(LIB_NAME) 
 
 clean:
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all

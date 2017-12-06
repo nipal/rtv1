@@ -24,13 +24,25 @@ export CC	= gcc
 
 #-g -fsanitize=address
 
+# //////////////// cross platforme
+OS	:=	$(shell uname -s)
+PROC	:= $(shell uname -p)
+# ////////////////
 
 NAME			= rtv1
 SRC_DIR			= ./src
 LIB_FT			= ./libft
-#LIB_MLX			= ./minilibx
 LIB_QUATER		= ./quaternion
+
+ifeq "$(OS)" "Windows_NT"
+exit # sorry but not sorry =)
+endif
+ifeq "$(OS)" "Linux"
+LIB_MLX			= ./minilibx
+endif
+ifeq "$(OS)" "Darwin"
 LIB_MLX			= ./minilibx_macos
+endif
 
 all:
 	make -C $(LIB_MLX)
