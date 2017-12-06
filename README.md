@@ -12,7 +12,9 @@ This raytracer displays the following objects: plane, sphere, cylinder, and cone
 + You will need X11 and libxext-dev
 + and just `make` the project
 ```
+	sudo apt-get install libx11
 	sudo apt-get install libx11-dev
+	sudo apt-get install libxext
 	sudo apt-get install libxext-dev
 	make
 ```
