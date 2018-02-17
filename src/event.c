@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 15:22:06 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/08 06:28:56 by fjanoty          ###   ########.fr       */
+/*   Updated: 2018/02/17 18:23:14 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	post_processing(t_env *e)
 	i = 0;
 	while (i < item->nb_light)
 	{
-		pp_draw_light_flat(w, &item->light[i], 0.1, item->light[i].col);
+//		pp_draw_light_flat(w, &item->light[i], 0.1, item->light[i].col);
 		i++;
 	}
 	print_all_segement(e);
@@ -80,14 +80,19 @@ void	post_processing(t_env *e)
 
 int		main_bcl(t_env *e)
 {
+	static	int	i = 0;
+	run_osc_network();
 	(void)e;
 	if (e->scene.refresh)
 	{
 		e->scene.refresh = 0;
-		launch_ray(&e->scene, &e->item);
-		if (e->visual_debug % 2)
+	//	if (i++ < 10)
+			launch_ray(&e->scene, &e->item);
+	e->scene.refresh = 1;
+//		if (e->visual_debug % 2)
 			post_processing(e);
 		mlx_put_image_to_window(e->mlx, e->scene.win, e->scene.img, 0, 0);
+	//	bzero(e->scene.data, e->scene.size_x * e->scene.size_y * sizeof(int));
 	}
 	return (0);
 }

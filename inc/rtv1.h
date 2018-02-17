@@ -6,7 +6,7 @@
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 04:58:18 by fjanoty           #+#    #+#             */
-/*   Updated: 2017/11/08 06:55:53 by fjanoty          ###   ########.fr       */
+/*   Updated: 2018/02/17 17:00:13 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include "quaternion.h"
 # include "mlx_key.h"
 # include "libft.h"
+# include "tinyosc.h"
+# include "osc_rtv1.h"
 
 # define SCENE_X        600
 # define SCENE_Y        400

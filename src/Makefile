@@ -6,7 +6,7 @@
 #    By: nperrin <nperrin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/05 01:32:20 by fjanoty           #+#    #+#              #
-#    Updated: 2017/12/06 17:11:50 by fjanoty          ###   ########.fr        #
+#    Updated: 2018/02/17 16:50:18 by fjanoty          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,9 @@ SRC		= 							\
 			ray_geo.c				\
 			ray_condition.c			\
 			segment.c				\
+									\
+			tinyosc.c				\
+			osc_rtv1.c				\
 
 OBJ			= $(SRC:.c=.o)
 
